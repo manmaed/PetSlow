@@ -1,0 +1,16 @@
+[
+{
+  "modid": "petslow",
+  "name": "PetSlow",
+  "description": "Example placeholder mod.",
+  "version": "0.1.0",
+  "mcversion": "1.12.2",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["manmaed"],
+  "credits": "Wendi for the SlowDoll and Riz for the death sound",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
