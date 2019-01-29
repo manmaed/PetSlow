@@ -24,9 +24,6 @@ import java.util.UUID;
  */
 public class EntityMiniSlow extends EntityTameable {
 
-    public static boolean test = true;
-
-
     public EntityMiniSlow(World worldIn) {
         super(worldIn);
         this.setSize(0.5F, 1.0F);
@@ -61,9 +58,6 @@ public class EntityMiniSlow extends EntityTameable {
     {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35D);
-        if(test) {
-            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(5.0D);
-        }
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
     }
 
@@ -120,6 +114,7 @@ public class EntityMiniSlow extends EntityTameable {
         if(stack.getItem().equals(Items.NAME_TAG)) {
             this.setCustomNameTag(stack.getDisplayName());
         }
+        /*if(stack.getItem().equals(Items.TORCH))*/
         if (this.isTamed())
         {
             if (this.isOwner(player) && !this.world.isRemote && !stack.getItem().equals(Items.APPLE) && !stack.getItem().equals(Items.GOLDEN_APPLE))
