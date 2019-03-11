@@ -1,6 +1,7 @@
 package manmaed.petslow.entity;
 
 import manmaed.petslow.libs.SoundHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
@@ -10,9 +11,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -23,6 +27,9 @@ import java.util.UUID;
  * Created by manmaed on 26/02/2017.
  */
 public class EntityMiniSlow extends EntityTameable {
+
+
+    private int torch = 0;
 
     public EntityMiniSlow(World worldIn) {
         super(worldIn);
@@ -35,12 +42,30 @@ public class EntityMiniSlow extends EntityTameable {
             if(isTamed() && !isSitting()) {
                 if (world.getLight(pos) < 3) {
                     if(Blocks.AIR.getDefaultState() != world.getBlockState(pos.down())) {
-                        world.setBlockState(pos, Blocks.TORCH.getDefaultState());
-                        playSound(SoundEvents.BLOCK_NOTE_BELL, 0.05F, 0.01F);
+                        //LogHelper.info(torch);
+                        if (torch >= 1) {
+                            torch--;
+                            world.setBlockState(pos, Blocks.TORCH.getDefaultState());
+                            playSound(SoundEvents.BLOCK_NOTE_BELL, getVolume(), 0.01F);
+                        }
                     }
                 }
             }
         }
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
+        if (nbtTagCompound == null) {
+            nbtTagCompound = new NBTTagCompound();
+        }
+        nbtTagCompound.setInteger("torchCount", this.torch);
+        return nbtTagCompound;
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound nbtTagCompound) {
+        torch = nbtTagCompound.getInteger("torchCount");
     }
 
     protected void initEntityAI()
@@ -105,6 +130,9 @@ public class EntityMiniSlow extends EntityTameable {
     {
         super.setTamed(tamed);
     }
+    public float getVolume(){
+        return Minecraft.getMinecraft().gameSettings.getSoundLevel(SoundCategory.NEUTRAL);
+    }
 
     public boolean processInteract(EntityPlayer player, EnumHand hand)
     {
@@ -114,10 +142,17 @@ public class EntityMiniSlow extends EntityTameable {
         if(stack.getItem().equals(Items.NAME_TAG)) {
             this.setCustomNameTag(stack.getDisplayName());
         }
-        /*if(stack.getItem().equals(Items.TORCH))*/
+        if(stack.getItem().equals(Item.getItemFromBlock(Blocks.TORCH))) {
+            torch++;
+            stack.shrink(1);
+            playSound(SoundEvents.ENTITY_GENERIC_EAT, getVolume(), 1.00F);
+            if(this.rand.nextInt(25) == 0 ){
+                playSound(SoundEvents.ENTITY_PLAYER_BURP, getVolume(), 1F);
+            }
+        }
         if (this.isTamed())
         {
-            if (this.isOwner(player) && !this.world.isRemote && !stack.getItem().equals(Items.APPLE) && !stack.getItem().equals(Items.GOLDEN_APPLE))
+            if (this.isOwner(player) && !this.world.isRemote && !stack.getItem().equals(Items.APPLE) && !stack.getItem().equals(Items.GOLDEN_APPLE) && !stack.getItem().equals(Item.getItemFromBlock(Blocks.TORCH)))
             {
                 this.aiSit.setSitting(!this.isSitting());
                 this.isJumping = false;
