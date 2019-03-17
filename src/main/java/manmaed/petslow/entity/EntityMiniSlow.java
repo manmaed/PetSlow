@@ -1,7 +1,6 @@
 package manmaed.petslow.entity;
 
 import manmaed.petslow.libs.SoundHandler;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
@@ -16,7 +15,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -46,7 +44,7 @@ public class EntityMiniSlow extends EntityTameable {
                         if (torch >= 1) {
                             torch--;
                             world.setBlockState(pos, Blocks.TORCH.getDefaultState());
-                            playSound(SoundEvents.BLOCK_NOTE_BELL, getVolume(), 0.01F);
+                            playSound(SoundEvents.BLOCK_NOTE_BELL, getSoundVolume(), 0.01F);
                         }
                     }
                 }
@@ -123,18 +121,14 @@ public class EntityMiniSlow extends EntityTameable {
      */
     protected float getSoundVolume()
     {
-        return 0.4F;
+        return 1.0F;
     }
 
     public void setTamed(boolean tamed)
     {
         super.setTamed(tamed);
     }
-    public float getVolume(){
-        return Minecraft.getMinecraft().gameSettings.getSoundLevel(SoundCategory.NEUTRAL);
-    }
-
-    public boolean processInteract(EntityPlayer player, EnumHand hand)
+        public boolean processInteract(EntityPlayer player, EnumHand hand)
     {
         ItemStack stack = player.getHeldItemMainhand();
         /*LogHelper.info("getLightBrightness: " + world.getLightBrightness(getPosition()) + " - " + "getLight: " + world.getLight(getPosition()) );*/
@@ -145,9 +139,9 @@ public class EntityMiniSlow extends EntityTameable {
         if(stack.getItem().equals(Item.getItemFromBlock(Blocks.TORCH))) {
             torch++;
             stack.shrink(1);
-            playSound(SoundEvents.ENTITY_GENERIC_EAT, getVolume(), 1.00F);
+            playSound(SoundEvents.ENTITY_GENERIC_EAT, getSoundVolume(), 1.00F);
             if(this.rand.nextInt(25) == 0 ){
-                playSound(SoundEvents.ENTITY_PLAYER_BURP, getVolume(), 1F);
+                playSound(SoundEvents.ENTITY_PLAYER_BURP, getSoundVolume(), 1F);
             }
         }
         if (this.isTamed())

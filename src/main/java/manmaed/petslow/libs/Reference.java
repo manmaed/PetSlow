@@ -7,7 +7,7 @@ public class Reference {
 
     public static final String MOD_ID = "petslow";
     public static final String MOD_NAME = "PetSlow";
-    public static final String VERSION = "0.1.1";
+    public static final String VERSION = "0.1.2";
     public static final String CLIENT_PROXY = "manmaed.petslow.proxy.ClientProxy";
     public static final String PROXY_COMMON = "manmaed.petslow.proxy.CommonProxy";
     public static final String MC_VERSION = "1.12.2";
