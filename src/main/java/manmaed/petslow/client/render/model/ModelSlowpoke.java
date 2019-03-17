@@ -77,6 +77,10 @@ public class ModelSlowpoke extends ModelBase {
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
         if(entity instanceof EntityMiniSlow) {
             EntityMiniSlow entityMiniSlow = (EntityMiniSlow) entity;
+            if (entityMiniSlow.isSitting()) {
+
+            } else {
+
             //HeadHat
             GlStateManager.pushMatrix();
             GlStateManager.translate(this.headhat.offsetX, this.headhat.offsetY, this.headhat.offsetZ);
@@ -126,28 +130,6 @@ public class ModelSlowpoke extends ModelBase {
             GlStateManager.translate(-this.arm1.rotationPointX * f5, -this.arm1.rotationPointY * f5, -this.arm1.rotationPointZ * f5);
             this.arm1.render(f5);
             GlStateManager.popMatrix();
-            if (entityMiniSlow.isSitting()) {
-
-                //Leg1
-                GlStateManager.pushMatrix();
-                GlStateManager.translate(this.leg1sit.offsetX, this.leg1sit.offsetY, this.leg1sit.offsetZ);
-                GlStateManager.translate(this.leg1sit.rotationPointX * f5, this.leg1sit.rotationPointY * f5, this.leg1sit.rotationPointZ * f5);
-                GlStateManager.scale(0.5D, 0.5D, 0.5D);
-                GlStateManager.translate(-this.leg1sit.offsetX, -this.leg1sit.offsetY, -this.leg1sit.offsetZ);
-                GlStateManager.translate(-this.leg1sit.rotationPointX * f5, -this.leg1sit.rotationPointY * f5, -this.leg1sit.rotationPointZ * f5);
-                this.leg1sit.render(f5);
-                GlStateManager.popMatrix();
-
-                //Leg2
-                GlStateManager.pushMatrix();
-                GlStateManager.translate(this.leg2ssit.offsetX, this.leg2ssit.offsetY, this.leg2ssit.offsetZ);
-                GlStateManager.translate(this.leg2ssit.rotationPointX * f5, this.leg2ssit.rotationPointY * f5, this.leg2ssit.rotationPointZ * f5);
-                GlStateManager.scale(0.5D, 0.5D, 0.5D);
-                GlStateManager.translate(-this.leg2ssit.offsetX, -this.leg2ssit.offsetY, -this.leg2ssit.offsetZ);
-                GlStateManager.translate(-this.leg2ssit.rotationPointX * f5, -this.leg2ssit.rotationPointY * f5, -this.leg2ssit.rotationPointZ * f5);
-                this.leg2ssit.render(f5);
-                GlStateManager.popMatrix();
-            } else {
                 //Leg1
                 GlStateManager.pushMatrix();
                 GlStateManager.translate(this.leg1.offsetX, this.leg1.offsetY, this.leg1.offsetZ);
