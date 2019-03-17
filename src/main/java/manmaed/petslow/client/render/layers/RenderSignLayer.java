@@ -22,13 +22,15 @@ public class RenderSignLayer implements LayerRenderer<EntityMiniSlow> {
     @Override
     public void doRenderLayer(EntityMiniSlow entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         if (entitylivingbaseIn.isSitting()) {
-            GlStateManager.pushMatrix();
-            bindTexture(Textures.SIGN);
-            GlStateManager.translate(0F, 0F, 0F);
-            float pitch = interpolateValues(entitylivingbaseIn.prevRotationPitch, entitylivingbaseIn.rotationPitch, partialTicks);
-            //GlStateManager.rotate(pitch, 1.0F, 0.0F, 0.0F);
-            sign.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-            GlStateManager.popMatrix();
+            if (entitylivingbaseIn.isAway()) {
+                GlStateManager.pushMatrix();
+                bindTexture(Textures.SIGN);
+                GlStateManager.translate(0F, 0F, 0F);
+                float pitch = interpolateValues(entitylivingbaseIn.prevRotationPitch, entitylivingbaseIn.rotationPitch, partialTicks);
+                //GlStateManager.rotate(pitch, 1.0F, 0.0F, 0.0F);
+                sign.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+                GlStateManager.popMatrix();
+            }
         }
     }
     @Override

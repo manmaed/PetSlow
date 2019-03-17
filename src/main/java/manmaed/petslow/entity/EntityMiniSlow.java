@@ -28,11 +28,13 @@ public class EntityMiniSlow extends EntityTameable {
 
 
     private int torch = 0;
+    private boolean slowaway = false;
 
     public EntityMiniSlow(World worldIn) {
         super(worldIn);
         this.setSize(0.5F, 1.0F);
         this.setTamed(false);
+        this.canDespawn();
     }
 
     private void addtorch(World world, BlockPos pos) {
@@ -58,12 +60,14 @@ public class EntityMiniSlow extends EntityTameable {
             nbtTagCompound = new NBTTagCompound();
         }
         nbtTagCompound.setInteger("torchCount", this.torch);
+        nbtTagCompound.setBoolean("SlowAFK", this.slowaway);
         return nbtTagCompound;
     }
 
     @Override
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
         torch = nbtTagCompound.getInteger("torchCount");
+        slowaway = nbtTagCompound.getBoolean("SlowAFK");
     }
 
     protected void initEntityAI()
@@ -124,9 +128,31 @@ public class EntityMiniSlow extends EntityTameable {
         return 1.0F;
     }
 
+    public boolean isAway() {
+        int delay = rand.nextInt(5000 );
+        //LogHelper.info(delay);
+        if (delay == 0) {
+            if (!this.slowaway) {
+                this.slowaway = true;
+                //ChatHelper.sendChatMessageServerWide(new TextComponentString("Slow Is Away"));
+                return slowaway;
+            }
+            else if (this.slowaway) {
+                this.slowaway = false;
+                //ChatHelper.sendChatMessageServerWide(new TextComponentString("Slow Is Back"));
+                return slowaway;
+            }
+        } else { return slowaway; }
+        return slowaway;
+    }
+
     public void setTamed(boolean tamed)
     {
         super.setTamed(tamed);
+    }
+    @Override
+    protected boolean canDespawn() {
+        return false;
     }
         public boolean processInteract(EntityPlayer player, EnumHand hand)
     {
