@@ -31,7 +31,7 @@ public class EntityMiniSlow extends EntityTameable {
     private int torch = 0;
     private boolean slowaway = false;
     private int awayCooldown = 0;
-    private int cooldown = this.rand.nextInt(5000) + 100;
+    private int cooldown = rand.nextInt(5000) + 100;
 
     public EntityMiniSlow(World worldIn) {
         super(worldIn);
@@ -59,20 +59,23 @@ public class EntityMiniSlow extends EntityTameable {
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
-        if (nbtTagCompound == null) {
-            nbtTagCompound = new NBTTagCompound();
+        NBTTagCompound tagCompound = super.writeToNBT(nbtTagCompound);
+        if (tagCompound == null) {
+            tagCompound = new NBTTagCompound();
         }
-        nbtTagCompound.setInteger("torchCount", this.torch);
-        nbtTagCompound.setBoolean("SlowAFK", this.slowaway);
-        nbtTagCompound.setInteger("awayCooldown", this.awayCooldown);
-        return nbtTagCompound;
+        tagCompound.setInteger("torchCount", this.torch);
+        tagCompound.setBoolean("SlowAFK", this.slowaway);
+        tagCompound.setInteger("awayCooldown", this.awayCooldown);
+        return tagCompound;
     }
 
     @Override
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
-        torch = nbtTagCompound.getInteger("torchCount");
-        slowaway = nbtTagCompound.getBoolean("SlowAFK");
-        awayCooldown = nbtTagCompound.getInteger("awayCooldown");
+        NBTTagCompound tagCompound = super.writeToNBT(nbtTagCompound);
+        torch = tagCompound.getInteger("torchCount");
+        slowaway = tagCompound.getBoolean("SlowAFK");
+        awayCooldown = tagCompound.getInteger("awayCooldown");
+
     }
 
     protected void initEntityAI()
@@ -101,6 +104,9 @@ public class EntityMiniSlow extends EntityTameable {
     public void onEntityUpdate() {
         super.onEntityUpdate();
         addtorch(world, this.getPosition());
+        if(!world.isRemote && this.isTamed()) {
+            this.awayCooldown--;
+        }
     }
 
     protected SoundEvent getSwimSound()
@@ -134,8 +140,8 @@ public class EntityMiniSlow extends EntityTameable {
     }
 
     public void setAwayCoolday() {
-        //cooldown = this.rand.nextInt(5000) + 100;
-        cooldown = this.awayCooldown;
+        //cooldown = rand.nextInt(5000) + 100;
+        this.cooldown = this.awayCooldown;
     }
 
     public boolean isAway() {
@@ -161,7 +167,9 @@ public class EntityMiniSlow extends EntityTameable {
     protected boolean canDespawn() {
         return false;
     }
-        public boolean processInteract(EntityPlayer player, EnumHand hand)
+
+
+    public boolean processInteract(EntityPlayer player, EnumHand hand)
     {
         ItemStack stack = player.getHeldItemMainhand();
         /*LogHelper.info("getLightBrightness: " + world.getLightBrightness(getPosition()) + " - " + "getLight: " + world.getLight(getPosition()) );*/
@@ -200,7 +208,6 @@ public class EntityMiniSlow extends EntityTameable {
                 }
 
                 if (!this.world.isRemote) {
-                    this.awayCooldown--;
                     if (this.rand.nextInt(3) == 0) {
                         this.setTamedBy(player);
                         this.navigator.clearPath();
