@@ -1,5 +1,6 @@
 package manmaed.petslow.entity;
 
+import manmaed.petslow.libs.LogHelper;
 import manmaed.petslow.libs.SoundHandler;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -29,6 +30,8 @@ public class EntityMiniSlow extends EntityTameable {
 
     private int torch = 0;
     private boolean slowaway = false;
+    private int awayCooldown = 0;
+    private int cooldown = this.rand.nextInt(5000) + 100;
 
     public EntityMiniSlow(World worldIn) {
         super(worldIn);
@@ -61,6 +64,7 @@ public class EntityMiniSlow extends EntityTameable {
         }
         nbtTagCompound.setInteger("torchCount", this.torch);
         nbtTagCompound.setBoolean("SlowAFK", this.slowaway);
+        nbtTagCompound.setInteger("awayCooldown", this.awayCooldown);
         return nbtTagCompound;
     }
 
@@ -68,6 +72,7 @@ public class EntityMiniSlow extends EntityTameable {
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
         torch = nbtTagCompound.getInteger("torchCount");
         slowaway = nbtTagCompound.getBoolean("SlowAFK");
+        awayCooldown = nbtTagCompound.getInteger("awayCooldown");
     }
 
     protected void initEntityAI()
@@ -128,21 +133,23 @@ public class EntityMiniSlow extends EntityTameable {
         return 1.0F;
     }
 
+    public void setAwayCoolday() {
+        //cooldown = this.rand.nextInt(5000) + 100;
+        cooldown = this.awayCooldown;
+    }
+
     public boolean isAway() {
-        int delay = rand.nextInt(5000 );
-        //LogHelper.info(delay);
-        if (delay == 0) {
-            if (!this.slowaway) {
-                this.slowaway = true;
-                //ChatHelper.sendChatMessageServerWide(new TextComponentString("Slow Is Away"));
-                return slowaway;
-            }
-            else if (this.slowaway) {
-                this.slowaway = false;
-                //ChatHelper.sendChatMessageServerWide(new TextComponentString("Slow Is Back"));
-                return slowaway;
-            }
-        } else { return slowaway; }
+        LogHelper.info(slowaway + " " + awayCooldown + " " + cooldown);
+        if (!this.slowaway && awayCooldown == 0 ) {
+            this.slowaway = true;
+            //ChatHelper.sendChatMessageServerWide(new TextComponentString("Slow Is Away"));
+            setAwayCoolday();
+        }
+        if (this.slowaway && awayCooldown == 0 ) {
+            this.slowaway = false;
+            //ChatHelper.sendChatMessageServerWide(new TextComponentString("Slow Is Back"));
+            setAwayCoolday();
+        }
         return slowaway;
     }
 
@@ -193,6 +200,7 @@ public class EntityMiniSlow extends EntityTameable {
                 }
 
                 if (!this.world.isRemote) {
+                    this.awayCooldown--;
                     if (this.rand.nextInt(3) == 0) {
                         this.setTamedBy(player);
                         this.navigator.clearPath();
