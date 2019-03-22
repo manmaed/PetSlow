@@ -1,6 +1,5 @@
 package manmaed.petslow.entity;
 
-import manmaed.petslow.libs.LogHelper;
 import manmaed.petslow.libs.SoundHandler;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -29,9 +28,10 @@ public class EntityMiniSlow extends EntityTameable {
 
 
     private int torch = 0;
-    private boolean slowaway = false;
+    /*private boolean slowaway = false;
     private int awayCooldown = 0;
-    private int cooldown = rand.nextInt(5000) + 100;
+    private int cooldown = rand.nextInt(5000) + 100;*/
+    protected EntityAIAway aiAway;
 
     public EntityMiniSlow(World worldIn) {
         super(worldIn);
@@ -64,8 +64,8 @@ public class EntityMiniSlow extends EntityTameable {
             tagCompound = new NBTTagCompound();
         }
         tagCompound.setInteger("torchCount", this.torch);
-        tagCompound.setBoolean("SlowAFK", this.slowaway);
-        tagCompound.setInteger("awayCooldown", this.awayCooldown);
+        /*tagCompound.setBoolean("SlowAFK", this.slowaway);
+        tagCompound.setInteger("awayCooldown", this.awayCooldown);*/
         return tagCompound;
     }
 
@@ -73,16 +73,19 @@ public class EntityMiniSlow extends EntityTameable {
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
         NBTTagCompound tagCompound = super.writeToNBT(nbtTagCompound);
         torch = tagCompound.getInteger("torchCount");
-        slowaway = tagCompound.getBoolean("SlowAFK");
-        awayCooldown = tagCompound.getInteger("awayCooldown");
+        /*slowaway = tagCompound.getBoolean("SlowAFK");
+        awayCooldown = tagCompound.getInteger("awayCooldown");*/
 
     }
 
     protected void initEntityAI()
     {
         this.aiSit = new EntityAISit(this);
+        this.aiAway = new EntityAIAway(this);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, this.aiSit);
+        this.tasks.addTask(1, this.aiAway);
+        //this.tasks.addTask(1, new EntityAIAway(this));
         this.tasks.addTask(2, new EntityAIFollowOwner(this, 1.0D, 4.0F, 2.0F));
         this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true, new Class[0]));
@@ -104,9 +107,9 @@ public class EntityMiniSlow extends EntityTameable {
     public void onEntityUpdate() {
         super.onEntityUpdate();
         addtorch(world, this.getPosition());
-        if(!world.isRemote && this.isTamed()) {
+       /* if(!world.isRemote && this.isTamed()) {
             this.awayCooldown--;
-        }
+        }*/
     }
 
     protected SoundEvent getSwimSound()
@@ -139,12 +142,12 @@ public class EntityMiniSlow extends EntityTameable {
         return 1.0F;
     }
 
-    public void setAwayCoolday() {
+    /*public void setAwayCoolday() {
         //cooldown = rand.nextInt(5000) + 100;
         this.cooldown = this.awayCooldown;
-    }
+    }*/
 
-    public boolean isAway() {
+    /*public boolean isAway() {
         LogHelper.info(slowaway + " " + awayCooldown + " " + cooldown);
         if (!this.slowaway && awayCooldown == 0 ) {
             this.slowaway = true;
@@ -157,12 +160,18 @@ public class EntityMiniSlow extends EntityTameable {
             setAwayCoolday();
         }
         return slowaway;
-    }
+    }*/
 
     public void setTamed(boolean tamed)
     {
         super.setTamed(tamed);
     }
+    public boolean isAway()
+    {
+        return this.aiAway.isAway();
+
+    }
+
     @Override
     protected boolean canDespawn() {
         return false;

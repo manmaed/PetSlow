@@ -1,4 +1,4 @@
-package manmaed.petrock.client.render.model;
+package manmaed.petslow.client.render.model;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
