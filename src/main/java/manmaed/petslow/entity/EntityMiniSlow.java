@@ -30,9 +30,9 @@ public class EntityMiniSlow extends EntityTameable {
 
     private int torch = 0;
     private boolean isaway = false;
+    private static final int notinuse = -1;
     private int returncooldown = notinuse;
     private int staycooldown = notinuse;
-    private static final int notinuse = -1;
 
     public EntityMiniSlow(World worldIn) {
         super(worldIn);
@@ -111,15 +111,17 @@ public class EntityMiniSlow extends EntityTameable {
     public void onEntityUpdate() {
         super.onEntityUpdate();
         addtorch(world, this.getPosition());
-        LogHelper.info("StayCooldown: " + staycooldown + " ReturnCooldown: " + returncooldown);
-        if(this.isTamed() && this.isSitting()) {
+        LogHelper.info("StayCooldown: " + staycooldown + " ReturnCooldown: " + returncooldown + " Away:" + this.getAway());
+        if(this.isTamed() && this.isSitting() && !world.isRemote) {
             if(staycooldown == 0  && returncooldown == -1) {
-                this.returncooldown = this.rand.nextInt(2500) + 100;
+                int bool = this.world.rand.nextInt(2500) + 100;
+                this.returncooldown = bool;
                 this.staycooldown = notinuse;
                 setAway(false);
             }
             if(returncooldown  == 0  && staycooldown == -1) {
-                this.staycooldown = this.rand.nextInt(25000) + 1000;
+                int bool = this.world.rand.nextInt(25000) + 1000;
+                this.staycooldown = bool;
                 this.returncooldown = notinuse;
                 setAway(true);
             }
@@ -130,14 +132,14 @@ public class EntityMiniSlow extends EntityTameable {
                 returncooldown--;
             }
         }
-        if(staycooldown == -1 && returncooldown == -1) {
-            boolean tobeornottobe = rand.nextBoolean();
+        if(staycooldown == -1 && returncooldown == -1 && !world.isRemote) {
+            boolean tobeornottobe = world.rand.nextBoolean();
             if(tobeornottobe){
-                this.returncooldown = this.rand.nextInt(2500) + 100;
+                this.returncooldown = this.world.rand.nextInt(2500) + 100;
                 this.staycooldown = notinuse;
                 setAway(false);
             } else {
-                this.staycooldown = this.rand.nextInt(25000) + 1000;
+                this.staycooldown = this.world.rand.nextInt(25000) + 1000;
                 this.returncooldown = notinuse;
                 setAway(true);
             }
@@ -174,25 +176,7 @@ public class EntityMiniSlow extends EntityTameable {
         return 1.0F;
     }
 
-    /*public void setAwayCoolday() {
-        //cooldown = rand.nextInt(5000) + 100;
-        this.cooldown = this.awayCooldown;
-    }*/
 
-    /*public boolean isAway() {
-        LogHelper.info(slowaway + " " + awayCooldown + " " + cooldown);
-        if (!this.slowaway && awayCooldown == 0 ) {
-            this.slowaway = true;
-            //ChatHelper.sendChatMessageServerWide(new TextComponentString("Slow Is Away"));
-            setAwayCoolday();
-        }
-        if (this.slowaway && awayCooldown == 0 ) {
-            this.slowaway = false;
-            //ChatHelper.sendChatMessageServerWide(new TextComponentString("Slow Is Back"));
-            setAwayCoolday();
-        }
-        return slowaway;
-    }*/
 
     public void setTamed(boolean tamed)
     {
