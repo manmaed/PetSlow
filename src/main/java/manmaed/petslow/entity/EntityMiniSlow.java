@@ -37,7 +37,6 @@ public class EntityMiniSlow extends EntityTameable {
         super(worldIn);
         this.setSize(0.5F, 1.0F);
         this.setTamed(false);
-        this.canDespawn();
     }
 
     private void addtorch(World world, BlockPos pos) {
@@ -59,20 +58,20 @@ public class EntityMiniSlow extends EntityTameable {
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
-        NBTTagCompound tagCompound = super.writeToNBT(nbtTagCompound);
-        if (tagCompound == null) {
-            tagCompound = new NBTTagCompound();
+        super.writeToNBT(nbtTagCompound);
+        if (nbtTagCompound == null) {
+            nbtTagCompound = new NBTTagCompound();
         }
-        tagCompound.setInteger("torchCount", this.torch);
+        nbtTagCompound.setInteger("torchCount", this.torch);
         /*tagCompound.setBoolean("SlowAFK", this.slowaway);
         tagCompound.setInteger("awayCooldown", this.awayCooldown);*/
-        return tagCompound;
+        return nbtTagCompound;
     }
 
     @Override
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
-        NBTTagCompound tagCompound = super.writeToNBT(nbtTagCompound);
-        torch = tagCompound.getInteger("torchCount");
+        super.readFromNBT(nbtTagCompound);
+        torch = nbtTagCompound.getInteger("torchCount");
         /*slowaway = tagCompound.getBoolean("SlowAFK");
         awayCooldown = tagCompound.getInteger("awayCooldown");*/
 
@@ -81,10 +80,10 @@ public class EntityMiniSlow extends EntityTameable {
     protected void initEntityAI()
     {
         this.aiSit = new EntityAISit(this);
-        this.aiAway = new EntityAIAway(this);
+        /*this.aiAway = new EntityAIAway(this);*/
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, this.aiSit);
-        this.tasks.addTask(1, this.aiAway);
+/*        this.tasks.addTask(1, this.aiAway);*/
         //this.tasks.addTask(1, new EntityAIAway(this));
         this.tasks.addTask(2, new EntityAIFollowOwner(this, 1.0D, 4.0F, 2.0F));
         this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
@@ -168,7 +167,7 @@ public class EntityMiniSlow extends EntityTameable {
     }
     public boolean isAway()
     {
-        return this.aiAway.isAway();
+        return false;
 
     }
 
