@@ -30,8 +30,9 @@ public class EntityMiniSlow extends EntityTameable {
 
     private int torch = 0;
     private boolean isaway = false;
-    private int returncooldown = -1;
-    private int staycooldown = -1;
+    private int returncooldown = notinuse;
+    private int staycooldown = notinuse;
+    private static final int notinuse = -1;
 
     public EntityMiniSlow(World worldIn) {
         super(worldIn);
@@ -114,18 +115,18 @@ public class EntityMiniSlow extends EntityTameable {
         if(this.isTamed() && this.isSitting()) {
             if(staycooldown == 0  && returncooldown == -1) {
                 this.returncooldown = this.rand.nextInt(2500) + 100;
-                this.staycooldown = -1;
+                this.staycooldown = notinuse;
                 setAway(false);
             }
             if(returncooldown  == 0  && staycooldown == -1) {
                 this.staycooldown = this.rand.nextInt(25000) + 1000;
-                this.returncooldown = -1;
+                this.returncooldown = notinuse;
                 setAway(true);
             }
-            if(staycooldown != -1) {
+            if(staycooldown != notinuse) {
                 staycooldown--;
             }
-            if(returncooldown != -1) {
+            if(returncooldown != notinuse) {
                 returncooldown--;
             }
         }
@@ -133,11 +134,11 @@ public class EntityMiniSlow extends EntityTameable {
             boolean tobeornottobe = rand.nextBoolean();
             if(tobeornottobe){
                 this.returncooldown = this.rand.nextInt(2500) + 100;
-                this.staycooldown = -1;
+                this.staycooldown = notinuse;
                 setAway(false);
             } else {
                 this.staycooldown = this.rand.nextInt(25000) + 1000;
-                this.returncooldown = -1;
+                this.returncooldown = notinuse;
                 setAway(true);
             }
         }
