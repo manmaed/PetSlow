@@ -22,7 +22,7 @@ public class RenderSignLayer implements LayerRenderer<EntityMiniSlow> {
     @Override
     public void doRenderLayer(EntityMiniSlow entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         if (entitylivingbaseIn.isSitting()) {
-            if (entitylivingbaseIn.isAway()) {
+            if (entitylivingbaseIn.getAway()) {
                 GlStateManager.pushMatrix();
                 bindTexture(Textures.SIGN);
                 GlStateManager.translate(0F, 0F, 0F);

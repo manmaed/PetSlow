@@ -78,7 +78,7 @@ public class ModelSlowpoke extends ModelBase {
         if(entity instanceof EntityMiniSlow) {
             EntityMiniSlow entityMiniSlow = (EntityMiniSlow) entity;
             if (entityMiniSlow.isSitting()) {
-                if (entityMiniSlow.isAway()) {
+                if (entityMiniSlow.getAway()) {
 
                 } else { /*Slow is Sitting Down*/
                     //HeadHat
