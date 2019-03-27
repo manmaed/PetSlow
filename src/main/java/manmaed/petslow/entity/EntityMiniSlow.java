@@ -145,11 +145,6 @@ public class EntityMiniSlow extends EntityTameable {
     }
 
     @Override
-    protected void entityInit() {
-        super.entityInit();
-    }
-
-    @Override
     public void onEntityUpdate() {
         super.onEntityUpdate();
         addtorch(world, this.getPosition());
