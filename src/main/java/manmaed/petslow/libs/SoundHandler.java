@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
  * Created by manmaed on 14/01/2019.
  */
 public class SoundHandler {
+
     public static SoundEvent SLOWBOOP;
     public static SoundEvent SLOWDEATH;
 

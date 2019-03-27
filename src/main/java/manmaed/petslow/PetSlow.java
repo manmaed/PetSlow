@@ -44,34 +44,29 @@ public class PetSlow {
     private static boolean invalsign = false;
     public static final String SLOW_UUID = "d2839efc727a426397ce3c73cdee5013";
 
-
     @Mod.EventHandler
-    public void onInvalidFingerprint(FMLFingerprintViolationEvent event)
-    {
+    public void onInvalidFingerprint(FMLFingerprintViolationEvent event) {
         if(event.isDirectory()){
             devenvsign = true;
         }
         if(!event.isDirectory()) {
             invalsign = true;
         }
-
     }
 
     @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event)
-    {
+    public void preInit(FMLPreInitializationEvent event) {
         registryHelper = new RegistryHelper(event);
         PRBlocks.load();
         PSItems.load();
         PSEntitys.load();
         proxy.renderentitys();
         SoundHandler.registerSounds();
-
     }
 
     @Mod.EventHandler
-    public void load(FMLInitializationEvent event)
-    {
+    public void load(FMLInitializationEvent event) {
+        //Do Something?
     }
 
     @Mod.EventHandler

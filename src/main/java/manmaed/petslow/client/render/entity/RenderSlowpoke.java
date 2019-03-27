@@ -12,14 +12,11 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 /**
  * Created by manmaed on 26/02/2017.
  */
-public class RenderSlowpoke extends RenderLiving<EntityMiniSlow>
-{
+public class RenderSlowpoke extends RenderLiving<EntityMiniSlow> {
 
     public static final Factory FACTORY = new Factory();
 
-
-    public RenderSlowpoke(RenderManager renderManagerIn)
-    {
+    public RenderSlowpoke(RenderManager renderManagerIn) {
         super(renderManagerIn, new ModelSlowpoke(), 0.4F);
     }
     /**
@@ -30,13 +27,10 @@ public class RenderSlowpoke extends RenderLiving<EntityMiniSlow>
         return Textures.SLOWPOKE;
     }
 
-    public static class Factory implements IRenderFactory<EntityMiniSlow>
-    {
+    public static class Factory implements IRenderFactory<EntityMiniSlow> {
         @Override
-        public Render<? super EntityMiniSlow> createRenderFor(RenderManager manager)
-        {
+        public Render<? super EntityMiniSlow> createRenderFor(RenderManager manager) {
             return new RenderSlowpoke(manager);
         }
     }
-
 }

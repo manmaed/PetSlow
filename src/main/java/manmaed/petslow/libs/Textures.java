@@ -13,16 +13,13 @@ public class Textures {
     public static final ResourceLocation SIGN = ResourceLocationHelper.getResourceLocation(MODEL_SHEET_LOCATION + "sign.png");
 
 
-
     private static class ResourceLocationHelper {
-    public static ResourceLocation getResourceLocation(String modId, String path) {
+        public static ResourceLocation getResourceLocation(String modId, String path) {
+            return new ResourceLocation(modId, path);
+        }
 
-        return new ResourceLocation(modId, path);
+        public static ResourceLocation getResourceLocation(String path) {
+            return getResourceLocation(Reference.MOD_ID.toLowerCase(), path);
+        }
     }
-
-    public static ResourceLocation getResourceLocation(String path) {
-
-        return getResourceLocation(Reference.MOD_ID.toLowerCase(), path);
-    }
-}
 }

@@ -20,13 +20,10 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.UUID;
-
 /**
  * Created by manmaed on 26/02/2017.
  */
 public class EntityMiniSlow extends EntityTameable {
-
 
     private int torch = 0;
     private boolean isaway = false;
@@ -56,13 +53,58 @@ public class EntityMiniSlow extends EntityTameable {
             }
         }
     }
+    private void shouldafk(World world) {
+        if (!world.isRemote) {
+            if (isTamed() && isSitting()) {
+                if (staycooldown == 0 && returncooldown == -1) {
+                    int bool = this.world.rand.nextInt(2500) + 100;
+                    this.returncooldown = bool;
+                    this.staycooldown = notinuse;
+                    setAway(false);
+                }
+                if (returncooldown == 0 && staycooldown == -1) {
+                    int bool = this.world.rand.nextInt(25000) + 1000;
+                    this.staycooldown = bool;
+                    this.returncooldown = notinuse;
+                    setAway(true);
+                }
+            }
+        }
+    }
+
+    private void countdown(World world) {
+        if (this.isTamed() && this.isSitting()) {
+            if (!world.isRemote) {
+                if (staycooldown != notinuse) {
+                    this.staycooldown--;
+                }
+                if (returncooldown != notinuse) {
+                    this.returncooldown--;
+                }
+            }
+        }
+    }
+
+    private void chooseafk(World world) {
+        if (!world.isRemote) {
+            if (staycooldown == -1 && returncooldown == -1) {
+                boolean tobeornottobe = world.rand.nextBoolean();
+                if (tobeornottobe) {
+                    this.returncooldown = this.world.rand.nextInt(2500) + 100;
+                    this.staycooldown = notinuse;
+                    setAway(false);
+                } else {
+                    this.staycooldown = this.world.rand.nextInt(25000) + 1000;
+                    this.returncooldown = notinuse;
+                    setAway(true);
+                }
+            }
+        }
+    }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
         super.writeToNBT(nbtTagCompound);
-        if (nbtTagCompound == null) {
-            nbtTagCompound = new NBTTagCompound();
-        }
         nbtTagCompound.setInteger("torchCount", this.torch);
         nbtTagCompound.setBoolean("slowAway", this.isaway);
         nbtTagCompound.setInteger("returnCooldown", this.returncooldown);
@@ -82,110 +124,77 @@ public class EntityMiniSlow extends EntityTameable {
 
     }
 
-    protected void initEntityAI()
-    {
+    @Override
+    protected void initEntityAI() {
         this.aiSit = new EntityAISit(this);
-        /*this.aiAway = new EntityAIAway(this);*/
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, this.aiSit);
-/*        this.tasks.addTask(1, this.aiAway);*/
-        //this.tasks.addTask(1, new EntityAIAway(this));
         this.tasks.addTask(2, new EntityAIFollowOwner(this, 1.0D, 4.0F, 2.0F));
         this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true, new Class[0]));
         this.tasks.addTask(4, new EntityAIWander(this, 0.8D,10));
     }
 
-    protected void applyEntityAttributes()
-    {
+    @Override
+    protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35D);
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
     }
 
-    protected void entityInit()
-    {
+    @Override
+    protected void entityInit() {
         super.entityInit();
     }
 
+    @Override
     public void onEntityUpdate() {
         super.onEntityUpdate();
         addtorch(world, this.getPosition());
+        getAway();
+        chooseafk(world);
+        shouldafk(world);
+        countdown(world);
         LogHelper.info("StayCooldown: " + staycooldown + " ReturnCooldown: " + returncooldown + " Away:" + this.getAway());
-        if(this.isTamed() && this.isSitting() && !world.isRemote) {
-            if(staycooldown == 0  && returncooldown == -1) {
-                int bool = this.world.rand.nextInt(2500) + 100;
-                this.returncooldown = bool;
-                this.staycooldown = notinuse;
-                setAway(false);
-            }
-            if(returncooldown  == 0  && staycooldown == -1) {
-                int bool = this.world.rand.nextInt(25000) + 1000;
-                this.staycooldown = bool;
-                this.returncooldown = notinuse;
-                setAway(true);
-            }
-            if(staycooldown != notinuse) {
-                staycooldown--;
-            }
-            if(returncooldown != notinuse) {
-                returncooldown--;
-            }
-        }
-        if(staycooldown == -1 && returncooldown == -1 && !world.isRemote) {
-            boolean tobeornottobe = world.rand.nextBoolean();
-            if(tobeornottobe){
-                this.returncooldown = this.world.rand.nextInt(2500) + 100;
-                this.staycooldown = notinuse;
-                setAway(false);
-            } else {
-                this.staycooldown = this.world.rand.nextInt(25000) + 1000;
-                this.returncooldown = notinuse;
-                setAway(true);
-            }
-        }
     }
 
-    protected SoundEvent getSwimSound()
-    {
+    @Override
+    protected SoundEvent getSwimSound() {
 
         return SoundEvents.ENTITY_PLAYER_SWIM;
     }
 
-    protected SoundEvent getSplashSound()
-    {
+    @Override
+    protected SoundEvent getSplashSound() {
 
         return SoundEvents.ENTITY_PLAYER_SPLASH;
     }
 
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
-    {
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return SoundEvents.ENTITY_PLAYER_HURT;
     }
 
-    protected SoundEvent getDeathSound()
-    {
+    @Override
+    protected SoundEvent getDeathSound() {
         return SoundHandler.SLOWDEATH;
     }
 
     /**
      * Returns the volume for the sounds this mob makes.
      */
-    protected float getSoundVolume()
-    {
+    @Override
+    protected float getSoundVolume() {
         return 1.0F;
     }
 
-
-
-    public void setTamed(boolean tamed)
-    {
+    @Override
+    public void setTamed(boolean tamed) {
         super.setTamed(tamed);
     }
 
     //Away Stuff
-    public boolean getAway()
-    {
+    public boolean getAway() {
         return isaway;
     }
     private void setAway(boolean b){
@@ -197,12 +206,10 @@ public class EntityMiniSlow extends EntityTameable {
         return false;
     }
 
-
+    @Override
     public boolean processInteract(EntityPlayer player, EnumHand hand)
     {
         ItemStack stack = player.getHeldItemMainhand();
-        /*LogHelper.info("getLightBrightness: " + world.getLightBrightness(getPosition()) + " - " + "getLight: " + world.getLight(getPosition()) );*/
-        //LogHelper.info(this.isSitting() + " " + this.isTamed());
         if(stack.getItem().equals(Items.NAME_TAG)) {
             this.setCustomNameTag(stack.getDisplayName());
         }
@@ -214,10 +221,8 @@ public class EntityMiniSlow extends EntityTameable {
                 playSound(SoundEvents.ENTITY_PLAYER_BURP, getSoundVolume(), 1F);
             }
         }
-        if (this.isTamed())
-        {
-            if (this.isOwner(player) && !this.world.isRemote && !stack.getItem().equals(Items.APPLE) && !stack.getItem().equals(Items.GOLDEN_APPLE) && !stack.getItem().equals(Item.getItemFromBlock(Blocks.TORCH)))
-            {
+        if (this.isTamed()) {
+            if (this.isOwner(player) && !this.world.isRemote && !stack.getItem().equals(Items.APPLE) && !stack.getItem().equals(Items.GOLDEN_APPLE) && !stack.getItem().equals(Item.getItemFromBlock(Blocks.TORCH))) {
                 this.aiSit.setSitting(!this.isSitting());
                 this.isJumping = false;
                 this.navigator.clearPath();
@@ -259,46 +264,11 @@ public class EntityMiniSlow extends EntityTameable {
     @Override
     public EntityMiniSlow createChild(EntityAgeable ageable) {
         EntityMiniSlow miniSlow = new EntityMiniSlow(this.world);
-        UUID uuid = this.getOwnerId();
-
-        if(uuid != null) {
-            miniSlow.setOwnerId(uuid);
-            miniSlow.setTamed(true);
-
-        }
-    return miniSlow;
+        return miniSlow;
     }
 
-    public boolean canMateWith(EntityAnimal otherAnimal)
-    {
-        if (otherAnimal == this)
-        {
-            return false;
-        }
-        else if (!this.isTamed())
-        {
-            return false;
-        }
-        else if (!(otherAnimal instanceof EntityMiniSlow))
-        {
-            return false;
-        }
-        else
-        {
-            EntityMiniSlow miniSlow = (EntityMiniSlow)otherAnimal;
-
-            if (!miniSlow.isTamed())
-            {
-                return false;
-            }
-            else if (miniSlow.isSitting())
-            {
-                return false;
-            }
-            else
-            {
-                return this.isInLove() && miniSlow.isInLove();
-            }
-        }
+    @Override
+    public boolean canMateWith(EntityAnimal otherAnimal) {
+        return false;
     }
 }

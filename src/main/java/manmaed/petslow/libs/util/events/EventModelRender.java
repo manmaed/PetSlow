@@ -18,15 +18,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class EventModelRender
 {
 
-    public EventModelRender()
-    {
+    public EventModelRender() {
         MinecraftForge.EVENT_BUS.register(this);
     }
     
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
-    public void renderModels(ModelRegistryEvent event)
-    {
+    public void renderModels(ModelRegistryEvent event) {
         for (Block block : PetSlow.getRegistryHelper().getRegisteredBlocks()) {
             ResourceLocation rl = block.getRegistryName();
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(rl, "inventory"));

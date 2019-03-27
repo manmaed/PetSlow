@@ -79,7 +79,7 @@ public class ModelSlowpoke extends ModelBase {
             EntityMiniSlow entityMiniSlow = (EntityMiniSlow) entity;
             if (entityMiniSlow.isSitting()) {
                 if (entityMiniSlow.getAway()) {
-
+                //Make Slow invisable
                 } else { /*Slow is Sitting Down*/
                     //HeadHat
                     GlStateManager.pushMatrix();

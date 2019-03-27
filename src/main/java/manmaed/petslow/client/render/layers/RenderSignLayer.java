@@ -17,7 +17,9 @@ public class RenderSignLayer implements LayerRenderer<EntityMiniSlow> {
     private final RenderSlowpoke renderer;
     private final ModelSign sign = new ModelSign();
 
-    public RenderSignLayer(RenderSlowpoke renderer) {this.renderer = renderer; }
+    public RenderSignLayer(RenderSlowpoke renderer) {
+        this.renderer = renderer;
+    }
 
     @Override
     public void doRenderLayer(EntityMiniSlow entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
@@ -33,10 +35,12 @@ public class RenderSignLayer implements LayerRenderer<EntityMiniSlow> {
             }
         }
     }
+
     @Override
     public boolean shouldCombineTextures() {
         return false;
     }
+
     private float interpolateValues(float prevVal, float nextVal, float partialTick) {
         return prevVal + partialTick * (nextVal - prevVal);
     }

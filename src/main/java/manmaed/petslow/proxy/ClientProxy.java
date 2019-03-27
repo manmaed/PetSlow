@@ -15,12 +15,7 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 public class ClientProxy extends CommonProxy {
 
     public void renderentitys() {
-        //ClientCommandHandler.instance.registerCommand(new CommandPetRock());
-        //ClientCommandHandler.instance.registerCommand(new CommandSetHat());
-        //RenderingRegistry.registerEntityRenderingHandler(EntityPetRock.class, RenderPetRock.FACTORY);
         RenderingRegistry.registerEntityRenderingHandler(EntityMiniSlow.class, RenderSlowpoke.FACTORY);
-        //RenderingRegistry.registerEntityRenderingHandler(EntityMiniSlow.class, RenderPetSlow.FACTORY);
-
     }
     
     public void renderlayers() {

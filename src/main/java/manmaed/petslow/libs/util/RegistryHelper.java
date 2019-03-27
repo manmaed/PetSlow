@@ -19,39 +19,31 @@ public class RegistryHelper {
 
     private final EventRegisterHelper eventRegisterHelper;
 
-    public RegistryHelper(FMLPreInitializationEvent event)
-    {
+    public RegistryHelper(FMLPreInitializationEvent event) {
         this.eventRegisterHelper = new EventRegisterHelper(event);
-
     }
 
-    public ArrayList<Block> getRegisteredBlocks()
-
-    {
+    public ArrayList<Block> getRegisteredBlocks() {
         return blocks;
     }
 
-    public void registerBlock(Block block)
-    {
+    public void registerBlock(Block block) {
         blocks.add(block);
     }
-    public ArrayList<Item> getRegisteredItems()
-    {
+
+    public ArrayList<Item> getRegisteredItems() {
         return items;
     }
-    public void registerItem(Item item)
-    {
+
+    public void registerItem(Item item) {
         this.items.add(item);
     }
-    public ArrayList<Entity> getRegisteredIEntitys()
-    {
+
+    public ArrayList<Entity> getRegisteredIEntitys() {
         return entitys;
     }
-    public void registerEntity(Entity entity)
-    {
+
+    public void registerEntity(Entity entity) {
         this.entitys.add(entity);
     }
-
-
-
 }

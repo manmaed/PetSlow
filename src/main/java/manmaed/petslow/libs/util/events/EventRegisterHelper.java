@@ -9,13 +9,10 @@ import net.minecraftforge.fml.relauncher.Side;
 public class EventRegisterHelper {
 
     private final EventBlockRegister eventBlockRegister;
-
     private final EventItemRegister eventItemRegister;
-
     private final EventModelRender eventModelRender;
 
-    public EventRegisterHelper(FMLPreInitializationEvent event)
-    {
+    public EventRegisterHelper(FMLPreInitializationEvent event) {
         eventBlockRegister = new EventBlockRegister();
         eventItemRegister = new EventItemRegister();
         if(event.getSide() == Side.CLIENT) {

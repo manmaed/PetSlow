@@ -17,7 +17,9 @@ public class RenderChairLayer implements LayerRenderer<EntityMiniSlow> {
     private final RenderSlowpoke renderer;
     private final ModelChair chair = new ModelChair();
 
-    public RenderChairLayer(RenderSlowpoke renderer) {this.renderer = renderer; }
+    public RenderChairLayer(RenderSlowpoke renderer) {
+        this.renderer = renderer;
+    }
 
     @Override
     public void doRenderLayer(EntityMiniSlow entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
@@ -31,6 +33,7 @@ public class RenderChairLayer implements LayerRenderer<EntityMiniSlow> {
             GlStateManager.popMatrix();
         }
     }
+
     @Override
     public boolean shouldCombineTextures() {
         return false;
