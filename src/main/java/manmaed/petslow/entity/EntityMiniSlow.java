@@ -26,13 +26,14 @@ import java.util.UUID;
  * Created by manmaed on 26/02/2017.
  */
 public class EntityMiniSlow extends EntityTameable {
-
+    
+    private static final int NOT_IN_USE = -1;
 
     private int torch = 0;
-    private boolean isaway = false;
-    private static final int notinuse = -1;
-    private int returncooldown = notinuse;
-    private int staycooldown = notinuse;
+    private boolean isAway = false;
+    
+    private int returnCooldown = NOT_IN_USE;
+    private int stayCooldown = NOT_IN_USE;
 
     public EntityMiniSlow(World worldIn) {
         super(worldIn);
@@ -40,7 +41,7 @@ public class EntityMiniSlow extends EntityTameable {
         this.setTamed(false);
     }
 
-    private void addtorch(World world, BlockPos pos) {
+    private void addTorch(World world, BlockPos pos) {
         if(!world.isRemote) {
             if(isTamed() && !isSitting()) {
                 if (world.getLight(pos) < 3) {
@@ -60,13 +61,11 @@ public class EntityMiniSlow extends EntityTameable {
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
         super.writeToNBT(nbtTagCompound);
-        if (nbtTagCompound == null) {
-            nbtTagCompound = new NBTTagCompound();
-        }
+
         nbtTagCompound.setInteger("torchCount", this.torch);
-        nbtTagCompound.setBoolean("slowAway", this.isaway);
-        nbtTagCompound.setInteger("returnCooldown", this.returncooldown);
-        nbtTagCompound.setInteger("stayCooldown", this.staycooldown);
+        nbtTagCompound.setBoolean("slowAway", this.isAway);
+        nbtTagCompound.setInteger("returnCooldown", this.returnCooldown);
+        nbtTagCompound.setInteger("stayCooldown", this.stayCooldown);
 
         return nbtTagCompound;
     }
@@ -75,13 +74,14 @@ public class EntityMiniSlow extends EntityTameable {
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
         super.readFromNBT(nbtTagCompound);
         torch = nbtTagCompound.getInteger("torchCount");
-        isaway = nbtTagCompound.getBoolean("slowAway");
-        returncooldown = nbtTagCompound.getInteger("returnCooldown");
-        staycooldown = nbtTagCompound.getInteger("stayCooldown");
+        isAway = nbtTagCompound.getBoolean("slowAway");
+        returnCooldown = nbtTagCompound.getInteger("returnCooldown");
+        stayCooldown = nbtTagCompound.getInteger("stayCooldown");
 
 
     }
 
+    @Override
     protected void initEntityAI()
     {
         this.aiSit = new EntityAISit(this);
@@ -96,73 +96,75 @@ public class EntityMiniSlow extends EntityTameable {
         this.tasks.addTask(4, new EntityAIWander(this, 0.8D,10));
     }
 
+    @Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
+
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35D);
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
     }
 
-    protected void entityInit()
-    {
-        super.entityInit();
-    }
-
+    @Override
     public void onEntityUpdate() {
         super.onEntityUpdate();
-        addtorch(world, this.getPosition());
-        LogHelper.info("StayCooldown: " + staycooldown + " ReturnCooldown: " + returncooldown + " Away:" + this.getAway());
+        addTorch(world, this.getPosition());
+        LogHelper.info("StayCooldown: " + stayCooldown + " ReturnCooldown: " + returnCooldown + " Away:" + this.getAway());
         if(this.isTamed() && this.isSitting() && !world.isRemote) {
-            if(staycooldown == 0  && returncooldown == -1) {
+            if(stayCooldown == 0  && returnCooldown == -1) {
                 int bool = this.world.rand.nextInt(2500) + 100;
-                this.returncooldown = bool;
-                this.staycooldown = notinuse;
+                this.returnCooldown = bool;
+                this.stayCooldown = NOT_IN_USE;
                 setAway(false);
             }
-            if(returncooldown  == 0  && staycooldown == -1) {
+            if(returnCooldown == 0  && stayCooldown == -1) {
                 int bool = this.world.rand.nextInt(25000) + 1000;
-                this.staycooldown = bool;
-                this.returncooldown = notinuse;
+                this.stayCooldown = bool;
+                this.returnCooldown = NOT_IN_USE;
                 setAway(true);
             }
-            if(staycooldown != notinuse) {
-                staycooldown--;
+            if(stayCooldown != NOT_IN_USE) {
+                stayCooldown--;
             }
-            if(returncooldown != notinuse) {
-                returncooldown--;
+            if(returnCooldown != NOT_IN_USE) {
+                returnCooldown--;
             }
         }
-        if(staycooldown == -1 && returncooldown == -1 && !world.isRemote) {
-            boolean tobeornottobe = world.rand.nextBoolean();
-            if(tobeornottobe){
-                this.returncooldown = this.world.rand.nextInt(2500) + 100;
-                this.staycooldown = notinuse;
+        if(stayCooldown == -1 && returnCooldown == -1 && !world.isRemote) {
+            boolean toBeOrNotToBe = world.rand.nextBoolean();
+            if(toBeOrNotToBe){
+                this.returnCooldown = this.world.rand.nextInt(2500) + 100;
+                this.stayCooldown = NOT_IN_USE;
                 setAway(false);
             } else {
-                this.staycooldown = this.world.rand.nextInt(25000) + 1000;
-                this.returncooldown = notinuse;
+                this.stayCooldown = this.world.rand.nextInt(25000) + 1000;
+                this.returnCooldown = NOT_IN_USE;
                 setAway(true);
             }
         }
     }
 
+    @Override
     protected SoundEvent getSwimSound()
     {
 
         return SoundEvents.ENTITY_PLAYER_SWIM;
     }
 
+    @Override
     protected SoundEvent getSplashSound()
     {
 
         return SoundEvents.ENTITY_PLAYER_SPLASH;
     }
 
+    @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
         return SoundEvents.ENTITY_PLAYER_HURT;
     }
 
+    @Override
     protected SoundEvent getDeathSound()
     {
         return SoundHandler.SLOWDEATH;
@@ -171,13 +173,14 @@ public class EntityMiniSlow extends EntityTameable {
     /**
      * Returns the volume for the sounds this mob makes.
      */
+    @Override
     protected float getSoundVolume()
     {
         return 1.0F;
     }
 
 
-
+    @Override
     public void setTamed(boolean tamed)
     {
         super.setTamed(tamed);
@@ -186,10 +189,10 @@ public class EntityMiniSlow extends EntityTameable {
     //Away Stuff
     public boolean getAway()
     {
-        return isaway;
+        return isAway;
     }
     private void setAway(boolean b){
-        this.isaway = b;
+        this.isAway = b;
     }
 
     @Override
@@ -197,7 +200,7 @@ public class EntityMiniSlow extends EntityTameable {
         return false;
     }
 
-
+    @Override
     public boolean processInteract(EntityPlayer player, EnumHand hand)
     {
         ItemStack stack = player.getHeldItemMainhand();
@@ -216,7 +219,8 @@ public class EntityMiniSlow extends EntityTameable {
         }
         if (this.isTamed())
         {
-            if (this.isOwner(player) && !this.world.isRemote && !stack.getItem().equals(Items.APPLE) && !stack.getItem().equals(Items.GOLDEN_APPLE) && !stack.getItem().equals(Item.getItemFromBlock(Blocks.TORCH)))
+            if (this.isOwner(player) && !this.world.isRemote && !stack.getItem().equals(Items.APPLE)
+              && !stack.getItem().equals(Items.GOLDEN_APPLE) && !stack.getItem().equals(Item.getItemFromBlock(Blocks.TORCH)))
             {
                 this.aiSit.setSitting(!this.isSitting());
                 this.isJumping = false;
