@@ -1,6 +1,5 @@
 package manmaed.petslow.entity;
 
-import manmaed.petslow.libs.LogHelper;
 import manmaed.petslow.libs.SoundHandler;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -14,6 +13,9 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundEvent;
@@ -27,11 +29,12 @@ public class EntityMiniSlow extends EntityTameable {
 
     private static final int NOT_IN_USE = -1;
 
-    private int torch = 0;
-    private boolean isAway = false;
+    private static final DataParameter<Integer> RETURN_COOLDOWN = EntityDataManager.<Integer>createKey(EntityMiniSlow.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> STAY_COOLDOWN = EntityDataManager.<Integer>createKey(EntityMiniSlow.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> AWAY = EntityDataManager.<Boolean>createKey(EntityMiniSlow.class, DataSerializers.BOOLEAN);
 
-    private int returnCooldown = NOT_IN_USE;
-    private int stayCooldown = NOT_IN_USE;
+
+    private int torch = 0;
 
     public EntityMiniSlow(World worldIn) {
         super(worldIn);
@@ -58,16 +61,16 @@ public class EntityMiniSlow extends EntityTameable {
     private void shouldafk(World world) {
         if (!world.isRemote) {
             if (isTamed() && isSitting()) {
-                if (stayCooldown == 0 && returnCooldown == -1) {
+                if (this.dataManager.get(STAY_COOLDOWN) == 0 && this.dataManager.get(RETURN_COOLDOWN) == -1) {
                     int bool = this.world.rand.nextInt(2500) + 100;
-                    this.returnCooldown = bool;
-                    this.stayCooldown = NOT_IN_USE;
+                    this.dataManager.set(STAY_COOLDOWN, NOT_IN_USE);
+                    this.dataManager.set(RETURN_COOLDOWN, bool);
                     setAway(false);
                 }
-                if (returnCooldown == 0 && stayCooldown == -1) {
+                if (this.dataManager.get(RETURN_COOLDOWN) == 0 && this.dataManager.get(STAY_COOLDOWN) == -1) {
                     int bool = this.world.rand.nextInt(25000) + 1000;
-                    this.stayCooldown = bool;
-                    this.returnCooldown = NOT_IN_USE;
+                    this.dataManager.set(RETURN_COOLDOWN, NOT_IN_USE);
+                    this.dataManager.set(STAY_COOLDOWN, bool);
                     setAway(true);
                 }
             }
@@ -77,11 +80,15 @@ public class EntityMiniSlow extends EntityTameable {
     private void countdown(World world) {
         if (this.isTamed() && this.isSitting()) {
             if (!world.isRemote) {
-                if (stayCooldown != NOT_IN_USE) {
-                    this.stayCooldown--;
+                if (this.dataManager.get(STAY_COOLDOWN) != NOT_IN_USE) {
+                    int sc = this.dataManager.get(STAY_COOLDOWN);
+                    int nsc = --sc;
+                    this.dataManager.set(STAY_COOLDOWN, nsc);
                 }
-                if (returnCooldown != NOT_IN_USE) {
-                    this.returnCooldown--;
+                if (this.dataManager.get(RETURN_COOLDOWN) != NOT_IN_USE) {
+                    int rc = this.dataManager.get(RETURN_COOLDOWN);
+                    int nrc = --rc;
+                    this.dataManager.set(RETURN_COOLDOWN, nrc);
                 }
             }
         }
@@ -89,15 +96,15 @@ public class EntityMiniSlow extends EntityTameable {
 
     private void chooseafk(World world) {
         if (!world.isRemote) {
-            if (stayCooldown == -1 && returnCooldown == -1) {
+            if(this.dataManager.get(STAY_COOLDOWN) == -1 && this.dataManager.get(RETURN_COOLDOWN) == -1) {
                 boolean tobeornottobe = world.rand.nextBoolean();
                 if (tobeornottobe) {
-                    this.returnCooldown = this.world.rand.nextInt(2500) + 100;
-                    this.stayCooldown = NOT_IN_USE;
+                    this.dataManager.set(RETURN_COOLDOWN, (this.world.rand.nextInt(2500) + 100));
+                    this.dataManager.set(STAY_COOLDOWN, NOT_IN_USE);
                     setAway(false);
                 } else {
-                    this.stayCooldown = this.world.rand.nextInt(25000) + 1000;
-                    this.returnCooldown = NOT_IN_USE;
+                    this.dataManager.set(STAY_COOLDOWN, (this.world.rand.nextInt(25000) + 1000));
+                    this.dataManager.set(RETURN_COOLDOWN, NOT_IN_USE);
                     setAway(true);
                 }
             }
@@ -108,9 +115,6 @@ public class EntityMiniSlow extends EntityTameable {
     public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
         super.writeToNBT(nbtTagCompound);
         nbtTagCompound.setInteger("torchCount", this.torch);
-        nbtTagCompound.setBoolean("slowAway", this.isAway);
-        nbtTagCompound.setInteger("returnCooldown", this.returnCooldown);
-        nbtTagCompound.setInteger("stayCooldown", this.stayCooldown);
 
         return nbtTagCompound;
     }
@@ -119,9 +123,6 @@ public class EntityMiniSlow extends EntityTameable {
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
         super.readFromNBT(nbtTagCompound);
         torch = nbtTagCompound.getInteger("torchCount");
-        isAway = nbtTagCompound.getBoolean("slowAway");
-        returnCooldown = nbtTagCompound.getInteger("returnCooldown");
-        stayCooldown = nbtTagCompound.getInteger("stayCooldown");
 
 
     }
@@ -152,7 +153,15 @@ public class EntityMiniSlow extends EntityTameable {
         chooseafk(world);
         shouldafk(world);
         countdown(world);
-        LogHelper.info("stayCooldown: " + stayCooldown + " returnCooldown: " + returnCooldown + " Away:" + this.getAway());
+        //LogHelper.info("stayCooldown: " + this.dataManager.get(STAY_COOLDOWN) + " returnCooldown: " + this.dataManager.get(RETURN_COOLDOWN) + " Away:" + this.getAway());
+    }
+
+    @Override
+    protected void entityInit() {
+        super.entityInit();
+        this.dataManager.register(RETURN_COOLDOWN, NOT_IN_USE);
+        this.dataManager.register(STAY_COOLDOWN, NOT_IN_USE);
+        this.dataManager.register(AWAY, false);
     }
 
     @Override
@@ -190,10 +199,10 @@ public class EntityMiniSlow extends EntityTameable {
 
     //Away Stuff
     public boolean getAway() {
-        return isAway;
+        return this.dataManager.get(AWAY);
     }
     private void setAway(boolean b){
-        this.isAway = b;
+        this.dataManager.set(AWAY, b);
     }
 
     @Override
