@@ -5,10 +5,10 @@ package manmaed.petslow.proxy;
  */
 public class CommonProxy {
 
-    public void renderentitys()
-    {
+    public void renderentitys() {
 
     }
+
     public void renderlayers() {
 
     }

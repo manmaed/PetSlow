@@ -13,7 +13,6 @@ public class PSEntitys {
         /**
          * Register the mod entity type with FML
          * This will also register a spawn egg.
-
          * @param texture Main Texture?
          * @param entityClass The entity class
          * @param entityName A unique name for the entity
@@ -21,11 +20,7 @@ public class PSEntitys {
          * @param eggPrimary Primary egg color BackGround
          * @param eggSecondary Secondary egg color Dots
          */
-
         int id = 1;
-
-
         EntityRegisterUtil.registerEntity(ResourceLocationHelper.getResourceLocation("minime"), EntityMiniSlow .class, "MiniSlow", id++ , 0xdcd5d5, 0x686565);
     }
-
 }

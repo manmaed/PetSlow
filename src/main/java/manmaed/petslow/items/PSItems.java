@@ -11,7 +11,6 @@ public class PSItems {
     //public static Item itemname;
     public static Item spawnslow;
 
-
     public static void load() {
         //Init'ing
 		//itemname = new ItemClass();
@@ -25,5 +24,4 @@ public class PSItems {
         spawnslow.setRegistryName("spawnslow");
 
     }
-
 }

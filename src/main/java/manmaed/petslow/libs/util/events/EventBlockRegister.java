@@ -11,8 +11,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  */
 public class EventBlockRegister {
 
-    public EventBlockRegister()
-    {
+    public EventBlockRegister() {
         MinecraftForge.EVENT_BUS.register(this);
     }
 
