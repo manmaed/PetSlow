@@ -110,7 +110,7 @@ curseforge {
         id = '311515'
         changelog = 'Jenkins Upload' // A file can also be set using: changelog = file('changelog.txt')
         releaseType = 'beta'
+		addGameVersion "1.12.2"
     }
 }
 build.dependsOn signJar
-build.dependsOn curseforge
