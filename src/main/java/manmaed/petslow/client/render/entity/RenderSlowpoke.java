@@ -19,6 +19,7 @@ public class RenderSlowpoke extends RenderLiving<EntityMiniSlow> {
     public RenderSlowpoke(RenderManager renderManagerIn) {
         super(renderManagerIn, new ModelSlowpoke(), 0.4F);
     }
+
     /**
      * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
      */

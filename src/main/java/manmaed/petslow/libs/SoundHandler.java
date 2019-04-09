@@ -17,7 +17,7 @@ public class SoundHandler {
         SLOWDEATH = registerSound("sounds.entity.minislow.death");
     }
 
-    private static SoundEvent registerSound(String name){
+    private static SoundEvent registerSound(String name) {
         ResourceLocation location = new ResourceLocation(Reference.MOD_ID, name);
         SoundEvent event = new SoundEvent(location);
         event.setRegistryName(name);

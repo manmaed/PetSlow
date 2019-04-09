@@ -15,7 +15,7 @@ public class EventRegisterHelper {
     public EventRegisterHelper(FMLPreInitializationEvent event) {
         eventBlockRegister = new EventBlockRegister();
         eventItemRegister = new EventItemRegister();
-        if(event.getSide() == Side.CLIENT) {
+        if (event.getSide() == Side.CLIENT) {
             eventModelRender = new EventModelRender();
         } else {
             eventModelRender = null;
@@ -31,8 +31,8 @@ public class EventRegisterHelper {
     }
 
     public EventModelRender getEventModelRender() throws NullPointerException {
-        if(eventModelRender == null) {
-            throw  new NullPointerException();
+        if (eventModelRender == null) {
+            throw new NullPointerException();
         } else {
             return eventModelRender;
         }

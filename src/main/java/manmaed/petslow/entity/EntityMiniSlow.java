@@ -1,5 +1,6 @@
 package manmaed.petslow.entity;
 
+import manmaed.petslow.items.PSItems;
 import manmaed.petslow.libs.SoundHandler;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -43,10 +44,10 @@ public class EntityMiniSlow extends EntityTameable {
     }
 
     private void addtorch(World world, BlockPos pos) {
-        if(!world.isRemote) {
-            if(isTamed() && !isSitting()) {
+        if (!world.isRemote) {
+            if (isTamed() && !isSitting()) {
                 if (world.getLight(pos) < 3) {
-                    if(Blocks.AIR.getDefaultState() != world.getBlockState(pos.down())) {
+                    if (Blocks.AIR.getDefaultState() != world.getBlockState(pos.down())) {
                         //LogHelper.info(torch);
                         if (torch >= 1) {
                             torch--;
@@ -58,6 +59,7 @@ public class EntityMiniSlow extends EntityTameable {
             }
         }
     }
+
     private void shouldafk(World world) {
         if (!world.isRemote) {
             if (isTamed() && isSitting()) {
@@ -96,7 +98,7 @@ public class EntityMiniSlow extends EntityTameable {
 
     private void chooseafk(World world) {
         if (!world.isRemote) {
-            if(this.dataManager.get(STAY_COOLDOWN) == -1 && this.dataManager.get(RETURN_COOLDOWN) == -1) {
+            if (this.dataManager.get(STAY_COOLDOWN) == -1 && this.dataManager.get(RETURN_COOLDOWN) == -1) {
                 boolean tobeornottobe = world.rand.nextBoolean();
                 if (tobeornottobe) {
                     this.dataManager.set(RETURN_COOLDOWN, (this.world.rand.nextInt(2500) + 100));
@@ -135,7 +137,7 @@ public class EntityMiniSlow extends EntityTameable {
         this.tasks.addTask(2, new EntityAIFollowOwner(this, 1.0D, 4.0F, 2.0F));
         this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true, new Class[0]));
-        this.tasks.addTask(4, new EntityAIWander(this, 0.8D,10));
+        this.tasks.addTask(4, new EntityAIWander(this, 0.8D, 10));
     }
 
     @Override
@@ -201,7 +203,8 @@ public class EntityMiniSlow extends EntityTameable {
     public boolean getAway() {
         return this.dataManager.get(AWAY);
     }
-    private void setAway(boolean b){
+
+    private void setAway(boolean b) {
         this.dataManager.set(AWAY, b);
     }
 
@@ -211,38 +214,46 @@ public class EntityMiniSlow extends EntityTameable {
     }
 
     @Override
-    public boolean processInteract(EntityPlayer player, EnumHand hand)
-    {
+    public boolean processInteract(EntityPlayer player, EnumHand hand) {
         ItemStack stack = player.getHeldItemMainhand();
-        if(stack.getItem().equals(Items.NAME_TAG)) {
+        if (stack.getItem().equals(Items.NAME_TAG)) {
             this.setCustomNameTag(stack.getDisplayName());
         }
-        if(stack.getItem().equals(Item.getItemFromBlock(Blocks.TORCH))) {
+        if (stack.getItem().equals(Item.getItemFromBlock(Blocks.TORCH))) {
             torch++;
             stack.shrink(1);
             playSound(SoundEvents.ENTITY_GENERIC_EAT, getSoundVolume(), 1.00F);
-            if(this.rand.nextInt(25) == 0 ){
+            if (this.rand.nextInt(25) == 0) {
                 playSound(SoundEvents.ENTITY_PLAYER_BURP, getSoundVolume(), 1F);
             }
         }
         if (this.isTamed()) {
-            if (this.isOwner(player) && !this.world.isRemote && !stack.getItem().equals(Items.APPLE) && !stack.getItem().equals(Items.GOLDEN_APPLE) && !stack.getItem().equals(Item.getItemFromBlock(Blocks.TORCH))) {
+            if (this.isOwner(player) && !this.world.isRemote && !stack.getItem().equals(PSItems.slowbrew) && !stack.getItem().equals(PSItems.claybrew) && !stack.getItem().equals(Item.getItemFromBlock(Blocks.TORCH))) {
                 this.aiSit.setSitting(!this.isSitting());
                 this.isJumping = false;
                 this.navigator.clearPath();
             }
-            if(stack.getItem() == Items.GOLDEN_APPLE && getHealth() < 20.0F) {
+            if (stack.getItem() == PSItems.claybrew && getHealth() < 20.0F) {
                 if (!player.capabilities.isCreativeMode) {
                     stack.shrink(1);
+                    player.addItemStackToInventory(new ItemStack(PSItems.mug));
+                }
+                playSound(SoundEvents.ENTITY_GENERIC_DRINK, getSoundVolume(), 1.00F);
+                if (this.rand.nextInt(25) == 0) {
+                    playSound(SoundEvents.ENTITY_PLAYER_BURP, getSoundVolume(), 1F);
                 }
                 this.heal(3.0F);
                 return true;
             }
-        }
-        else if (!this.isTamed()) {
-            if (stack.getItem() == Items.APPLE ){
+        } else if (!this.isTamed()) {
+            if (stack.getItem() == PSItems.slowbrew) {
                 if (!player.capabilities.isCreativeMode) {
                     stack.shrink(1);
+                    player.addItemStackToInventory(new ItemStack(PSItems.mug));
+                }
+                playSound(SoundEvents.ENTITY_GENERIC_DRINK, getSoundVolume(), 1.00F);
+                if (this.rand.nextInt(25) == 0) {
+                    playSound(SoundEvents.ENTITY_PLAYER_BURP, getSoundVolume(), 1F);
                 }
 
                 if (!this.world.isRemote) {

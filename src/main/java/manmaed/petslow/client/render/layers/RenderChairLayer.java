@@ -38,6 +38,7 @@ public class RenderChairLayer implements LayerRenderer<EntityMiniSlow> {
     public boolean shouldCombineTextures() {
         return false;
     }
+
     private float interpolateValues(float prevVal, float nextVal, float partialTick) {
         return prevVal + partialTick * (nextVal - prevVal);
     }

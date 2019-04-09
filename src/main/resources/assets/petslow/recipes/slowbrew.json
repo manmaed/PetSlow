@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "hw",
+    "am"
+  ],
+  "key": {
+    "h": {
+      "item": "minecraft:wheat"
+    },
+    "w": {
+      "item": "minecraft:water_bucket"
+    },
+    "m": {
+      "item": "petslow:mug"
+    },
+    "a": {
+      "item": "minecraft:apple"
+    }
+  },
+  "result": {
+    "item": "petslow:slowbrew "
+  }
+}

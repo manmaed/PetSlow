@@ -17,7 +17,7 @@ public class ClientProxy extends CommonProxy {
     public void renderentitys() {
         RenderingRegistry.registerEntityRenderingHandler(EntityMiniSlow.class, RenderSlowpoke.FACTORY);
     }
-    
+
     public void renderlayers() {
         Render render = Minecraft.getMinecraft().getRenderManager().getEntityClassRenderObject(EntityMiniSlow.class);
         if (render instanceof RenderSlowpoke) {

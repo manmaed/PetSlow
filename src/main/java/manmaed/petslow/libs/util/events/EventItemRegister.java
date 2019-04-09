@@ -8,8 +8,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-public class EventItemRegister
-{
+public class EventItemRegister {
     public EventItemRegister() {
         MinecraftForge.EVENT_BUS.register(this);
     }

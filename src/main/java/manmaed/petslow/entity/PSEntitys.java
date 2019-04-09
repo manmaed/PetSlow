@@ -8,8 +8,7 @@ import manmaed.petslow.libs.util.events.EntityRegisterUtil;
  */
 public class PSEntitys {
 
-    public static void load()
-    {
+    public static void load() {
         /**
          * Register the mod entity type with FML
          * This will also register a spawn egg.
@@ -21,6 +20,6 @@ public class PSEntitys {
          * @param eggSecondary Secondary egg color Dots
          */
         int id = 1;
-        EntityRegisterUtil.registerEntity(ResourceLocationHelper.getResourceLocation("minime"), EntityMiniSlow .class, "MiniSlow", id++ , 0xdcd5d5, 0x686565);
+        EntityRegisterUtil.registerEntity(ResourceLocationHelper.getResourceLocation("minime"), EntityMiniSlow.class, "MiniSlow", id++, 0xdcd5d5, 0x686565);
     }
 }

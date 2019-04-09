@@ -46,10 +46,10 @@ public class PetSlow {
 
     @Mod.EventHandler
     public void onInvalidFingerprint(FMLFingerprintViolationEvent event) {
-        if(event.isDirectory()){
+        if (event.isDirectory()) {
             devenvsign = true;
         }
-        if(!event.isDirectory()) {
+        if (!event.isDirectory()) {
             invalsign = true;
         }
     }
@@ -79,6 +79,7 @@ public class PetSlow {
         }
         proxy.renderlayers();
     }
+
     public static RegistryHelper getRegistryHelper() {
         return registryHelper;
     }

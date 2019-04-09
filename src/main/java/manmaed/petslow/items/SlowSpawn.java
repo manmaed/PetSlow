@@ -21,16 +21,17 @@ public class SlowSpawn extends Item {
 
     Random rand = new Random();
 
-    public SlowSpawn() {
+    public SlowSpawn(String name) {
         super();
-        setUnlocalizedName("spawnslow");
+        setUnlocalizedName(name);
         setCreativeTab(CreativeTabs.MISC);
         setMaxStackSize(1);
+        setRegistryName(name);
     }
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand) {
-        if(!worldIn.isRemote) {
+        if (!worldIn.isRemote) {
             ItemStack itemStack = playerIn.getHeldItem(hand);
             itemStack.shrink(1);
             EntityMiniSlow miniSlow = new EntityMiniSlow(worldIn);
@@ -42,7 +43,7 @@ public class SlowSpawn extends Item {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        tooltip.add("To tame the Mini Slowpoke feed it Apples and to heal it feed it Golden Apples");
+        tooltip.add("To tame a Mini Slowpoke give it a Slow brew, to heal it give it a Clay brew");
     }
 
 

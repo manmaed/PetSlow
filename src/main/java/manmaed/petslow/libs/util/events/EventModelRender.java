@@ -15,13 +15,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * Created by manmaed on 03/07/2017.
  */
-public class EventModelRender
-{
+public class EventModelRender {
 
     public EventModelRender() {
         MinecraftForge.EVENT_BUS.register(this);
     }
-    
+
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void renderModels(ModelRegistryEvent event) {
@@ -33,5 +32,5 @@ public class EventModelRender
             ResourceLocation rl = item.getRegistryName();
             ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(rl, "inventory"));
         }
-     }
+    }
 }
