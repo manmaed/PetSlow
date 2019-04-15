@@ -111,7 +111,9 @@ curseforge {
         changelog = 'Jenkins Upload' // A file can also be set using: changelog = file('changelog.txt')
         releaseType = 'beta'
 		addGameVersion "1.12.2"
+		mainArtifact(jar) {
 		displayName = "Pet Slow v $project.version - $project.minecraft.version"
+        }
     }
 }
 build.dependsOn signJar
