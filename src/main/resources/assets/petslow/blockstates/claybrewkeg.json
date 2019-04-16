@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "normal": { "model": "petslow:claybrewkeg" },
+    "inventory": { "model": "petslow:claybrewkeg" }
+  }
+}

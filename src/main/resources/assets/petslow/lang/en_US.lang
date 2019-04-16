@@ -1,5 +1,7 @@
 entity.MiniSlow.name=Mini Slowpoke
+entity.BigSlow.name=Big Slowpoke
 item.spawnslow.name=Slowpoke Doll
 item.mug.name=Mug
 item.slowbrew.name=Slow Brew
 item.claybrew.name=Clay Brew
+tile.claybrewkeg.name=Clay Brew Keg

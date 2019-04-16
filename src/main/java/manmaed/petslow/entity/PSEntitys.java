@@ -21,5 +21,6 @@ public class PSEntitys {
          */
         int id = 1;
         EntityRegisterUtil.registerEntity(ResourceLocationHelper.getResourceLocation("minime"), EntityMiniSlow.class, "MiniSlow", id++, 0xdcd5d5, 0x686565);
+        EntityRegisterUtil.registerEntity(ResourceLocationHelper.getResourceLocation("bigme"), EntityBigSlow.class, "BigSlow", ++id, 0xdcd5d5, 0x686565);
     }
 }

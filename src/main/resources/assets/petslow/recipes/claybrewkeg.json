@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "www",
+    "wcw",
+    "www"
+  ],
+  "key": {
+    "c": {
+      "item": "petslow:claybrew"
+    },
+    "w": {
+      "item": "minecraft:planks", "data": 0
+    }
+  },
+  "result": {
+    "item": "petslow:claybrewkeg"
+  }
+}

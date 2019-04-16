@@ -1,8 +1,10 @@
 package manmaed.petslow.proxy;
 
 import manmaed.petslow.client.render.entity.RenderSlowpoke;
+import manmaed.petslow.client.render.entity.RenderSlowpokeBoss;
 import manmaed.petslow.client.render.layers.RenderChairLayer;
 import manmaed.petslow.client.render.layers.RenderSignLayer;
+import manmaed.petslow.entity.EntityBigSlow;
 import manmaed.petslow.entity.EntityMiniSlow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
@@ -16,6 +18,7 @@ public class ClientProxy extends CommonProxy {
 
     public void renderentitys() {
         RenderingRegistry.registerEntityRenderingHandler(EntityMiniSlow.class, RenderSlowpoke.FACTORY);
+        RenderingRegistry.registerEntityRenderingHandler(EntityBigSlow.class, RenderSlowpokeBoss.FACTORY);
     }
 
     public void renderlayers() {

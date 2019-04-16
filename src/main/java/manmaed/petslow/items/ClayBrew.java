@@ -35,6 +35,7 @@ public class ClayBrew extends Item {
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         tooltip.add("Used to heal a tamed Mini Slow");
+        tooltip.add("Do Not mix with Slow Brew in a Clay Brew Keg!");
     }
 
     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
