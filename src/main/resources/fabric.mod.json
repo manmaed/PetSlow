@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "petslow",
+  "version": "${version}",
+
+  "name": "PetSlow",
+  "description": "Mini Slowpoke!",
+  "authors": [
+    "manmaed",
+	"Wendi for the SlowDoll",
+	"Riz for the death sound"
+  ],
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.manmaed.petslow.PetSlow"
+    ],
+    "client": [
+      "net.manmaed.petslow.PetSlowClient"
+    ]
+  },
+
+  "depends": {
+    "fabricloader": ">=0.4.0",
+    "fabric": "*"
+  }
+}
