@@ -81,6 +81,7 @@ public class EntityPetSlow extends TameableEntity {
     private void addtorch(World world, BlockPos pos) {
         if (world.isClient) {
             if (isTamed() && !isSitting()) {
+                //LogHelper.info(world.getAmbientDarkness() + " : " + world.getLightLevel(pos));
                 if (world.getLightLevel(pos) < 3) {
                     if (Blocks.AIR.getDefaultState() != world.getBlockState(pos.down())) {
                         //LogHelper.info(torch);
@@ -203,7 +204,7 @@ public class EntityPetSlow extends TameableEntity {
         if(stack.getItem().equals(Items.NAME_TAG)) {
             this.setCustomName(stack.getName());
         }
-        if (stack.getItem().equals(Items.TORCH/*  (Blocks.TORCH)*/)) {
+        if (stack.getItem() == Blocks.TORCH.asItem() && stack.getItem() == Items.TORCH) {
             torch++;
             stack.decrement(1);
             playSound(SoundEvents.ENTITY_GENERIC_EAT, getSoundVolume(), 1.00F);
@@ -212,10 +213,20 @@ public class EntityPetSlow extends TameableEntity {
             }
         }
         if (this.isTamed()) {
-            if (this.isOwner(player) && this.world.isClient && !stack.getItem().equals(PSItems.slowbrew) && !stack.getItem().equals(PSItems.claybrew) && !stack.getItem().equals(Items.TORCH/*(Blocks.TORCH)*/)) {
-                this.sitGoal.setEnabledWithOwner(!this.isSitting());
-                this.jumping = false;
-                this.navigation.stop();
+            if (this.isOwner(player)) {
+                if (!this.world.isClient) {
+                    if (stack.getItem() != PSItems.slowbrew) {
+                        if (stack.getItem() != PSItems.claybrew) {
+                            if (stack.getItem() != Blocks.TORCH.asItem()) {
+                                if (stack.getItem() != Items.TORCH.asItem()) {
+                                    this.sitGoal.setEnabledWithOwner(!this.isSitting());
+                                    this.jumping = false;
+                                    this.navigation.stop();
+                                }
+                            }
+                        }
+                    }
+                }
             }
             if (stack.getItem() == PSItems.claybrew && getHealth() < 20.0F) {
                 if (!player.abilities.creativeMode) {
@@ -240,7 +251,7 @@ public class EntityPetSlow extends TameableEntity {
                     playSound(SoundEvents.ENTITY_PLAYER_BURP, getSoundVolume(), 1F);
                 }
 
-                if (this.world.isClient) {
+                if (!this.world.isClient) {
                     if (this.random.nextInt(3) == 0) {
                         this.setOwner(player);
                         this.navigation.stop();

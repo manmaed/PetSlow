@@ -60,9 +60,6 @@ public class ModelSlowpoke<T extends Entity> extends EntityModel<T>{
         this.leg1sit.setRotationPoint(1.0F, 17.0F, -1.0F);
         this.leg1sit.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, 0.0F);
         this.setRotateAngle(leg1sit, -1.5707963267948966F, 0.0F, 0.0F);
-
-        //head.addChild(headhat);
-
     }
 
     @Override
@@ -72,73 +69,74 @@ public class ModelSlowpoke<T extends Entity> extends EntityModel<T>{
             if (petSlow.isSitting()) {
                 if (petSlow.getAway()) {
                     //Make Slow invisable
-                } else { /*Slow is Sitting Down*/
+                } else {
+                    //Slow is Sitting Down
                     //HeadHat
                     GlStateManager.pushMatrix();
-                    GlStateManager.translatef(this.headhat.pitch, this.headhat.yaw, this.headhat.roll);
+                    GlStateManager.translatef(this.headhat.x, this.headhat.y, this.headhat.z);
                     GlStateManager.translatef(this.headhat.rotationPointX * f5, this.headhat.rotationPointY * f5, this.headhat.rotationPointZ * f5);
                     GlStateManager.scaled(0.5D, 0.5D, 0.5D);
-                    GlStateManager.translatef(-this.headhat.pitch, -this.headhat.yaw, -this.headhat.roll);
+                    GlStateManager.translatef(-this.headhat.x, -this.headhat.y, -this.headhat.z);
                     GlStateManager.translatef(-this.headhat.rotationPointX * f5, -this.headhat.rotationPointY * f5, -this.headhat.rotationPointZ * f5);
                     this.headhat.render(f5);
                     GlStateManager.popMatrix();
 
                     //Body
                     GlStateManager.pushMatrix();
-                    GlStateManager.translatef(this.body.pitch, this.body.yaw, this.body.roll);
+                    GlStateManager.translatef(this.body.x, this.body.y, this.body.z);
                     GlStateManager.translatef(this.body.rotationPointX * f5, this.body.rotationPointY * f5, this.body.rotationPointZ * f5);
                     GlStateManager.scaled(0.5D, 0.5D, 0.5D);
-                    GlStateManager.translatef(-this.body.pitch, -this.body.yaw, -this.body.roll);
+                    GlStateManager.translatef(-this.body.x, -this.body.y, -this.body.z);
                     GlStateManager.translatef(-this.body.rotationPointX * f5, -this.body.rotationPointY * f5, -this.body.rotationPointZ * f5);
                     this.body.render(f5);
                     GlStateManager.popMatrix();
 
                     //Head
                     GlStateManager.pushMatrix();
-                    GlStateManager.translatef(this.head.pitch, this.head.yaw, this.head.roll);
+                    GlStateManager.translatef(this.head.x, this.head.y, this.head.z);
                     GlStateManager.translatef(this.head.rotationPointX * f5, this.head.rotationPointY * f5, this.head.rotationPointZ * f5);
                     GlStateManager.scaled(0.5D, 0.5D, 0.5D);
-                    GlStateManager.translatef(-this.head.pitch, -this.head.yaw, -this.head.roll);
+                    GlStateManager.translatef(-this.head.x, -this.head.y, -this.head.z);
                     GlStateManager.translatef(-this.head.rotationPointX * f5, -this.head.rotationPointY * f5, -this.head.rotationPointZ * f5);
                     this.head.render(f5);
                     GlStateManager.popMatrix();
 
                     //Arm2
                     GlStateManager.pushMatrix();
-                    GlStateManager.translatef(this.arm2.pitch, this.arm2.yaw, this.arm2.roll);
+                    GlStateManager.translatef(this.arm2.x, this.arm2.y, this.arm2.z);
                     GlStateManager.translatef(this.arm2.rotationPointX * f5, this.arm2.rotationPointY * f5, this.arm2.rotationPointZ * f5);
                     GlStateManager.scaled(0.5D, 0.5D, 0.5D);
-                    GlStateManager.translatef(-this.arm2.pitch, -this.arm2.yaw, -this.arm2.roll);
+                    GlStateManager.translatef(-this.arm2.x, -this.arm2.y, -this.arm2.z);
                     GlStateManager.translatef(-this.arm2.rotationPointX * f5, -this.arm2.rotationPointY * f5, -this.arm2.rotationPointZ * f5);
                     this.arm2.render(f5);
                     GlStateManager.popMatrix();
 
                     //Arm1
                     GlStateManager.pushMatrix();
-                    GlStateManager.translatef(this.arm1.pitch, this.arm1.yaw, this.arm1.roll);
+                    GlStateManager.translatef(this.arm1.x, this.arm1.y, this.arm1.z);
                     GlStateManager.translatef(this.arm1.rotationPointX * f5, this.arm1.rotationPointY * f5, this.arm1.rotationPointZ * f5);
                     GlStateManager.scaled(0.5D, 0.5D, 0.5D);
-                    GlStateManager.translatef(-this.arm1.pitch, -this.arm1.yaw, -this.arm1.roll);
+                    GlStateManager.translatef(-this.arm1.x, -this.arm1.y, -this.arm1.z);
                     GlStateManager.translatef(-this.arm1.rotationPointX * f5, -this.arm1.rotationPointY * f5, -this.arm1.rotationPointZ * f5);
                     this.arm1.render(f5);
                     GlStateManager.popMatrix();
 
                     //Leg1
                     GlStateManager.pushMatrix();
-                    GlStateManager.translatef(this.leg1sit.pitch, this.leg1sit.yaw, this.leg1sit.roll);
+                    GlStateManager.translatef(this.leg1sit.x, this.leg1sit.y, this.leg1sit.z);
                     GlStateManager.translatef(this.leg1sit.rotationPointX * f5, this.leg1sit.rotationPointY * f5, this.leg1sit.rotationPointZ * f5);
                     GlStateManager.scaled(0.5D, 0.5D, 0.5D);
-                    GlStateManager.translatef(-this.leg1sit.pitch, -this.leg1sit.yaw, -this.leg1sit.roll);
+                    GlStateManager.translatef(-this.leg1sit.x, -this.leg1sit.y, -this.leg1sit.z);
                     GlStateManager.translatef(-this.leg1sit.rotationPointX * f5, -this.leg1sit.rotationPointY * f5, -this.leg1sit.rotationPointZ * f5);
                     this.leg1sit.render(f5);
                     GlStateManager.popMatrix();
 
                     //Leg2
                     GlStateManager.pushMatrix();
-                    GlStateManager.translatef(this.leg2ssit.pitch, this.leg2ssit.yaw, this.leg2ssit.roll);
+                    GlStateManager.translatef(this.leg2ssit.x, this.leg2ssit.y, this.leg2ssit.z);
                     GlStateManager.translatef(this.leg2ssit.rotationPointX * f5, this.leg2ssit.rotationPointY * f5, this.leg2ssit.rotationPointZ * f5);
                     GlStateManager.scaled(0.5D, 0.5D, 0.5D);
-                    GlStateManager.translatef(-this.leg2ssit.pitch, -this.leg2ssit.yaw, -this.leg2ssit.roll);
+                    GlStateManager.translatef(-this.leg2ssit.x, -this.leg2ssit.y, -this.leg2ssit.z);
                     GlStateManager.translatef(-this.leg2ssit.rotationPointX * f5, -this.leg2ssit.rotationPointY * f5, -this.leg2ssit.rotationPointZ * f5);
                     this.leg2ssit.render(f5);
                     GlStateManager.popMatrix();
@@ -147,75 +145,74 @@ public class ModelSlowpoke<T extends Entity> extends EntityModel<T>{
 
                 //HeadHat
                 GlStateManager.pushMatrix();
-                GlStateManager.translatef(this.headhat.pitch, this.headhat.yaw, this.headhat.roll);
+                GlStateManager.translatef(this.headhat.x, this.headhat.y, this.headhat.z);
                 GlStateManager.translatef(this.headhat.rotationPointX * f5, this.headhat.rotationPointY * f5, this.headhat.rotationPointZ * f5);
                 GlStateManager.scaled(0.5D, 0.5D, 0.5D);
-                GlStateManager.translatef(-this.headhat.pitch, -this.headhat.yaw, -this.headhat.roll);
+                GlStateManager.translatef(-this.headhat.x, -this.headhat.y, -this.headhat.z);
                 GlStateManager.translatef(-this.headhat.rotationPointX * f5, -this.headhat.rotationPointY * f5, -this.headhat.rotationPointZ * f5);
                 this.headhat.render(f5);
                 GlStateManager.popMatrix();
 
                 //Body
                 GlStateManager.pushMatrix();
-                GlStateManager.translatef(this.body.pitch, this.body.yaw, this.body.roll);
+                GlStateManager.translatef(this.body.x, this.body.y, this.body.z);
                 GlStateManager.translatef(this.body.rotationPointX * f5, this.body.rotationPointY * f5, this.body.rotationPointZ * f5);
                 GlStateManager.scaled(0.5D, 0.5D, 0.5D);
-                GlStateManager.translatef(-this.body.pitch, -this.body.yaw, -this.body.roll);
+                GlStateManager.translatef(-this.body.x, -this.body.y, -this.body.z);
                 GlStateManager.translatef(-this.body.rotationPointX * f5, -this.body.rotationPointY * f5, -this.body.rotationPointZ * f5);
                 this.body.render(f5);
                 GlStateManager.popMatrix();
 
                 //Head
                 GlStateManager.pushMatrix();
-                GlStateManager.translatef(this.head.pitch, this.head.yaw, this.head.roll);
+                GlStateManager.translatef(this.head.x, this.head.y, this.head.z);
                 GlStateManager.translatef(this.head.rotationPointX * f5, this.head.rotationPointY * f5, this.head.rotationPointZ * f5);
                 GlStateManager.scaled(0.5D, 0.5D, 0.5D);
-                GlStateManager.translatef(-this.head.pitch, -this.head.yaw, -this.head.roll);
+                GlStateManager.translatef(-this.head.x, -this.head.y, -this.head.z);
                 GlStateManager.translatef(-this.head.rotationPointX * f5, -this.head.rotationPointY * f5, -this.head.rotationPointZ * f5);
                 this.head.render(f5);
                 GlStateManager.popMatrix();
 
                 //Arm2
                 GlStateManager.pushMatrix();
-                GlStateManager.translatef(this.arm2.pitch, this.arm2.yaw, this.arm2.roll);
+                GlStateManager.translatef(this.arm2.x, this.arm2.y, this.arm2.z);
                 GlStateManager.translatef(this.arm2.rotationPointX * f5, this.arm2.rotationPointY * f5, this.arm2.rotationPointZ * f5);
                 GlStateManager.scaled(0.5D, 0.5D, 0.5D);
-                GlStateManager.translatef(-this.arm2.pitch, -this.arm2.yaw, -this.arm2.roll);
+                GlStateManager.translatef(-this.arm2.x, -this.arm2.y, -this.arm2.z);
                 GlStateManager.translatef(-this.arm2.rotationPointX * f5, -this.arm2.rotationPointY * f5, -this.arm2.rotationPointZ * f5);
                 this.arm2.render(f5);
                 GlStateManager.popMatrix();
 
                 //Arm1
                 GlStateManager.pushMatrix();
-                GlStateManager.translatef(this.arm1.pitch, this.arm1.yaw, this.arm1.roll);
+                GlStateManager.translatef(this.arm1.x, this.arm1.y, this.arm1.z);
                 GlStateManager.translatef(this.arm1.rotationPointX * f5, this.arm1.rotationPointY * f5, this.arm1.rotationPointZ * f5);
                 GlStateManager.scaled(0.5D, 0.5D, 0.5D);
-                GlStateManager.translatef(-this.arm1.pitch, -this.arm1.yaw, -this.arm1.roll);
+                GlStateManager.translatef(-this.arm1.x, -this.arm1.y, -this.arm1.z);
                 GlStateManager.translatef(-this.arm1.rotationPointX * f5, -this.arm1.rotationPointY * f5, -this.arm1.rotationPointZ * f5);
                 this.arm1.render(f5);
                 GlStateManager.popMatrix();
                 //Leg1
                 GlStateManager.pushMatrix();
-                GlStateManager.translatef(this.leg1.pitch, this.leg1.yaw, this.leg1.roll);
+                GlStateManager.translatef(this.leg1.x, this.leg1.y, this.leg1.z);
                 GlStateManager.translatef(this.leg1.rotationPointX * f5, this.leg1.rotationPointY * f5, this.leg1.rotationPointZ * f5);
                 GlStateManager.scaled(0.5D, 0.5D, 0.5D);
-                GlStateManager.translatef(-this.leg1.pitch, -this.leg1.yaw, -this.leg1.roll);
+                GlStateManager.translatef(-this.leg1.x, -this.leg1.y, -this.leg1.z);
                 GlStateManager.translatef(-this.leg1.rotationPointX * f5, -this.leg1.rotationPointY * f5, -this.leg1.rotationPointZ * f5);
                 this.leg1.render(f5);
                 GlStateManager.popMatrix();
                 //Leg 2
                 GlStateManager.pushMatrix();
-                GlStateManager.translatef(this.leg2.pitch, this.leg2.yaw, this.leg2.roll);
+                GlStateManager.translatef(this.leg2.x, this.leg2.y, this.leg2.z);
                 GlStateManager.translatef(this.leg2.rotationPointX * f5, this.leg2.rotationPointY * f5, this.leg2.rotationPointZ * f5);
                 GlStateManager.scaled(0.5D, 0.5D, 0.5D);
-                GlStateManager.translatef(-this.leg2. pitch, -this.leg2.yaw, -this.leg2.roll);
+                GlStateManager.translatef(-this.leg2.x, -this.leg2.y, -this.leg2.z);
                 GlStateManager.translatef(-this.leg2.rotationPointX * f5, -this.leg2.rotationPointY * f5, -this.leg2.rotationPointZ * f5);
                 this.leg2.render(f5);
                 GlStateManager.popMatrix();
             }
         }
     }
-
     /**
      * This is a helper function from Tabula to set the rotation of model parts
      */
@@ -224,9 +221,8 @@ public class ModelSlowpoke<T extends Entity> extends EntityModel<T>{
         model.yaw = y;
         model.roll = z;
     }
-
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, T entity) {
-        super.setAngles(entity, f, f1, f2, f3, f4, f5);
+    @Override
+    public void setAngles(T entity, float f, float f1, float f2, float f3, float f4, float f5) {
         this.head.pitch = f4 / (180F / (float) Math.PI);
         this.head.yaw = f3 / (180F / (float) Math.PI);
         this.headhat.pitch = f4 / (180F / (float) Math.PI);

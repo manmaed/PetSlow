@@ -1,0 +1,12 @@
+{
+  "itemGroup.petslow.itemgroup"  : "Pet Slowpoke's Tab",
+  "entity.petslow.petslow":"Mini Slowpoke",
+  "item.petslow.slowdoll":"SlowpokeDoll",
+  "item.petslow.mug":"Mug",
+  "item.petslow.slowbrew":"SlowBrew",
+  "item.petslow.slowbrew.tooltip":"Used to tame a Mini Slowpoke",
+  "item.petslow.claybrew":"ClayBrew",
+  "item.petslow.claybrew.tooltip":"Used to heal a Mini Slowpoke",
+  "item.petslow.petslow_spawn_egg" : "PetSlow Spawn Egg",
+  "":""
+}
