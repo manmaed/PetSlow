@@ -13,6 +13,7 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
@@ -201,34 +202,13 @@ public class EntityPetSlow extends TameableEntity {
     @Override
     public boolean interactMob(PlayerEntity player, Hand hand) {
         ItemStack stack = player.getStackInHand(hand);
-        if(stack.getItem().equals(Items.NAME_TAG)) {
+        Item item = stack.getItem();
+        if(item.equals(Items.NAME_TAG)) {
             this.setCustomName(stack.getName());
+            return true;
         }
-        if (stack.getItem() == Blocks.TORCH.asItem() && stack.getItem() == Items.TORCH) {
-            torch++;
-            stack.decrement(1);
-            playSound(SoundEvents.ENTITY_GENERIC_EAT, getSoundVolume(), 1.00F);
-            if (this.random.nextInt(25) == 0) {
-                playSound(SoundEvents.ENTITY_PLAYER_BURP, getSoundVolume(), 1F);
-            }
-        }
-        if (this.isTamed()) {
-            if (this.isOwner(player)) {
-                if (!this.world.isClient) {
-                    if (stack.getItem() != PSItems.slowbrew) {
-                        if (stack.getItem() != PSItems.claybrew) {
-                            if (stack.getItem() != Blocks.TORCH.asItem()) {
-                                if (stack.getItem() != Items.TORCH.asItem()) {
-                                    this.sitGoal.setEnabledWithOwner(!this.isSitting());
-                                    this.jumping = false;
-                                    this.navigation.stop();
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            if (stack.getItem() == PSItems.claybrew && getHealth() < 20.0F) {
+        if(this.isTamed()) {
+            if(item.equals(PSItems.claybrew) && getHealth() < 20.0F){
                 if (!player.abilities.creativeMode) {
                     stack.decrement(1);
                     player.inventory.insertStack(new ItemStack(PSItems.mug));
@@ -240,8 +220,27 @@ public class EntityPetSlow extends TameableEntity {
                 this.heal(3.0F);
                 return true;
             }
-        } else if (!this.isTamed()) {
-            if (stack.getItem() == PSItems.slowbrew) {
+            if (item.equals(Blocks.TORCH.asItem())) {
+                torch++;
+                stack.decrement(1);
+                playSound(SoundEvents.ENTITY_GENERIC_EAT, getSoundVolume(), 1.00F);
+                if (this.random.nextInt(25) == 0) {
+                    playSound(SoundEvents.ENTITY_PLAYER_BURP, getSoundVolume(), 1F);
+                }
+                return true;
+            }
+            if(!item.equals(PSItems.claybrew) & !item.equals(Items.NAME_TAG) & !item.equals(PSItems.slowbrew) & !item.equals(Blocks.TORCH.asItem())) {
+                if (this.isOwner(player) && !world.isClient ) {
+                    if (!item.equals(PSItems.claybrew) & !item.equals(Items.NAME_TAG) & !item.equals(PSItems.slowbrew) & !item.equals(Blocks.TORCH.asItem())) {
+                        this.sitGoal.setEnabledWithOwner(!this.isSitting());
+                        this.jumping = false;
+                        this.navigation.stop();
+                        return true;
+                    }
+                }
+            }
+        } else {
+            if(item.equals(PSItems.slowbrew)) {
                 if (!player.abilities.creativeMode) {
                     stack.decrement(1);
                     player.inventory.insertStack(new ItemStack(PSItems.mug));
@@ -250,8 +249,7 @@ public class EntityPetSlow extends TameableEntity {
                 if (this.random.nextInt(25) == 0) {
                     playSound(SoundEvents.ENTITY_PLAYER_BURP, getSoundVolume(), 1F);
                 }
-
-                if (!this.world.isClient) {
+                if (!world.isClient) {
                     if (this.random.nextInt(3) == 0) {
                         this.setOwner(player);
                         this.navigation.stop();
@@ -263,8 +261,8 @@ public class EntityPetSlow extends TameableEntity {
                         this.showEmoteParticle(false);
                         this.world.sendEntityStatus(this, (byte) 6);
                     }
+                    return true;
                 }
-
             }
             return true;
         }

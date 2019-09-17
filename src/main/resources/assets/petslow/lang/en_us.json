@@ -1,7 +1,7 @@
 {
   "itemGroup.petslow.itemgroup"  : "Pet Slowpoke's Tab",
   "entity.petslow.petslow":"Mini Slowpoke",
-  "item.petslow.slowdoll":"SlowpokeDoll",
+  "item.petslow.slowdoll":"Slowpoke Doll",
   "item.petslow.mug":"Mug",
   "item.petslow.slowbrew":"SlowBrew",
   "item.petslow.slowbrew.tooltip":"Used to tame a Mini Slowpoke",

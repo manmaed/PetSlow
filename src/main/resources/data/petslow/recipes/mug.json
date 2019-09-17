@@ -5,8 +5,7 @@
   ],
   "key": {
     "s": {
-      "item": "minecraft:stone",
-      "data": 0
+      "item": "minecraft:stone"
     },
     "b": {
       "item": "minecraft:stone_button"

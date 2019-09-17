@@ -28,14 +28,14 @@ public class PSItems {
 
      public static void RegisterItems() {
          mug = new Item(new Item.Settings().group(PetSlow.ITEM_GROUP));
-         slowbrew = new Brew(new Item.Settings().group(PetSlow.ITEM_GROUP), "slowbrew");
-         claybrew = new Brew(new Item.Settings().group(PetSlow.ITEM_GROUP), "claybrew");
+         slowbrew = new SlowBrew(new Item.Settings().group(PetSlow.ITEM_GROUP),"slowbrew");
+         claybrew = new ClayBrew(new Item.Settings().group(PetSlow.ITEM_GROUP),"claybrew");
          slowspawn = new SpawnEggItem(PSEntitys.petslow, 0, 0, new Item.Settings().group(PetSlow.ITEM_GROUP).maxCount(1));
 
          makeItems("mug", mug);
          makeItems("slowbrew", slowbrew);
-         makeItems("claybrew", claybrew);
          makeItems("slowdoll", slowspawn);
+         makeItems("claybrew", claybrew);
      }
 
     public static void makeItems(String itemName, Item item){

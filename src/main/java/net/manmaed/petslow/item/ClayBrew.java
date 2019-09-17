@@ -14,28 +14,18 @@ import java.util.List;
 /**
  * Created by manmaed on 14/09/2019.
  */
-public class Brew extends Item {
+public class ClayBrew extends Item {
 
-    public static  String tt;
+    private static String tt;
 
-    public Brew(Settings settings, String itemname) {
+    public ClayBrew(Settings settings, String itemname) {
         super(settings);
-        this.tt = "item.petslow." + itemname + ".tooltip";
+        tt = "item.petslow." + itemname + ".tooltip";
     }
 
     private static String gettooltip() {
         return tt;
     }
-
-    /*@Override
-    public void onStoppedUsing(ItemStack stack, World world, LivingEntity livingEntity, int int_1) {
-        if(world.isClient) {
-            livingEntity.clearPotionEffects();
-        }
-        if (livingEntity instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) livingEntity;
-        }
-    }*/
 
     @Override
     @Environment(EnvType.CLIENT)
