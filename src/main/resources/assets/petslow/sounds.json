@@ -1,19 +1,12 @@
 {
-  "sounds.entity.minislow.boop": {
+  "sounds.entity.mini_slow.death": {
     "category": "neutral",
+    "subtitle": "entity.entity.mini_slow.death",
     "sounds": [
       {
-        "name": "petslow:entity/minislow/boop",
-        "stream": true
-      }
-    ]
-  },
-  "sounds.entity.minislow.death": {
-    "category": "neutral",
-    "sounds": [
-      {
-        "name": "petslow:entity/minislow/death",
-        "stream": true
+        "name": "petslow:entity/mini_slow/death",
+        "stream": true,
+        "pitch": 1.0
       }
     ]
   }

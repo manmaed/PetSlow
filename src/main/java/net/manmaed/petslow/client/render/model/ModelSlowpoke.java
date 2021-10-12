@@ -1,10 +1,6 @@
 package net.manmaed.petslow.client.render.model;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.manmaed.petslow.entity.EntityMiniSlow;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
@@ -82,17 +78,7 @@ public class ModelSlowpoke<T extends Entity> extends SegmentedModel<T> {
 
     @Override
     public Iterable<ModelRenderer> parts() {
-        return ImmutableList.of(
-        headhat,
-        arm2,
-        leg1,
-        leg2,
-        head,
-        body,
-        arm1,
-        leg1sit,
-        leg2ssit
-        );
+        return ImmutableList.of(headhat, arm2, leg1, leg2, head, body, arm1, leg1sit, leg2ssit);
     }
 
     /**

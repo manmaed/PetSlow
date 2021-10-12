@@ -1,20 +1,12 @@
 package net.manmaed.petslow.client.render.layers;
 
-import net.manmaed.petslow.client.render.entity.RenderSlowpoke;
-import net.manmaed.petslow.client.render.model.ModelSign;
-import net.manmaed.petslow.entity.EntityMiniSlow;
-import net.manmaed.petslow.libs.Textures;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.util.ResourceLocation;
-
 /**
  * Created by manmaed on 14/01/2019.
  */
-public class RenderSignLayer implements LayerRenderer<EntityMiniSlow> {
+//TODO: FIX CLASS
+public class RenderSignLayer /*implements LayerRenderer<EntityMiniSlow>*/ {
 
-    private final RenderSlowpoke renderer;
+   /* private final RenderSlowpoke renderer;
     private final ModelSign sign = new ModelSign();
 
     public RenderSignLayer(RenderSlowpoke renderer) {
@@ -48,4 +40,5 @@ public class RenderSignLayer implements LayerRenderer<EntityMiniSlow> {
     private void bindTexture(ResourceLocation rl) {
         Minecraft.getMinecraft().renderEngine.bindTexture(rl);
     }
+*/
 }

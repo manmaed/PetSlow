@@ -44,10 +44,10 @@ public class SlowBrew extends Item {
             entityLiving.curePotionEffects(stack);
         }
         if (stack.isEmpty()) {
-            return new ItemStack(PSItems.mug.get());
+            return new ItemStack(PSItems.MUG.get());
         } else {
             if (entityLiving instanceof PlayerEntity && !((PlayerEntity) entityLiving).abilities.instabuild) {
-                ItemStack itemStack = new ItemStack(PSItems.mug.get());
+                ItemStack itemStack = new ItemStack(PSItems.MUG.get());
                 PlayerEntity player = (PlayerEntity) entityLiving;
                 if (!player.inventory.add(itemStack)) {
                     player.drop(itemStack, false);
@@ -56,6 +56,7 @@ public class SlowBrew extends Item {
             return stack;
         }
     }
+
     /**
      * How long it takes to use or consume an item
      */

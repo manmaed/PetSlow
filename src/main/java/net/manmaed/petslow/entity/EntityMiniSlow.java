@@ -11,7 +11,10 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.*;
+import net.minecraft.item.DyeItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -55,9 +58,7 @@ public class EntityMiniSlow extends TameableEntity {
     }
 
     public static AttributeModifierMap.MutableAttribute setCustomAttributes() {
-        return MobEntity.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 20.D)
-                .add(Attributes.MOVEMENT_SPEED, 0.35D);
+        return MobEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 20.D).add(Attributes.MOVEMENT_SPEED, 0.35D);
     }
 
     @Override
@@ -154,7 +155,6 @@ public class EntityMiniSlow extends TameableEntity {
     }
 
 
-
     @Override
     protected SoundEvent getSwimHighSpeedSplashSound() {
         return SoundEvents.PLAYER_SPLASH_HIGH_SPEED;
@@ -205,14 +205,14 @@ public class EntityMiniSlow extends TameableEntity {
         ItemStack itemStack = player.getItemInHand(hand);
         Item item = itemStack.getItem();
         if (this.level.isClientSide) {
-            boolean flag = this.isOwnedBy(player) || this.isTame() || item == PSItems.slow_Brew.get() && !this.isTame();
+            boolean flag = this.isOwnedBy(player) || this.isTame() || item == PSItems.SLOW_BREW.get() && !this.isTame();
             return flag ? ActionResultType.CONSUME : ActionResultType.PASS;
         } else {
             if (this.isTame()) {
-                if (item == PSItems.clay_Brew.get() && this.getHealth() < this.getMaxHealth()) {
+                if (item == PSItems.CLAY_BREW.get() && this.getHealth() < this.getMaxHealth()) {
                     if (!player.isCreative()) {
                         itemStack.shrink(1);
-                        player.inventory.add(new ItemStack(PSItems.mug.get()));
+                        player.inventory.add(new ItemStack(PSItems.MUG.get()));
                     }
                     playSound(SoundEvents.GENERIC_DRINK, getSoundVolume(), 1F);
                     if (this.random.nextInt(25) == 0) {
@@ -239,10 +239,10 @@ public class EntityMiniSlow extends TameableEntity {
                     }
                     return actionresulttype;
                 }
-            } else if (item == PSItems.slow_Brew.get()) {
+            } else if (item == PSItems.SLOW_BREW.get()) {
                 if (!player.isCreative()) {
                     itemStack.shrink(1);
-                    player.inventory.add(new ItemStack(PSItems.mug.get()));
+                    player.inventory.add(new ItemStack(PSItems.MUG.get()));
                 }
                 playSound(SoundEvents.GENERIC_DRINK, getSoundVolume(), 1F);
                 if (this.random.nextInt(25) == 0) {
@@ -252,9 +252,9 @@ public class EntityMiniSlow extends TameableEntity {
                     this.tame(player);
                     this.navigation.stop();
                     this.setOrderedToSit(true);
-                    this.level.broadcastEntityEvent(this, (byte)7);
+                    this.level.broadcastEntityEvent(this, (byte) 7);
                 } else {
-                    this.level.broadcastEntityEvent(this, (byte)6);
+                    this.level.broadcastEntityEvent(this, (byte) 6);
                 }
                 return ActionResultType.SUCCESS;
             }

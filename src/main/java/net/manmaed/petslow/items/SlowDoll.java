@@ -1,6 +1,5 @@
 package net.manmaed.petslow.items;
 
-import net.manmaed.petslow.entity.EntityMiniSlow;
 import net.manmaed.petslow.entity.PSEntityTypes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -22,11 +21,11 @@ import java.util.Random;
 /**
  * Created by manmaed on 24/02/2017.
  */
-public class SlowSpawn extends Item {
+public class SlowDoll extends Item {
 
     Random rand = new Random();
 
-    public SlowSpawn(Properties properties) {
+    public SlowDoll(Properties properties) {
         super(properties);
     }
 
@@ -61,9 +60,9 @@ public class SlowSpawn extends Item {
             itemStack.shrink(1);
             //TODO: Spawn Slow
             *//*
-            * @see net.minecraft.world.item.Items
-            *//*
-            *//*EntityMiniSlow miniSlow = new EntityMiniSlow(worldIn);
+     * @see net.minecraft.world.item.Items
+     *//*
+     *//*EntityMiniSlow miniSlow = new EntityMiniSlow(worldIn);
             miniSlow.setLocationAndAngles(playerIn.posX, playerIn.posY, playerIn.posZ, 10, 10);
             worldIn.spawnEntity(miniSlow);*//*
         }
@@ -72,7 +71,7 @@ public class SlowSpawn extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("item.petslow.slow_brew.tooltip"));
+        tooltip.add(new TranslationTextComponent("item.petslow.slow_doll.tooltip"));
         //tooltip.add("To tame a Mini Slowpoke give it a Slow brew, to heal it give it a Clay brew");
     }
 }

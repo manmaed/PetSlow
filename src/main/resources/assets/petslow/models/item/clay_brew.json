@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "petslow:items/spawnslow"
+    "layer0": "petslow:items/clay_brew"
   }
 }

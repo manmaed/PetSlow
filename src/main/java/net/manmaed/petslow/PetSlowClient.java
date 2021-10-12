@@ -1,7 +1,7 @@
 package net.manmaed.petslow;
 
-import net.manmaed.petslow.entity.PSEntityTypes;
 import net.manmaed.petslow.client.render.entity.RenderSlowpoke;
+import net.manmaed.petslow.entity.PSEntityTypes;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 

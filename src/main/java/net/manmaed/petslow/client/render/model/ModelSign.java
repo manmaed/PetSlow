@@ -1,16 +1,11 @@
 package net.manmaed.petslow.client.render.model;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.Entity;
-
 /**
  * test - Undefined
  * Created using Tabula 7.0.0
  */
-public class ModelSign extends ModelBase {
-    public ModelRenderer sign;
+public class ModelSign /*extends ModelBase*/ {
+    /*public ModelRenderer sign;
 
     public ModelSign() {
         this.textureWidth = 128;
@@ -32,12 +27,12 @@ public class ModelSign extends ModelBase {
         GlStateManager.popMatrix();
     }
 
-    /**
+    *//**
      * This is a helper function from Tabula to set the rotation of model parts
-     */
+     *//*
     public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;
-    }
+    }*/
 }

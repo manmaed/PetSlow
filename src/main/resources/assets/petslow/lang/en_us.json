@@ -1,0 +1,23 @@
+{
+  "lang.file.name": "Engish (US)",
+  "lang.author.name": "manmaed",
+  "itemGroup.petslow": "PetSlow",
+
+  "petslow.comment.1": "Items",
+  "item.petslow.mug": "Mug",
+  "item.petslow.mug.tooltip": "It's a Mug used to drink from",
+  "item.petslow.clay_brew": "Clay Brew",
+  "item.petslow.clay_brew.tooltip": "Used to heal a tamed Mini Slow",
+  "item.petslow.slow_brew": "Slow Brewa",
+  "item.petslow.slow_brew.tooltip": "Used to tame a Mini Slowpoke",
+  "item.petslow.slow_doll": "Slowpoke Doll",
+  "item.petslow.slow_doll.tooltip": "To tame a Mini Slowpoke give it a Slow brew, to heal it give it a Clay brew",
+
+  "petslow.comment.2": "Blocks",
+
+  "petslow.comment.3": "Entitys",
+
+  "petslow.comment.4": "Sounds",
+
+  "petslow.comment.5": "Other"
+}

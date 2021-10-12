@@ -14,9 +14,5 @@ public class PSEntityTypes {
 
     public static DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, Reference.MOD_ID);
 
-    public static final RegistryObject<EntityType<EntityMiniSlow>> SLOWPOKE = ENTITY_TYPES.register("mini_slow",
-            () -> EntityType.Builder.of(EntityMiniSlow:: new, EntityClassification.MISC)
-                    .sized(0.5f, 1.0f)
-                    .build("mini_slow")
-    );
+    public static final RegistryObject<EntityType<EntityMiniSlow>> SLOWPOKE = ENTITY_TYPES.register("mini_slow", () -> EntityType.Builder.of(EntityMiniSlow::new, EntityClassification.MISC).sized(0.5f, 1.0f).build("mini_slow"));
 }

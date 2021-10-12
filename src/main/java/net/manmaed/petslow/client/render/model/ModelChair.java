@@ -1,15 +1,11 @@
 package net.manmaed.petslow.client.render.model;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
-
 /**
  * ModelPlayer - Either Mojang or a mod author
  * Created using Tabula 7.0.0
  */
-public class ModelChair extends ModelBase {
-    public ModelRenderer chairbase;
+public class ModelChair/* extends ModelBase*/ {
+    /*public ModelRenderer chairbase;
     public ModelRenderer chairback;
     public ModelRenderer leg1;
     public ModelRenderer leg2;
@@ -49,12 +45,12 @@ public class ModelChair extends ModelBase {
         this.chairbase.render(f5);
     }
 
-    /**
+    *//**
      * This is a helper function from Tabula to set the rotation of model parts
-     */
+     *//*
     public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;
-    }
+    }*/
 }

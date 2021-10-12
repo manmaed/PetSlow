@@ -1,18 +1,15 @@
 package net.manmaed.petslow.client.render.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.manmaed.petslow.client.render.model.ModelSlowpoke;
 import net.manmaed.petslow.entity.EntityMiniSlow;
 import net.manmaed.petslow.libs.Reference;
-import net.manmaed.petslow.libs.Textures;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.client.registry.IRenderFactory;
 
 ;
 
@@ -22,6 +19,7 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 public class RenderSlowpoke extends MobRenderer<EntityMiniSlow, ModelSlowpoke<EntityMiniSlow>> {
 
     private static final ResourceLocation SLOWPOKE = new ResourceLocation(Reference.MOD_ID, "textures/entity/slowpoke.png");
+
     public RenderSlowpoke(EntityRendererManager manager) {
         super(manager, new ModelSlowpoke(), 0.25F);
     }
@@ -38,7 +36,7 @@ public class RenderSlowpoke extends MobRenderer<EntityMiniSlow, ModelSlowpoke<En
                 matrixStack.pushPose();
                 matrixStack.translate(this.model.headhat.x, this.model.headhat.y, this.model.headhat.z);
                 matrixStack.translate(this.model.headhat.xRot * entityYaw, this.model.headhat.yRot * entityYaw, this.model.headhat.zRot * entityYaw);
-                matrixStack.scale(  (float)0.5D, (float)0.5D, (float)0.5D);
+                matrixStack.scale((float) 0.5D, (float) 0.5D, (float) 0.5D);
                 matrixStack.translate(-this.model.headhat.x, -this.model.headhat.x, -this.model.headhat.z);
                 matrixStack.translate(-this.model.headhat.xRot * entityYaw, -this.model.headhat.yRot * entityYaw, -this.model.headhat.zRot * entityYaw);
                 this.model.headhat.render(matrixStack, ivertexbuilder, packedLight, OverlayTexture.NO_OVERLAY);
