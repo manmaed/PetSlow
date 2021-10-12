@@ -1,7 +1,7 @@
-package net.manmaed.petslow.render.layers;
+package net.manmaed.petslow.client.render.layers;
 
-import net.manmaed.petslow.render.entity.RenderSlowpoke;
-import net.manmaed.petslow.render.model.ModelSign;
+import net.manmaed.petslow.client.render.entity.RenderSlowpoke;
+import net.manmaed.petslow.client.render.model.ModelSign;
 import net.manmaed.petslow.entity.EntityMiniSlow;
 import net.manmaed.petslow.libs.Textures;
 import net.minecraft.client.Minecraft;

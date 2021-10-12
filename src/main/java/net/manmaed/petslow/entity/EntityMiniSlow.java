@@ -2,56 +2,82 @@ package net.manmaed.petslow.entity;
 
 import net.manmaed.petslow.items.PSItems;
 import net.manmaed.petslow.libs.SoundHandler;
-import net.minecraft.entity.EntityAgeable;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.passive.EntityTameable;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.AgeableEntity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.passive.TameableEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.*;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.event.ForgeEventFactory;
+
+import javax.annotation.Nullable;
 
 /**
  * Created by manmaed on 26/02/2017.
  */
-public class EntityMiniSlow extends EntityTameable {
+public class EntityMiniSlow extends TameableEntity {
 
-    private static final int NOT_IN_USE = -1;
-
-    private static final DataParameter<Integer> RETURN_COOLDOWN = EntityDataManager.<Integer>createKey(EntityMiniSlow.class, DataSerializers.VARINT);
-    private static final DataParameter<Integer> STAY_COOLDOWN = EntityDataManager.<Integer>createKey(EntityMiniSlow.class, DataSerializers.VARINT);
-    private static final DataParameter<Boolean> AWAY = EntityDataManager.<Boolean>createKey(EntityMiniSlow.class, DataSerializers.BOOLEAN);
-
-
+    private static final DataParameter<Integer> RETURN_COOLDOWN = EntityDataManager.defineId(EntityMiniSlow.class, DataSerializers.INT);
+    private static final DataParameter<Integer> STAY_COOLDOWN = EntityDataManager.defineId(EntityMiniSlow.class, DataSerializers.INT);
+    private static final DataParameter<Boolean> AWAY = EntityDataManager.defineId(EntityMiniSlow.class, DataSerializers.BOOLEAN);
     private int torch = 0;
 
-    public EntityMiniSlow(World worldIn) {
-        super(worldIn);
-        this.setSize(0.5F, 1.0F);
-        this.setTamed(false);
+
+    protected EntityMiniSlow(EntityType<? extends TameableEntity> entityType, World world) {
+        super(entityType, world);
+        this.setTame(false);
+    }
+
+    protected void registerGoals() {
+        //Goal Selectors
+        this.goalSelector.addGoal(1, new SwimGoal(this));
+        this.goalSelector.addGoal(2, new SitGoal(this));
+        this.goalSelector.addGoal(3, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false));
+        this.goalSelector.addGoal(4, new BreedGoal(this, 1.0D));
+        this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+        this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+        //Target Selectors
+        this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
+        this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
+        this.targetSelector.addGoal(3, new HurtByTargetGoal(this).setAlertOthers(EntityMiniSlow.class));
+    }
+
+    public static AttributeModifierMap.MutableAttribute setCustomAttributes() {
+        return MobEntity.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 20.D)
+                .add(Attributes.MOVEMENT_SPEED, 0.35D);
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(RETURN_COOLDOWN, -1);
+        this.entityData.define(STAY_COOLDOWN, -1);
+        this.entityData.define(AWAY, false);
     }
 
     private void addtorch(World world, BlockPos pos) {
-        if (!world.isRemote) {
-            if (isTamed() && !isSitting()) {
-                if (world.getLight(pos) < 3) {
-                    if (Blocks.AIR.getDefaultState() != world.getBlockState(pos.down())) {
+        if (!world.isClientSide) {
+            if (isTame() && !isOrderedToSit()) {
+                if (world.getLightEmission(pos) < 3) {
+                    if (Blocks.AIR.defaultBlockState() != world.getBlockState(pos.below())) {
                         //LogHelper.info(torch);
                         if (torch >= 1) {
                             torch--;
-                            world.setBlockState(pos, Blocks.TORCH.getDefaultState());
-                            playSound(SoundEvents.BLOCK_NOTE_BELL, getSoundVolume(), 0.01F);
+                            /*world.setBlock(pos, Blocks.TORCH.getStateForPlacement());*/
+                            playSound(SoundEvents.NOTE_BLOCK_BELL, getSoundVolume(), 0.01F);
                         }
                     }
                 }
@@ -60,18 +86,18 @@ public class EntityMiniSlow extends EntityTameable {
     }
 
     private void shouldafk(World world) {
-        if (!world.isRemote) {
-            if (isTamed() && isSitting()) {
-                if (this.dataManager.get(STAY_COOLDOWN) == 0 && this.dataManager.get(RETURN_COOLDOWN) == -1) {
-                    int bool = this.world.rand.nextInt(2500) + 100;
-                    this.dataManager.set(STAY_COOLDOWN, NOT_IN_USE);
-                    this.dataManager.set(RETURN_COOLDOWN, bool);
+        if (!world.isClientSide()) {
+            if (isTame() && isOrderedToSit()) {
+                if (this.entityData.get(STAY_COOLDOWN) == 0 && this.entityData.get(RETURN_COOLDOWN) == -1) {
+                    int bool = this.level.random.nextInt(2500) + 100;
+                    this.entityData.set(STAY_COOLDOWN, -1);
+                    this.entityData.set(RETURN_COOLDOWN, bool);
                     setAway(false);
                 }
-                if (this.dataManager.get(RETURN_COOLDOWN) == 0 && this.dataManager.get(STAY_COOLDOWN) == -1) {
-                    int bool = this.world.rand.nextInt(25000) + 1000;
-                    this.dataManager.set(RETURN_COOLDOWN, NOT_IN_USE);
-                    this.dataManager.set(STAY_COOLDOWN, bool);
+                if (this.entityData.get(RETURN_COOLDOWN) == 0 && this.entityData.get(STAY_COOLDOWN) == -1) {
+                    int bool = this.level.random.nextInt(25000) + 1000;
+                    this.entityData.set(RETURN_COOLDOWN, -1);
+                    this.entityData.set(STAY_COOLDOWN, bool);
                     setAway(true);
                 }
             }
@@ -79,210 +105,176 @@ public class EntityMiniSlow extends EntityTameable {
     }
 
     private void countdown(World world) {
-        if (this.isTamed() && this.isSitting()) {
-            if (!world.isRemote) {
-                if (this.dataManager.get(STAY_COOLDOWN) != NOT_IN_USE) {
-                    int sc = this.dataManager.get(STAY_COOLDOWN);
+        if (this.isTame() && this.isOrderedToSit()) {
+            if (!world.isClientSide()) {
+                if (this.entityData.get(STAY_COOLDOWN) != -1) {
+                    int sc = this.entityData.get(STAY_COOLDOWN);
                     int nsc = --sc;
-                    this.dataManager.set(STAY_COOLDOWN, nsc);
+                    this.entityData.set(STAY_COOLDOWN, nsc);
                 }
-                if (this.dataManager.get(RETURN_COOLDOWN) != NOT_IN_USE) {
-                    int rc = this.dataManager.get(RETURN_COOLDOWN);
+                if (this.entityData.get(RETURN_COOLDOWN) != -1) {
+                    int rc = this.entityData.get(RETURN_COOLDOWN);
                     int nrc = --rc;
-                    this.dataManager.set(RETURN_COOLDOWN, nrc);
+                    this.entityData.set(RETURN_COOLDOWN, nrc);
                 }
             }
         }
     }
 
     private void chooseafk(World world) {
-        if (!world.isRemote) {
-            if (this.dataManager.get(STAY_COOLDOWN) == -1 && this.dataManager.get(RETURN_COOLDOWN) == -1) {
-                boolean tobeornottobe = world.rand.nextBoolean();
+        if (!world.isClientSide()) {
+            if (this.entityData.get(STAY_COOLDOWN) == -1 && this.entityData.get(RETURN_COOLDOWN) == -1) {
+                boolean tobeornottobe = world.random.nextBoolean();
                 if (tobeornottobe) {
-                    this.dataManager.set(RETURN_COOLDOWN, (this.world.rand.nextInt(2500) + 100));
-                    this.dataManager.set(STAY_COOLDOWN, NOT_IN_USE);
+                    this.entityData.set(RETURN_COOLDOWN, (this.level.random.nextInt(2500) + 100));
+                    this.entityData.set(STAY_COOLDOWN, -1);
                     setAway(false);
                 } else {
-                    this.dataManager.set(STAY_COOLDOWN, (this.world.rand.nextInt(25000) + 1000));
-                    this.dataManager.set(RETURN_COOLDOWN, NOT_IN_USE);
+                    this.entityData.set(STAY_COOLDOWN, (this.level.random.nextInt(25000) + 1000));
+                    this.entityData.set(RETURN_COOLDOWN, -1);
                     setAway(true);
                 }
             }
         }
     }
 
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
-        super.writeToNBT(nbtTagCompound);
-        nbtTagCompound.setInteger("torchCount", this.torch);
+    public void addAdditionalSaveData(CompoundNBT nbtTagCompound) {
+        super.addAdditionalSaveData(nbtTagCompound);
+        nbtTagCompound.putInt("torchCount", this.torch);
+    }
 
-        return nbtTagCompound;
+    /**
+     * (abstract) Protected helper method to read subclass entity data from NBT.
+     */
+    public void readAdditionalSaveData(CompoundNBT nbtTagCompound) {
+        super.readAdditionalSaveData(nbtTagCompound);
+        if (nbtTagCompound.contains("torchCount")) {
+            torch = nbtTagCompound.getInt("torchCount");
+        }
+    }
+
+
+
+    @Override
+    protected SoundEvent getSwimHighSpeedSplashSound() {
+        return SoundEvents.PLAYER_SPLASH_HIGH_SPEED;
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbtTagCompound) {
-        super.readFromNBT(nbtTagCompound);
-        torch = nbtTagCompound.getInteger("torchCount");
-
-
-    }
-
-    @Override
-    protected void initEntityAI() {
-        this.aiSit = new EntityAISit(this);
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, this.aiSit);
-        this.tasks.addTask(2, new EntityAIFollowOwner(this, 1.0D, 4.0F, 2.0F));
-        this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true, new Class[0]));
-        this.tasks.addTask(4, new EntityAIWander(this, 0.8D, 10));
-    }
-
-    @Override
-    protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35D);
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-    }
-
-    @Override
-    public void onEntityUpdate() {
-        super.onEntityUpdate();
-        addtorch(world, this.getPosition());
-        getAway();
-        chooseafk(world);
-        shouldafk(world);
-        countdown(world);
-        //LogHelper.info("stayCooldown: " + this.dataManager.get(STAY_COOLDOWN) + " returnCooldown: " + this.dataManager.get(RETURN_COOLDOWN) + " Away:" + this.getAway());
-    }
-
-    @Override
-    protected void entityInit() {
-        super.entityInit();
-        this.dataManager.register(RETURN_COOLDOWN, NOT_IN_USE);
-        this.dataManager.register(STAY_COOLDOWN, NOT_IN_USE);
-        this.dataManager.register(AWAY, false);
+    protected SoundEvent getSwimSplashSound() {
+        return SoundEvents.PLAYER_SPLASH;
     }
 
     @Override
     protected SoundEvent getSwimSound() {
-        return SoundEvents.ENTITY_PLAYER_SWIM;
+        return SoundEvents.PLAYER_SWIM;
     }
 
+    @Nullable
     @Override
-    protected SoundEvent getSplashSound() {
-        return SoundEvents.ENTITY_PLAYER_SPLASH;
+    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+        return SoundEvents.PLAYER_HURT;
     }
 
-    @Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return SoundEvents.ENTITY_PLAYER_HURT;
-    }
-
+    @Nullable
     @Override
     protected SoundEvent getDeathSound() {
         return SoundHandler.SLOWDEATH;
     }
 
-    /**
-     * Returns the volume for the sounds this mob makes.
-     */
     @Override
-    protected float getSoundVolume() {
-        return 1.0F;
+    public void setTame(boolean tamed) {
+        super.setTame(tamed);
     }
 
     @Override
-    public void setTamed(boolean tamed) {
-        super.setTamed(tamed);
+    public void tick() {
+        super.tick();
+        addtorch(level, this.getOnPos());
+        getAway();
+        chooseafk(level);
+        shouldafk(level);
+        countdown(level);
+    }
+
+    //Slow Brew - Tames
+    //Clay Brew - Heals
+
+    @Override
+    public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
+        ItemStack itemStack = player.getItemInHand(hand);
+        Item item = itemStack.getItem();
+        if (this.level.isClientSide) {
+            boolean flag = this.isOwnedBy(player) || this.isTame() || item == PSItems.slow_Brew.get() && !this.isTame();
+            return flag ? ActionResultType.CONSUME : ActionResultType.PASS;
+        } else {
+            if (this.isTame()) {
+                if (item == PSItems.clay_Brew.get() && this.getHealth() < this.getMaxHealth()) {
+                    if (!player.isCreative()) {
+                        itemStack.shrink(1);
+                        player.inventory.add(new ItemStack(PSItems.mug.get()));
+                    }
+                    playSound(SoundEvents.GENERIC_DRINK, getSoundVolume(), 1F);
+                    if (this.random.nextInt(25) == 0) {
+                        playSound(SoundEvents.PLAYER_BURP, getSoundVolume(), 1F);
+                    }
+                    this.heal(3.0F);
+                    return ActionResultType.SUCCESS;
+                }
+                if (item == Items.TORCH) {
+                    torch++;
+                    itemStack.shrink(1);
+                    playSound(SoundEvents.GENERIC_EAT, getSoundVolume(), 1F);
+                    if (this.random.nextInt(25) == 0) {
+                        playSound(SoundEvents.PLAYER_BURP, getSoundVolume(), 1F);
+                    }
+                }
+                if (!(item instanceof DyeItem)) {
+                    ActionResultType actionresulttype = super.mobInteract(player, hand);
+                    if ((!actionresulttype.consumesAction() || this.isBaby()) && this.isOwnedBy(player)) {
+                        this.setOrderedToSit(!this.isOrderedToSit());
+                        this.jumping = false;
+                        this.navigation.stop();
+                        return ActionResultType.SUCCESS;
+                    }
+                    return actionresulttype;
+                }
+            } else if (item == PSItems.slow_Brew.get()) {
+                if (!player.isCreative()) {
+                    itemStack.shrink(1);
+                    player.inventory.add(new ItemStack(PSItems.mug.get()));
+                }
+                playSound(SoundEvents.GENERIC_DRINK, getSoundVolume(), 1F);
+                if (this.random.nextInt(25) == 0) {
+                    playSound(SoundEvents.PLAYER_BURP, getSoundVolume(), 1F);
+                }
+                if (this.random.nextInt(3) == 0 && !ForgeEventFactory.onAnimalTame(this, player)) {
+                    this.tame(player);
+                    this.navigation.stop();
+                    this.setOrderedToSit(true);
+                    this.level.broadcastEntityEvent(this, (byte)7);
+                } else {
+                    this.level.broadcastEntityEvent(this, (byte)6);
+                }
+                return ActionResultType.SUCCESS;
+            }
+            return super.mobInteract(player, hand);
+        }
     }
 
     //Away Stuff
     public boolean getAway() {
-        return this.dataManager.get(AWAY);
+        return this.entityData.get(AWAY);
     }
 
     private void setAway(boolean b) {
-        this.dataManager.set(AWAY, b);
+        this.entityData.set(AWAY, b);
     }
 
+
+    @Nullable
     @Override
-    protected boolean canDespawn() {
-        return false;
-    }
-
-    @Override
-    public boolean processInteract(EntityPlayer player, EnumHand hand) {
-        ItemStack stack = player.getHeldItemMainhand();
-        if (stack.getItem().equals(Items.NAME_TAG)) {
-            this.setCustomNameTag(stack.getDisplayName());
-        }
-        if (stack.getItem().equals(Item.getItemFromBlock(Blocks.TORCH))) {
-            torch++;
-            stack.shrink(1);
-            playSound(SoundEvents.ENTITY_GENERIC_EAT, getSoundVolume(), 1.00F);
-            if (this.rand.nextInt(25) == 0) {
-                playSound(SoundEvents.ENTITY_PLAYER_BURP, getSoundVolume(), 1F);
-            }
-        }
-        if (this.isTamed()) {
-            if (this.isOwner(player) && !this.world.isRemote && !stack.getItem().equals(PSItems.slowbrew) && !stack.getItem().equals(PSItems.claybrew) && !stack.getItem().equals(Item.getItemFromBlock(Blocks.TORCH))) {
-                this.aiSit.setSitting(!this.isSitting());
-                this.isJumping = false;
-                this.navigator.clearPath();
-            }
-            if (stack.getItem() == PSItems.claybrew && getHealth() < 20.0F) {
-                if (!player.capabilities.isCreativeMode) {
-                    stack.shrink(1);
-                    player.addItemStackToInventory(new ItemStack(PSItems.mug));
-                }
-                playSound(SoundEvents.ENTITY_GENERIC_DRINK, getSoundVolume(), 1.00F);
-                if (this.rand.nextInt(25) == 0) {
-                    playSound(SoundEvents.ENTITY_PLAYER_BURP, getSoundVolume(), 1F);
-                }
-                this.heal(3.0F);
-                return true;
-            }
-        } else if (!this.isTamed()) {
-            if (stack.getItem() == PSItems.slowbrew) {
-                if (!player.capabilities.isCreativeMode) {
-                    stack.shrink(1);
-                    player.addItemStackToInventory(new ItemStack(PSItems.mug));
-                }
-                playSound(SoundEvents.ENTITY_GENERIC_DRINK, getSoundVolume(), 1.00F);
-                if (this.rand.nextInt(25) == 0) {
-                    playSound(SoundEvents.ENTITY_PLAYER_BURP, getSoundVolume(), 1F);
-                }
-
-                if (!this.world.isRemote) {
-                    if (this.rand.nextInt(3) == 0) {
-                        this.setTamedBy(player);
-                        this.navigator.clearPath();
-                        this.aiSit.setSitting(true);
-                        this.setHealth(20.0F);
-                        this.playTameEffect(true);
-                        this.world.setEntityState(this, (byte) 7);
-                    } else {
-                        this.playTameEffect(false);
-                        this.world.setEntityState(this, (byte) 6);
-                    }
-                }
-
-            }
-            return true;
-        }
-        return super.processInteract(player, hand);
-    }
-
-    @Override
-    public EntityMiniSlow createChild(EntityAgeable ageable) {
-        EntityMiniSlow miniSlow = new EntityMiniSlow(this.world);
-        return miniSlow;
-    }
-
-    @Override
-    public boolean canMateWith(EntityAnimal otherAnimal) {
-        return false;
+    public AgeableEntity getBreedOffspring(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+        return null;
     }
 }

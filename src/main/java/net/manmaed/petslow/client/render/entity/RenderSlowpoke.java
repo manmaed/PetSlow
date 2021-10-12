@@ -1,86 +1,127 @@
-package net.manmaed.petslow.render.model;
+package net.manmaed.petslow.client.render.entity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.manmaed.petslow.client.render.model.ModelSlowpoke;
 import net.manmaed.petslow.entity.EntityMiniSlow;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.MathHelper;
+import net.manmaed.petslow.libs.Reference;
+import net.manmaed.petslow.libs.Textures;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.registry.IRenderFactory;
+
+;
 
 /**
- * ModelPlayer - Either Mojang or a mod author
- * Created using Tabula 7.0.0
+ * Created by manmaed on 26/02/2017.
  */
-public class ModelSlowpoke extends ModelBase {
-    public ModelRenderer headhat;
-    public ModelRenderer arm2;
-    public ModelRenderer leg1;
-    public ModelRenderer leg2;
-    public ModelRenderer head;
-    public ModelRenderer body;
-    public ModelRenderer arm1;
+public class RenderSlowpoke extends MobRenderer<EntityMiniSlow, ModelSlowpoke<EntityMiniSlow>> {
 
-    //SittingLegs
-    public ModelRenderer leg1sit;
-    public ModelRenderer leg2ssit;
-
-    //Chair
-    public ModelRenderer chairbase;
-    public ModelRenderer chairback;
-    public ModelRenderer chairleg1;
-    public ModelRenderer chairleg2;
-    public ModelRenderer chairleg3;
-    public ModelRenderer chairleg4;
-
-    public ModelSlowpoke() {
-        this.textureWidth = 64;
-        this.textureHeight = 32;
-        this.headhat = new ModelRenderer(this, 32, 0);
-        this.headhat.setRotationPoint(0.0F, 12.0F, 0.0F);
-        this.headhat.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, 0.5F);
-        this.body = new ModelRenderer(this, 16, 16);
-        this.body.setRotationPoint(0.0F, 12.0F, 0.0F);
-        this.body.addBox(-4.0F, 0.0F, -2.0F, 8, 12, 4, 0.0F);
-        this.head = new ModelRenderer(this, 0, 0);
-        this.head.setRotationPoint(0.0F, 12.0F, 0.0F);
-        this.head.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, 0.0F);
-        this.arm2 = new ModelRenderer(this, 40, 16);
-        this.arm2.setRotationPoint(-2.5F, 13.0F, 0.0F);
-        this.arm2.addBox(-3.0F, -2.0F, -2.0F, 4, 12, 4, 0.0F);
-        this.arm1 = new ModelRenderer(this, 40, 16);
-        this.arm1.mirror = true;
-        this.arm1.setRotationPoint(2.5F, 13.0F, 0.0F);
-        this.arm1.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, 0.0F);
-        this.leg1 = new ModelRenderer(this, 0, 16);
-        this.leg1.mirror = true;
-        this.leg1.setRotationPoint(1.0F, 18.0F, 0.0F);
-        this.leg1.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, 0.0F);
-        this.leg2 = new ModelRenderer(this, 0, 16);
-        this.leg2.setRotationPoint(-1.0F, 18.0F, 0.0F);
-        this.leg2.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, 0.0F);
-
-        this.leg2ssit = new ModelRenderer(this, 0, 16);
-        this.leg2ssit.setRotationPoint(-1.0F, 17.0F, -1.0F);
-        this.leg2ssit.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, 0.0F);
-        this.setRotateAngle(leg2ssit, -1.5707963267948966F, 0.0F, 0.0F);
-        this.leg1sit = new ModelRenderer(this, 0, 16);
-        this.leg1sit.mirror = true;
-        this.leg1sit.setRotationPoint(1.0F, 17.0F, -1.0F);
-        this.leg1sit.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, 0.0F);
-        this.setRotateAngle(leg1sit, -1.5707963267948966F, 0.0F, 0.0F);
-
-        //head.addChild(headhat);
-
+    private static final ResourceLocation SLOWPOKE = new ResourceLocation(Reference.MOD_ID, "textures/entity/slowpoke.png");
+    public RenderSlowpoke(EntityRendererManager manager) {
+        super(manager, new ModelSlowpoke(), 0.25F);
     }
 
     @Override
+    public void render(EntityMiniSlow entityMiniSlow, float entityYaw, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int packedLight) {
+        IVertexBuilder ivertexbuilder = buffer.getBuffer(this.model.renderType(SLOWPOKE));
+        if (entityMiniSlow.isOrderedToSit()) {
+            if (entityMiniSlow.getAway()) {
+                //404 Slowpoke Not Found
+            } else {
+                //Slow is Sitting Down
+                //HeadHat
+                matrixStack.pushPose();
+                matrixStack.translate(this.model.headhat.x, this.model.headhat.y, this.model.headhat.z);
+                matrixStack.translate(this.model.headhat.xRot * entityYaw, this.model.headhat.yRot * entityYaw, this.model.headhat.zRot * entityYaw);
+                matrixStack.scale(  (float)0.5D, (float)0.5D, (float)0.5D);
+                matrixStack.translate(-this.model.headhat.x, -this.model.headhat.x, -this.model.headhat.z);
+                matrixStack.translate(-this.model.headhat.xRot * entityYaw, -this.model.headhat.yRot * entityYaw, -this.model.headhat.zRot * entityYaw);
+                this.model.headhat.render(matrixStack, ivertexbuilder, packedLight, OverlayTexture.NO_OVERLAY);
+                matrixStack.popPose();
+
+                /*//Body
+                matrixStack.pushPose();
+                matrixStack.translate(this.model.body.offsetX, this.model.body.offsetY, this.model.body.offsetZ);
+                matrixStack.translate(this.model.body.rotationPointX * f5, this.model.body.rotationPointY * f5, this.model.body.rotationPointZ * f5);
+                matrixStack.scale(0.5D, 0.5D, 0.5D);
+                matrixStack.translate(-this.model.body.offsetX, -this.model.body.offsetY, -this.model.body.offsetZ);
+                matrixStack.translate(-this.model.body.rotationPointX * f5, -this.model.body.rotationPointY * f5, -this.model.body.rotationPointZ * f5);
+                this.model.body.render(matrixStack, ivertexbuilder, packedLight, OverlayTexture.NO_OVERLAY);
+                matrixStack.popPose();
+
+                //Head
+                matrixStack.pushPose();
+                matrixStack.translate(this.model.head.offsetX, this.model.head.offsetY, this.model.head.offsetZ);
+                matrixStack.translate(this.model.head.rotationPointX * f5, this.model.head.rotationPointY * f5, this.model.head.rotationPointZ * f5);
+                matrixStack.scale(0.5D, 0.5D, 0.5D);
+                matrixStack.translate(-this.model.head.offsetX, -this.model.head.offsetY, -this.model.head.offsetZ);
+                matrixStack.translate(-this.model.head.rotationPointX * f5, -this.model.head.rotationPointY * f5, -this.model.head.rotationPointZ * f5);
+                this.model.head.render(matrixStack, ivertexbuilder, packedLight, OverlayTexture.NO_OVERLAY);
+                matrixStack.popPose();
+
+                //Arm2
+                matrixStack.pushPose();
+                matrixStack.translate(this.model.arm2.offsetX, this.model.arm2.offsetY, this.model.arm2.offsetZ);
+                matrixStack.translate(this.model.arm2.rotationPointX * f5, this.model.arm2.rotationPointY * f5, this.model.arm2.rotationPointZ * f5);
+                matrixStack.scale(0.5D, 0.5D, 0.5D);
+                matrixStack.translate(-this.model.arm2.offsetX, -this.model.arm2.offsetY, -this.model.arm2.offsetZ);
+                matrixStack.translate(-this.model.arm2.rotationPointX * f5, -this.model.arm2.rotationPointY * f5, -this.model.arm2.rotationPointZ * f5);
+                this.model.arm2.render(matrixStack, ivertexbuilder, packedLight, OverlayTexture.NO_OVERLAY);
+                matrixStack.popPose();
+
+                //Arm1
+                matrixStack.pushPose();
+                matrixStack.translate(this.model.arm1.offsetX, this.model.arm1.offsetY, this.model.arm1.offsetZ);
+                matrixStack.translate(this.model.arm1.rotationPointX * f5, this.model.arm1.rotationPointY * f5, this.model.arm1.rotationPointZ * f5);
+                matrixStack.scale(0.5D, 0.5D, 0.5D);
+                matrixStack.translate(-this.model.arm1.offsetX, -this.model.arm1.offsetY, -this.model.arm1.offsetZ);
+                matrixStack.translate(-this.model.arm1.rotationPointX * f5, -this.model.arm1.rotationPointY * f5, -this.model.arm1.rotationPointZ * f5);
+                this.model.arm1.render(matrixStack, ivertexbuilder, packedLight, OverlayTexture.NO_OVERLAY);
+                matrixStack.popPose();
+
+                //Leg1
+                matrixStack.pushPose();
+                matrixStack.translate(this.model.leg1sit.offsetX, this.model.leg1sit.offsetY, this.model.leg1sit.offsetZ);
+                matrixStack.translate(this.model.leg1sit.rotationPointX * f5, this.model.leg1sit.rotationPointY * f5, this.model.leg1sit.rotationPointZ * f5);
+                matrixStack.scale(0.5D, 0.5D, 0.5D);
+                matrixStack.translate(-this.model.leg1sit.offsetX, -this.model.leg1sit.offsetY, -this.model.leg1sit.offsetZ);
+                matrixStack.translate(-this.model.leg1sit.rotationPointX * f5, -this.model.leg1sit.rotationPointY * f5, -this.model.leg1sit.rotationPointZ * f5);
+                this.model.leg1sit.render(matrixStack, ivertexbuilder, packedLight, OverlayTexture.NO_OVERLAY);
+                matrixStack.popPose();
+
+                //Leg2
+                matrixStack.pushPose();
+                matrixStack.translate(this.model.leg2ssit.offsetX, this.model.leg2ssit.offsetY, this.model.leg2ssit.offsetZ);
+                matrixStack.translate(this.model.leg2ssit.rotationPointX * f5, this.model.leg2ssit.rotationPointY * f5, this.model.leg2ssit.rotationPointZ * f5);
+                matrixStack.scale(0.5D, 0.5D, 0.5D);
+                matrixStack.translate(-this.model.leg2ssit.offsetX, -this.model.leg2ssit.offsetY, -this.model.leg2ssit.offsetZ);
+                matrixStack.translate(-this.model.leg2ssit.rotationPointX * f5, -this.model.leg2ssit.rotationPointY * f5, -this.model.leg2ssit.rotationPointZ * f5);
+                this.model.leg2ssit.render(matrixStack, ivertexbuilder, packedLight, OverlayTexture.NO_OVERLAY);
+                matrixStack.popPose();*/
+            }
+        }
+    }
+
+    @Override
+    public ResourceLocation getTextureLocation(EntityMiniSlow entityMiniSlow) {
+        return SLOWPOKE;
+    }
+
+}
+
+ /*@Override
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
         if (entity instanceof EntityMiniSlow) {
             EntityMiniSlow entityMiniSlow = (EntityMiniSlow) entity;
             if (entityMiniSlow.isSitting()) {
                 if (entityMiniSlow.getAway()) {
                     //Make Slow invisable
-                } else { /*Slow is Sitting Down*/
+                } else { Slow is Sitting Down
                     //HeadHat
                     GlStateManager.pushMatrix();
                     GlStateManager.translate(this.headhat.offsetX, this.headhat.offsetY, this.headhat.offsetZ);
@@ -222,26 +263,4 @@ public class ModelSlowpoke extends ModelBase {
                 GlStateManager.popMatrix();
             }
         }
-    }
-
-    /**
-     * This is a helper function from Tabula to set the rotation of model parts
-     */
-    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-        modelRenderer.rotateAngleX = x;
-        modelRenderer.rotateAngleY = y;
-        modelRenderer.rotateAngleZ = z;
-    }
-
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
-        super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-        this.head.rotateAngleX = f4 / (180F / (float) Math.PI);
-        this.head.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.headhat.rotateAngleX = f4 / (180F / (float) Math.PI);
-        this.headhat.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.arm1.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.4F * f1;
-        this.leg2.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.4F * f1;
-        this.arm2.rotateAngleX = MathHelper.cos(f * 0.6662F + (float) Math.PI) * 1.4F * f1;
-        this.leg1.rotateAngleX = MathHelper.cos(f * 0.6662F + (float) Math.PI) * 1.4F * f1;
-    }
-}
+    }*/
