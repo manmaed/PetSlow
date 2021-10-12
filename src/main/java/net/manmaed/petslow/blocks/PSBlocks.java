@@ -8,7 +8,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 /**
  * Created by manmaed on 24/02/2017.
  */
-public class PRBlocks {
+public class PSBlocks {
     //No Blocks To Add
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Reference.MOD_ID);
 
