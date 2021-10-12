@@ -31,7 +31,6 @@ public class ClayBrew extends Item {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         tooltip.add(new TranslationTextComponent("item.petslow.clay_brew.tooltip"));
-        /*tooltip.add("Used to heal a tamed Mini Slow");*/
     }
 
     @Override
@@ -43,6 +42,7 @@ public class ClayBrew extends Item {
             player.awardStat(Stats.ITEM_USED.get(this));
         }
         if (!worldIn.isClientSide) {
+            //TODO: Change?
             entityLiving.curePotionEffects(stack);
         }
         if (stack.isEmpty()) {

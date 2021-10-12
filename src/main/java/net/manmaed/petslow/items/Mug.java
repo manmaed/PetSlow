@@ -22,6 +22,5 @@ public class Mug extends Item {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         tooltip.add(new TranslationTextComponent("item.petslow.mug.tooltip"));
-        //tooltip.add("It's a Mug used to drink from");
     }
 }

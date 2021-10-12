@@ -29,7 +29,6 @@ public class SlowBrew extends Item {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         tooltip.add(new TranslationTextComponent("item.petslow.slow_brew.tooltip"));
-        //tooltip.add("Used to tame a Mini Slowpoke");
     }
 
     @Override
@@ -41,6 +40,7 @@ public class SlowBrew extends Item {
             player.awardStat(Stats.ITEM_USED.get(this));
         }
         if (!worldIn.isClientSide) {
+            //TODO: Change?
             entityLiving.curePotionEffects(stack);
         }
         if (stack.isEmpty()) {
