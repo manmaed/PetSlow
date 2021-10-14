@@ -1,7 +1,9 @@
 package net.manmaed.petslow.entity;
 
 import net.manmaed.petslow.items.PSItems;
+import net.manmaed.petslow.libs.LogHelper;
 import net.manmaed.petslow.libs.SoundHandler;
+import net.manmaed.petslow.sounds.PSSounds;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
@@ -36,9 +38,11 @@ public class EntityMiniSlow extends TameableEntity {
     private static final DataParameter<Integer> STAY_COOLDOWN = EntityDataManager.defineId(EntityMiniSlow.class, DataSerializers.INT);
     private static final DataParameter<Boolean> AWAY = EntityDataManager.defineId(EntityMiniSlow.class, DataSerializers.BOOLEAN);
     private int torch = 0;
+    private static final int NOT_IN_USE = -1;
 
 
-    protected EntityMiniSlow(EntityType<? extends TameableEntity> entityType, World world) {
+
+    public EntityMiniSlow(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);
         this.setTame(false);
     }
@@ -58,14 +62,16 @@ public class EntityMiniSlow extends TameableEntity {
     }
 
     public static AttributeModifierMap.MutableAttribute setCustomAttributes() {
-        return MobEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 20.D).add(Attributes.MOVEMENT_SPEED, 0.35D);
+        return MobEntity.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 20.D)
+                .add(Attributes.MOVEMENT_SPEED, 0.25D);
     }
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(RETURN_COOLDOWN, -1);
-        this.entityData.define(STAY_COOLDOWN, -1);
+        this.entityData.define(RETURN_COOLDOWN, NOT_IN_USE);
+        this.entityData.define(STAY_COOLDOWN, NOT_IN_USE);
         this.entityData.define(AWAY, false);
     }
 
@@ -89,15 +95,15 @@ public class EntityMiniSlow extends TameableEntity {
     private void shouldafk(World world) {
         if (!world.isClientSide()) {
             if (isTame() && isOrderedToSit()) {
-                if (this.entityData.get(STAY_COOLDOWN) == 0 && this.entityData.get(RETURN_COOLDOWN) == -1) {
+                if (this.entityData.get(STAY_COOLDOWN) == 0 && this.entityData.get(RETURN_COOLDOWN) == NOT_IN_USE) {
                     int bool = this.level.random.nextInt(2500) + 100;
-                    this.entityData.set(STAY_COOLDOWN, -1);
+                    this.entityData.set(STAY_COOLDOWN, NOT_IN_USE);
                     this.entityData.set(RETURN_COOLDOWN, bool);
                     setAway(false);
                 }
-                if (this.entityData.get(RETURN_COOLDOWN) == 0 && this.entityData.get(STAY_COOLDOWN) == -1) {
+                if (this.entityData.get(RETURN_COOLDOWN) == 0 && this.entityData.get(STAY_COOLDOWN) == NOT_IN_USE) {
                     int bool = this.level.random.nextInt(25000) + 1000;
-                    this.entityData.set(RETURN_COOLDOWN, -1);
+                    this.entityData.set(RETURN_COOLDOWN, NOT_IN_USE);
                     this.entityData.set(STAY_COOLDOWN, bool);
                     setAway(true);
                 }
@@ -108,12 +114,12 @@ public class EntityMiniSlow extends TameableEntity {
     private void countdown(World world) {
         if (this.isTame() && this.isOrderedToSit()) {
             if (!world.isClientSide()) {
-                if (this.entityData.get(STAY_COOLDOWN) != -1) {
+                if (this.entityData.get(STAY_COOLDOWN) != NOT_IN_USE) {
                     int sc = this.entityData.get(STAY_COOLDOWN);
                     int nsc = --sc;
                     this.entityData.set(STAY_COOLDOWN, nsc);
                 }
-                if (this.entityData.get(RETURN_COOLDOWN) != -1) {
+                if (this.entityData.get(RETURN_COOLDOWN) != NOT_IN_USE) {
                     int rc = this.entityData.get(RETURN_COOLDOWN);
                     int nrc = --rc;
                     this.entityData.set(RETURN_COOLDOWN, nrc);
@@ -124,15 +130,15 @@ public class EntityMiniSlow extends TameableEntity {
 
     private void chooseafk(World world) {
         if (!world.isClientSide()) {
-            if (this.entityData.get(STAY_COOLDOWN) == -1 && this.entityData.get(RETURN_COOLDOWN) == -1) {
+            if (this.entityData.get(STAY_COOLDOWN) == NOT_IN_USE && this.entityData.get(RETURN_COOLDOWN) == NOT_IN_USE) {
                 boolean tobeornottobe = world.random.nextBoolean();
                 if (tobeornottobe) {
                     this.entityData.set(RETURN_COOLDOWN, (this.level.random.nextInt(2500) + 100));
-                    this.entityData.set(STAY_COOLDOWN, -1);
+                    this.entityData.set(STAY_COOLDOWN, NOT_IN_USE);
                     setAway(false);
                 } else {
                     this.entityData.set(STAY_COOLDOWN, (this.level.random.nextInt(25000) + 1000));
-                    this.entityData.set(RETURN_COOLDOWN, -1);
+                    this.entityData.set(RETURN_COOLDOWN, NOT_IN_USE);
                     setAway(true);
                 }
             }
@@ -179,7 +185,7 @@ public class EntityMiniSlow extends TameableEntity {
     @Nullable
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundHandler.SLOWDEATH;
+        return PSSounds.SLOW_DEATH.get();
     }
 
     @Override
@@ -210,7 +216,7 @@ public class EntityMiniSlow extends TameableEntity {
         } else {
             if (this.isTame()) {
                 if (item == PSItems.CLAY_BREW.get() && this.getHealth() < this.getMaxHealth()) {
-                    if (!player.isCreative()) {
+                    if (!player.abilities.instabuild) {
                         itemStack.shrink(1);
                         player.inventory.add(new ItemStack(PSItems.MUG.get()));
                     }
@@ -229,18 +235,17 @@ public class EntityMiniSlow extends TameableEntity {
                         playSound(SoundEvents.PLAYER_BURP, getSoundVolume(), 1F);
                     }
                 }
-                if (!(item instanceof DyeItem)) {
                     ActionResultType actionresulttype = super.mobInteract(player, hand);
                     if ((!actionresulttype.consumesAction() || this.isBaby()) && this.isOwnedBy(player)) {
                         this.setOrderedToSit(!this.isOrderedToSit());
                         this.jumping = false;
                         this.navigation.stop();
+                        LogHelper.warn(this.isOrderedToSit() + " " + this.isSleeping());
                         return ActionResultType.SUCCESS;
                     }
                     return actionresulttype;
-                }
             } else if (item == PSItems.SLOW_BREW.get()) {
-                if (!player.isCreative()) {
+                if (!player.abilities.instabuild) {
                     itemStack.shrink(1);
                     player.inventory.add(new ItemStack(PSItems.MUG.get()));
                 }

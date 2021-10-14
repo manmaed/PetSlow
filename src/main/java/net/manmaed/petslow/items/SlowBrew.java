@@ -31,7 +31,7 @@ public class SlowBrew extends Item {
         tooltip.add(new TranslationTextComponent("item.petslow.slow_brew.tooltip"));
     }
 
-    @Override
+    /*@Override
     public ItemStack finishUsingItem(ItemStack stack, World worldIn, LivingEntity entityLiving) {
         super.finishUsingItem(stack, worldIn, entityLiving);
         if (entityLiving instanceof ServerPlayerEntity) {
@@ -57,9 +57,9 @@ public class SlowBrew extends Item {
         }
     }
 
-    /**
+    *//**
      * How long it takes to use or consume an item
-     */
+     *//*
     public int getUseDuration(ItemStack stack) {
         return 32;
     }
@@ -81,5 +81,5 @@ public class SlowBrew extends Item {
     @Override
     public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
         return DrinkHelper.useDrink(world, player, hand);
-    }
+    }*/
 }

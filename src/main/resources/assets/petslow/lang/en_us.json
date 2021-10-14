@@ -16,8 +16,10 @@
   "petslow.comment.2": "Blocks",
 
   "petslow.comment.3": "Entitys",
+  "entity.petslow.mini_slow": "Mini Slow",
 
   "petslow.comment.4": "Sounds",
+  "entity.mini_slow.death": "Mini Slow dies",
 
   "petslow.comment.5": "Other"
 }
