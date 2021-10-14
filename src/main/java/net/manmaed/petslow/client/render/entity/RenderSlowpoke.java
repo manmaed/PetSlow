@@ -3,6 +3,7 @@ package net.manmaed.petslow.client.render.entity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.manmaed.petslow.client.render.layers.ChairFeatureRenderer;
 import net.manmaed.petslow.client.render.model.ModelSlowpoke;
 import net.manmaed.petslow.client.render.model.ModelSlowpoke_old;
 import net.manmaed.petslow.entity.EntityMiniSlow;
@@ -29,26 +30,30 @@ public class RenderSlowpoke extends MobRenderer<EntityMiniSlow, ModelSlowpoke<En
     public RenderSlowpoke(EntityRendererManager manager) {
         super(manager, new ModelSlowpoke(), 0.25F);
         //this.addlayer();
+        this.addLayer(new ChairFeatureRenderer(this));
+        /*this.addLayer(new SignFeatureRenderer(this));*/
     }
 
     @Override
     public void render(EntityMiniSlow entity, float entityYaw, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int packedLight) {
         IVertexBuilder vertexBuilder = buffer.getBuffer(this.model.renderType(SLOWPOKE));
+        Boolean sittingDown = entity.isOrderedToSit();
+        Boolean zzz = entity.isSleeping();
         /*super.render(entity, entityYaw, partialTicks, matrixStack, buffer, packedLight);*/
         matrixStack.pushPose();
         matrixStack.scale((float) -0.5D, (float) -0.5D, (float) -0.5D);
         matrixStack.translate(0f, -1.5f, 0f);
         /*LogHelper.fatal("isSleeping: " + entity.isSleeping() + " : isOrderdToSit: " + entity.isOrderedToSit());*/
-        if (entity.isSleeping()) {
-            LogHelper.fatal("is Sleeping");
+        if (zzz) {
+            LogHelper.fatal("RS: is Sleeping");
         }
-        if (entity.isOrderedToSit()) {
-            LogHelper.fatal("is Sitting");
+        if (sittingDown) {
+            LogHelper.fatal("RS: is Sitting");
             if (entity.getAway()) {
-                LogHelper.fatal("is Away");
+                LogHelper.fatal("RS: is Away");
                 //404 Slowpoke Not Found
             } else {
-                LogHelper.fatal("is Sitting and isnt away");
+                LogHelper.fatal("RS: is Sitting and isnt away");
                 this.model.head.render(matrixStack, vertexBuilder, packedLight, OverlayTexture.NO_OVERLAY);
                 this.model.headhat.render(matrixStack, vertexBuilder, packedLight, OverlayTexture.NO_OVERLAY);
                 this.model.body.render(matrixStack, vertexBuilder, packedLight, OverlayTexture.NO_OVERLAY);

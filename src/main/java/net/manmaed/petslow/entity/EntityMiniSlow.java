@@ -4,6 +4,7 @@ import net.manmaed.petslow.items.PSItems;
 import net.manmaed.petslow.libs.LogHelper;
 import net.manmaed.petslow.libs.SoundHandler;
 import net.manmaed.petslow.sounds.PSSounds;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
@@ -76,14 +77,14 @@ public class EntityMiniSlow extends TameableEntity {
     }
 
     private void addtorch(World world, BlockPos pos) {
-        if (!world.isClientSide) {
+        if (!this.level.isClientSide) {
             if (isTame() && !isOrderedToSit()) {
                 if (world.getLightEmission(pos) < 3) {
                     if (Blocks.AIR.defaultBlockState() != world.getBlockState(pos.below())) {
                         //LogHelper.info(torch);
                         if (torch >= 1) {
                             torch--;
-                            /*world.setBlock(pos, Blocks.TORCH.getStateForPlacement());*/
+                            world.setBlockAndUpdate(pos.above(), Blocks.TORCH.defaultBlockState());
                             playSound(SoundEvents.NOTE_BLOCK_BELL, getSoundVolume(), 0.01F);
                         }
                     }
@@ -93,7 +94,7 @@ public class EntityMiniSlow extends TameableEntity {
     }
 
     private void shouldafk(World world) {
-        if (!world.isClientSide()) {
+        if (!world.isClientSide) {
             if (isTame() && isOrderedToSit()) {
                 if (this.entityData.get(STAY_COOLDOWN) == 0 && this.entityData.get(RETURN_COOLDOWN) == NOT_IN_USE) {
                     int bool = this.level.random.nextInt(2500) + 100;
@@ -113,7 +114,7 @@ public class EntityMiniSlow extends TameableEntity {
 
     private void countdown(World world) {
         if (this.isTame() && this.isOrderedToSit()) {
-            if (!world.isClientSide()) {
+            if (!world.isClientSide) {
                 if (this.entityData.get(STAY_COOLDOWN) != NOT_IN_USE) {
                     int sc = this.entityData.get(STAY_COOLDOWN);
                     int nsc = --sc;
@@ -129,7 +130,7 @@ public class EntityMiniSlow extends TameableEntity {
     }
 
     private void chooseafk(World world) {
-        if (!world.isClientSide()) {
+        if (!world.isClientSide) {
             if (this.entityData.get(STAY_COOLDOWN) == NOT_IN_USE && this.entityData.get(RETURN_COOLDOWN) == NOT_IN_USE) {
                 boolean tobeornottobe = world.random.nextBoolean();
                 if (tobeornottobe) {
@@ -203,6 +204,7 @@ public class EntityMiniSlow extends TameableEntity {
         countdown(level);
     }
 
+
     //Slow Brew - Tames
     //Clay Brew - Heals
 
@@ -210,7 +212,7 @@ public class EntityMiniSlow extends TameableEntity {
     public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
         Item item = itemStack.getItem();
-        if (this.level.isClientSide) {
+        if (!this.level.isClientSide) {
             boolean flag = this.isOwnedBy(player) || this.isTame() || item == PSItems.SLOW_BREW.get() && !this.isTame();
             return flag ? ActionResultType.CONSUME : ActionResultType.PASS;
         } else {

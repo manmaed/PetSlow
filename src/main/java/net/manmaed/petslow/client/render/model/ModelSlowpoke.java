@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
@@ -12,7 +13,7 @@ import net.minecraft.util.math.MathHelper;
  * ModelSlowpoke - manmaed
  * Created using Tabula 7.0.0 -> 8.0.0
  */
-public class ModelSlowpoke<T extends Entity> extends EntityModel<T> {
+public class ModelSlowpoke<T extends Entity> extends SegmentedModel<T> {
     public ModelRenderer head;
     public ModelRenderer leg1;
     public ModelRenderer leg2;
@@ -62,10 +63,8 @@ public class ModelSlowpoke<T extends Entity> extends EntityModel<T> {
     }
 
     @Override
-    public void renderToBuffer(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-        ImmutableList.of(this.leg2, this.leg1, this.head, this.leg2sit, this.arm2, this.headhat, this.leg1sit, this.arm1, this.body)/*.forEach((modelRenderer) -> {
-            modelRenderer.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-        })*/;
+    public Iterable<ModelRenderer> parts() {
+        return ImmutableList.of(this.leg2, this.leg1, this.head, this.leg2sit, this.arm2, this.headhat, this.leg1sit, this.arm1, this.body);
     }
 
     @Override
