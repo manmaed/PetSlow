@@ -1,20 +1,19 @@
 package net.manmaed.petslow.items;
 
-import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.stats.Stats;
-import net.minecraft.util.*;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.*;
+import net.minecraft.world.level.Level;
+
 import java.util.List;
 
 /**
@@ -25,60 +24,40 @@ public class MugLava extends Item {
         super(properties);
     }
 
-    @Override
-    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("item.petslow.mug_lava.tooltip"));
+    public ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity livingEntity) {
+        if (!level.isClientSide) livingEntity.hurt(DamageSource.ON_FIRE, 2.0F); // FORGE - move up so stack.shrink does not turn stack into air
+        if (livingEntity instanceof ServerPlayer) {
+            ServerPlayer serverplayer = (ServerPlayer)livingEntity;
+            CriteriaTriggers.CONSUME_ITEM.trigger(serverplayer, itemStack);
+            serverplayer.awardStat(Stats.ITEM_USED.get(this));
+        }
+
+        if (livingEntity instanceof Player && !((Player)livingEntity).getAbilities().instabuild) {
+            itemStack.shrink(1);
+        }
+
+        return itemStack.isEmpty() ? new ItemStack(PSItems.MUG.get()) : itemStack;
     }
 
-    @Override
-    public ItemStack finishUsingItem(ItemStack stack, World worldIn, LivingEntity entityLiving) {
-        super.finishUsingItem(stack, worldIn, entityLiving);
-        if (entityLiving instanceof ServerPlayerEntity) {
-            ServerPlayerEntity player = (ServerPlayerEntity) entityLiving;
-            CriteriaTriggers.CONSUME_ITEM.trigger(player, stack);
-            player.awardStat(Stats.ITEM_USED.get(this));
-        }
-        if (!worldIn.isClientSide) {
-            //TODO: Change?
-            entityLiving.curePotionEffects(stack);
-        }
-        if (stack.isEmpty()) {
-            return new ItemStack(PSItems.MUG.get());
-        } else {
-            if (entityLiving instanceof PlayerEntity && !((PlayerEntity) entityLiving).abilities.instabuild) {
-                ItemStack itemStack = new ItemStack(PSItems.MUG.get());
-                PlayerEntity player = (PlayerEntity) entityLiving;
-                if (!player.inventory.add(itemStack)) {
-                    player.drop(itemStack, false);
-                }
-            }
-            return stack;
-        }
-    }
-
-    /**
-     * How long it takes to use or consume an item
-     */
-    public int getUseDuration(ItemStack stack) {
+    public int getUseDuration(ItemStack p_42933_) {
         return 32;
     }
 
-    public UseAction getUseAnimation(ItemStack stack) {
-        return UseAction.DRINK;
+    public UseAnim getUseAnimation(ItemStack p_42931_) {
+        return UseAnim.DRINK;
+    }
+
+    public InteractionResultHolder<ItemStack> use(Level p_42927_, Player p_42928_, InteractionHand p_42929_) {
+        return ItemUtils.startUsingInstantly(p_42927_, p_42928_, p_42929_);
     }
 
     @Override
-    public SoundEvent getDrinkingSound() {
-        return SoundEvents.GENERIC_DRINK;
+    public net.minecraftforge.common.capabilities.ICapabilityProvider initCapabilities(ItemStack stack, @javax.annotation.Nullable net.minecraft.nbt.CompoundTag nbt) {
+        return new net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper(stack);
     }
 
     @Override
-    public SoundEvent getEatingSound() {
-        return SoundEvents.GENERIC_DRINK;
-    }
-
-    @Override
-    public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
-        return DrinkHelper.useDrink(world, player, hand);
+    public void appendHoverText(ItemStack stack, @org.jetbrains.annotations.Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
+        tooltip.add(new TranslatableComponent("item.petslow.mug_lava.tooltip"));
     }
 }

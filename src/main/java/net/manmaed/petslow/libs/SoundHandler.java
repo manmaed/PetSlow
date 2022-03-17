@@ -1,7 +1,8 @@
 package net.manmaed.petslow.libs;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
+import net.manmaed.petslow.PetSlow;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
 /**
@@ -18,7 +19,7 @@ public class SoundHandler {
     }
 
     private static SoundEvent registerSound(String name) {
-        ResourceLocation location = new ResourceLocation(Reference.MOD_ID, name);
+        ResourceLocation location = new ResourceLocation(PetSlow.MOD_ID, name);
         SoundEvent event = new SoundEvent(location);
         event.setRegistryName(name);
         ForgeRegistries.SOUND_EVENTS.register(event);

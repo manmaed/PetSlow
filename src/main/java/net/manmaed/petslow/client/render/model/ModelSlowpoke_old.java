@@ -1,21 +1,12 @@
 package net.manmaed.petslow.client.render.model;
 
-import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.manmaed.petslow.entity.EntityMiniSlow;
-import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.entity.model.SegmentedModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.MathHelper;
 
 /**
  * ModelPlayer - Either Mojang or a mod author
  * Created using Tabula 7.0.0
  */
 public class ModelSlowpoke_old/*<T extends Entity> extends EntityModel<T>*/ {
-    public ModelRenderer headhat;
+   /* public ModelRenderer headhat;
     public ModelRenderer arm2;
     public ModelRenderer leg1;
     public ModelRenderer leg2;
@@ -25,7 +16,7 @@ public class ModelSlowpoke_old/*<T extends Entity> extends EntityModel<T>*/ {
 
     //SittingLegs
     public ModelRenderer leg1sit;
-    public ModelRenderer leg2ssit;
+    public ModelRenderer leg2ssit;*/
 
    /* public ModelSlowpoke_old() {
         this.texHeight = 64;

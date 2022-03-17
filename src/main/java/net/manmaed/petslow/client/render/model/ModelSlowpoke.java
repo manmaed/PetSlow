@@ -1,20 +1,11 @@
 package net.manmaed.petslow.client.render.model;
 
-import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.entity.model.SegmentedModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.MathHelper;
-
 /**
  * ModelSlowpoke - manmaed
  * Created using Tabula 7.0.0 -> 8.0.0
  */
-public class ModelSlowpoke<T extends Entity> extends SegmentedModel<T> {
-    public ModelRenderer head;
+public class ModelSlowpoke/*<T extends Entity> extends SegmentedModel<T>*/ {
+   /* public ModelRenderer head;
     public ModelRenderer leg1;
     public ModelRenderer leg2;
     public ModelRenderer arm1;
@@ -78,12 +69,12 @@ public class ModelSlowpoke<T extends Entity> extends SegmentedModel<T> {
         this.arm2.xRot = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
         this.leg1.xRot = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
     }
-    /**
+    *//**
      * This is a helper function from Tabula to set the rotation of model parts
-     */
+     *//*
     public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
         modelRenderer.xRot = x;
         modelRenderer.yRot = y;
         modelRenderer.zRot = z;
-    }
+    }*/
 }

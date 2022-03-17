@@ -1,7 +1,7 @@
 package net.manmaed.petslow.blocks;
 
-import net.manmaed.petslow.libs.Reference;
-import net.minecraft.block.Block;
+import net.manmaed.petslow.PetSlow;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -10,7 +10,7 @@ import net.minecraftforge.registries.ForgeRegistries;
  */
 public class PSBlocks {
     //No Blocks To Add
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Reference.MOD_ID);
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, PetSlow.MOD_ID);
 
     /*
      * Example:

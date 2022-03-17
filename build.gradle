@@ -26,8 +26,8 @@ repositories {
 // Github Stuff
 def ENV = System.getenv()
 version = "${ENV.GITHUB_RUN_NUMBER}" ? "${mod_version}.${ENV.GITHUB_RUN_NUMBER}" : "${mod_version}.nobuildnumber"
-group = "net.manmaed.petrock" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "petrock"
+group = "net.manmaed.petslow" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "petslow"
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17) // Mojang ships Java 8 to end users, so your mod should target Java 8.
 
@@ -42,7 +42,7 @@ minecraft {
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             mods {
-                petrock  {
+                petslow  {
                     source sourceSets.main
                 }
             }
@@ -55,7 +55,7 @@ minecraft {
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             mods {
-                petrock  {
+                petslow  {
                     source sourceSets.main
                 }
             }
@@ -65,9 +65,9 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-            args '--mod', 'petrock', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', 'petslow', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
             mods {
-                petrock  {
+                petslow  {
                     source sourceSets.main
                 }
             }
@@ -97,7 +97,7 @@ dependencies {
 jar {
     manifest {
         attributes([
-                "Specification-Title": "petrock",
+                "Specification-Title": "petslow",
                 "Specification-Vendor": "manmaed",
                 "Specification-Version": "1", // We are version 1 of ourselves
                 "Implementation-Title": project.name,
@@ -124,7 +124,7 @@ if (ENV.CURSE_DEPLOY) {
             addGameVersion "Java 17"
             addGameVersion "${minecraft_version}"
             mainArtifact(jar) {
-                displayName = "Petrock v${version} - ${minecraft_version}"
+                displayName = "PetSlow v${version} - ${minecraft_version}"
                 relations {
                 optionalDependency 'patchouli'
                 }

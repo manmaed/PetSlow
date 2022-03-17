@@ -1,5 +1,6 @@
 package net.manmaed.petslow.libs;
 
+import net.manmaed.petslow.PetSlow;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,7 +10,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class LogHelper {
 
-    public static final Logger loggin = LogManager.getLogger(Reference.MOD_ID);
+    public static final Logger loggin = LogManager.getLogger(PetSlow.MOD_ID);
 
     private static void log(Level logLevel, Object object) {
         loggin.log(logLevel, "[" + logLevel + "]:" + String.valueOf(object));

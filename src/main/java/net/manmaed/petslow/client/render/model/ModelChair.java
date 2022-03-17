@@ -1,20 +1,12 @@
 package net.manmaed.petslow.client.render.model;
 
-import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.entity.model.SegmentedModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
-
 /**
  * ModelPlayer - Either Mojang or a mod author
  * Created using Tabula 7.0.0
  */
-public class ModelChair<T extends Entity> extends SegmentedModel<T> {
+public class ModelChair/*<T extends Entity> extends SegmentedModel<T>*/ {
 
-    public ModelRenderer chairbase;
+    /*public ModelRenderer chairbase;
     public ModelRenderer chairback;
     public ModelRenderer leg1;
     public ModelRenderer leg2;
@@ -62,5 +54,5 @@ public class ModelChair<T extends Entity> extends SegmentedModel<T> {
         this.leg4.render(matrixStack, vertexBuilder, packedLight, packedOverlay);
         this.chairback.render(matrixStack, vertexBuilder, packedLight, packedOverlay);
         this.chairbase.render(matrixStack, vertexBuilder, packedLight, packedOverlay);
-    }
+    }*/
 }

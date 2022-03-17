@@ -1,41 +1,11 @@
 package net.manmaed.petslow.entity;
 
-import net.manmaed.petslow.items.PSItems;
-import net.manmaed.petslow.libs.LogHelper;
-import net.manmaed.petslow.libs.SoundHandler;
-import net.manmaed.petslow.sounds.PSSounds;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.DyeItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.event.ForgeEventFactory;
-
-import javax.annotation.Nullable;
-
 /**
  * Created by manmaed on 26/02/2017.
  */
-public class EntityMiniSlow extends TameableEntity {
+public class EntityMiniSlow/* extends TameableEntity*/ {
 
-    private static final DataParameter<Integer> RETURN_COOLDOWN = EntityDataManager.defineId(EntityMiniSlow.class, DataSerializers.INT);
+    /*private static final DataParameter<Integer> RETURN_COOLDOWN = EntityDataManager.defineId(EntityMiniSlow.class, DataSerializers.INT);
     private static final DataParameter<Integer> STAY_COOLDOWN = EntityDataManager.defineId(EntityMiniSlow.class, DataSerializers.INT);
     private static final DataParameter<Boolean> AWAY = EntityDataManager.defineId(EntityMiniSlow.class, DataSerializers.BOOLEAN);
     private int torch = 0;
@@ -151,9 +121,9 @@ public class EntityMiniSlow extends TameableEntity {
         nbtTagCompound.putInt("torchCount", this.torch);
     }
 
-    /**
+    *//**
      * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
+     *//*
     public void readAdditionalSaveData(CompoundNBT nbtTagCompound) {
         super.readAdditionalSaveData(nbtTagCompound);
         if (nbtTagCompound.contains("torchCount")) {
@@ -284,4 +254,4 @@ public class EntityMiniSlow extends TameableEntity {
     public AgeableEntity getBreedOffspring(ServerWorld serverWorld, AgeableEntity ageableEntity) {
         return null;
     }
-}
+*/}

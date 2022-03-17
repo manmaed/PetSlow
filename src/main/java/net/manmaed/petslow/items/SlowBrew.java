@@ -1,21 +1,7 @@
 package net.manmaed.petslow.items;
 
-import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.stats.Stats;
-import net.minecraft.util.*;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-import java.util.List;
+import net.minecraft.world.item.Item;
 
 /**
  * Created by manmaed on 09/04/2019.
@@ -26,10 +12,10 @@ public class SlowBrew extends Item {
         super(properties);
     }
 
-    @Override
+    /*@Override
     public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         tooltip.add(new TranslationTextComponent("item.petslow.slow_brew.tooltip"));
-    }
+    }*/
 
     /*@Override
     public ItemStack finishUsingItem(ItemStack stack, World worldIn, LivingEntity entityLiving) {
