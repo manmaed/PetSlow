@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "cfc",
+    "scs",
+    "ctc"
+  ],
+  "key": {
+    "c": {
+      "item": "minecraft:clay_ball"
+    },
+    "t": {
+      "item": "minecraft:torch"
+    },
+    "f": {
+      "item": "minecraft:rotten_flesh"
+    },
+    "s": {
+      "item": "minecraft:sugar"
+    }
+  },
+  "result": {
+    "item": "petslow:spawnslow"
+  }
+}

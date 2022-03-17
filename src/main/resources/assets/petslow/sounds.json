@@ -1,0 +1,13 @@
+{
+  "sounds.entity.mini_slow.death": {
+    "category": "neutral",
+    "subtitle": "entity.mini_slow.death",
+    "sounds": [
+      {
+        "name": "petslow:entity/mini_slow/death",
+        "stream": true,
+        "pitch": 1.0
+      }
+    ]
+  }
+}

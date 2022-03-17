@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ccc",
+    "cwc",
+    " m "
+  ],
+  "key": {
+    "c": {
+      "item": "minecraft:clay_ball"
+    },
+    "w": {
+      "item": "minecraft:water_bucket"
+    },
+    "m": {
+      "item": "petslow:mug"
+    }
+  },
+  "result": {
+    "item": "petslow:claybrew"
+  }
+}
