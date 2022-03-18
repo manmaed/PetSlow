@@ -2,10 +2,13 @@ package net.manmaed.petslow;
 
 
 import net.manmaed.petslow.blocks.PSBlocks;
+import net.manmaed.petslow.entity.EntityPetSlow;
+import net.manmaed.petslow.entity.PSEntityTypes;
 import net.manmaed.petslow.items.PSItems;
 import net.manmaed.petslow.sounds.PSSounds;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -36,11 +39,19 @@ public class PetSlow {
         IEventBus event = FMLJavaModLoadingContext.get().getModEventBus();
         PSItems.ITEMS.register(event);
         PSBlocks.BLOCKS.register(event);
+        PSEntityTypes.ENTITY_TYPES.register(event);
         PSSounds.SOUNDS.register(event);
+        event.addListener(this::AttributeCreation);
+        event.addListener(PetSlowClient::doEntityRendering);
+        event.addListener(PetSlowClient::registerLayerDefinitions);
     }
     /*
     TODO: Mod! 1.18.2
      */
+
+    private void AttributeCreation(EntityAttributeCreationEvent event) {
+        event.put(PSEntityTypes.SLOWPOKE.get(), EntityPetSlow.createAttributes().build());
+    }
     /*public static final ItemGroup PETSLOW = new ItemGroup(Reference.MOD_ID) {
         @Override
         public ItemStack makeIcon() {
