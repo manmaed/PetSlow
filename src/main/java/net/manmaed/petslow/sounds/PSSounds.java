@@ -18,6 +18,7 @@ public class PSSounds {
             "sounds.entity.mineturtle.hello",
             () -> new SoundEvent(new ResourceLocation(Reference.MOD_ID, "sounds.entity.mineturtle.hello")));
     */
-    public static final RegistryObject<SoundEvent> SLOW_DEATH = SOUNDS.register("sounds.entity.mini_slow.death", () -> new SoundEvent(new ResourceLocation(PetSlow.MOD_ID, "sounds.entity.mini_slow.death")));
+    public static final RegistryObject<SoundEvent> SLOW_DEATH = SOUNDS.register("sounds.entity.petslow.death", () -> new SoundEvent(new ResourceLocation(PetSlow.MOD_ID, "sounds.entity.petslow.death")));
+    public static final RegistryObject<SoundEvent> SLOW_TAME = SOUNDS.register("sounds.entity.petslow.tamed", () -> new SoundEvent(new ResourceLocation(PetSlow.MOD_ID, "sounds.entity.petslow.tamed")));
 
 }

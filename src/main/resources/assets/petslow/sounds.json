@@ -1,10 +1,21 @@
 {
-  "sounds.entity.mini_slow.death": {
+  "sounds.entity.petslow.death": {
     "category": "neutral",
-    "subtitle": "entity.mini_slow.death",
+    "subtitle": "entity.petslow.death",
     "sounds": [
       {
-        "name": "petslow:entity/mini_slow/death",
+        "name": "petslow:entity/petslow/death",
+        "stream": true,
+        "pitch": 1.0
+      }
+    ]
+  },
+  "sounds.entity.petslow.tamed": {
+    "category": "neutral",
+    "subtitle": "entity.petslow.tamed",
+    "sounds": [
+      {
+        "name": "petslow:entity/petslow/tamed",
         "stream": true,
         "pitch": 1.0
       }

@@ -27,6 +27,15 @@ public class RenderSlowpoke extends MobRenderer<EntityPetSlow, ModelSlowpoke<Ent
 
     /*@Override
     public void render(EntityPetSlow petSlow, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
+        *//*VertexConsumer vertexConsumer = multiBufferSource.getBuffer(this.model.renderType(SLOWPOKE));
+        poseStack.pushPose();
+        poseStack.scale(0.1F,0.1F,0.1F);
+        this.model.hat.render(poseStack, vertexConsumer, packedLight, OverlayTexture.RED_OVERLAY_V);*//*
+
+    }*/
+
+    /*@Override
+    public void render(EntityPetSlow petSlow, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
         VertexConsumer vertexConsumer = multiBufferSource.getBuffer(this.model.renderType(SLOWPOKE));
         boolean onChair = petSlow.isInSittingPose();
         boolean isAway = petSlow.isAway();

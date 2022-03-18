@@ -1,5 +1,7 @@
 package net.manmaed.petslow.entity;
 
+import net.manmaed.petslow.items.PSItems;
+import net.manmaed.petslow.libs.LogHelper;
 import net.manmaed.petslow.sounds.PSSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -9,6 +11,8 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
@@ -21,9 +25,15 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.event.ForgeEventFactory;
 import org.jetbrains.annotations.Nullable;
+import org.jline.utils.Log;
 
 import java.util.UUID;
 
@@ -139,6 +149,133 @@ public class EntityPetSlow extends TamableAnimal {
         return PSSounds.SLOW_DEATH.get();
     }
 
+    @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack itemStack = player.getItemInHand(hand);
+        Item item = itemStack.getItem();
+        if (this.level.isClientSide) {
+            boolean flag = this.isOwnedBy(player) || this.isTame() || item == PSItems.SLOW_BREW.get() && !this.isTame();
+            return flag ? InteractionResult.CONSUME : InteractionResult.PASS;
+        } else {
+            if (this.isTame()) {
+                if (item == PSItems.CLAY_BREW.get() && this.getHealth() < this.getMaxHealth()) {
+                    if (!player.getAbilities().instabuild) {
+                        itemStack.shrink(1);
+                        player.getInventory().add(new ItemStack(PSItems.MUG.get()));
+                    }
+                    playSound(SoundEvents.GENERIC_DRINK, getSoundVolume(), 1F);
+                    if (this.random.nextInt(25) == 0) {
+                        playSound(SoundEvents.PLAYER_BURP, getSoundVolume(), 1F);
+                    }
+                    this.heal(3.0F);
+                    return InteractionResult.SUCCESS;
+                }
+                if(item == Items.TORCH) {
+                    if (!player.getAbilities().instabuild) {
+                        itemStack.shrink(1);
+                    }
+                    torch++;
+                    playSound(SoundEvents.GENERIC_EAT, getSoundVolume(), 1F);
+                    if (this.random.nextInt(25) == 0) {
+                        playSound(SoundEvents.PLAYER_BURP, getSoundVolume(), 1F);
+                    }
+                }
+                if (!(item instanceof DyeItem)) {
+                    InteractionResult interactionresult = super.mobInteract(player, hand);
+                    if ((!interactionresult.consumesAction() || this.isBaby()) && this.isOwnedBy(player)) {
+                        //LogHelper.warn("before setting sit " + this.isOrderedToSit());
+                        this.setOrderedToSit(!this.isOrderedToSit());
+                        //LogHelper.warn("after setting sit " + this.isOrderedToSit());
+                        this.jumping = false;
+                        this.navigation.stop();
+                        return InteractionResult.SUCCESS;
+                    }
+
+                    return interactionresult;
+                }
+            } else if (item == PSItems.SLOW_BREW.get()) {
+                if (!player.getAbilities().instabuild) {
+                    itemStack.shrink(1);
+                }
+                if (this.random.nextInt(3) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player)) {
+                    this.tame(player);
+                    this.navigation.stop();
+                    this.setOrderedToSit(true);
+                    this.level.broadcastEntityEvent(this, (byte)7);
+                    //TOTEM_USE maybe
+                    playSound(PSSounds.SLOW_TAME.get(), getSoundVolume(), 1F);
+                    /*playSound(SoundEvents.TOTEM_USE, getSoundVolume(), 1F);*/
+                } else {
+                    this.level.broadcastEntityEvent(this, (byte)6);
+                }
+                playSound(SoundEvents.GENERIC_DRINK, getSoundVolume(), 1F);
+                if (this.random.nextInt(25) == 0) {
+                    playSound(SoundEvents.PLAYER_BURP, getSoundVolume(), 1F);
+                }
+                return InteractionResult.SUCCESS;
+            }
+            return super.mobInteract(player, hand);
+        }
+        /*ItemStack itemStack = player.getItemInHand(hand);
+        Item item = itemStack.getItem();
+        if (!this.level.isClientSide) {
+            boolean flag = this.isOwnedBy(player) || this.isTame() || item == PSItems.SLOW_BREW.get() && !this.isTame();
+            return flag ? InteractionResult.CONSUME : InteractionResult.PASS;
+        } else {
+            if (this.isTame()) {
+                if (item == PSItems.CLAY_BREW.get() && this.getHealth() < this.getMaxHealth()) {
+                    LogHelper.warn("Mug is Clay and heal < max");
+                    if (!player.getAbilities().instabuild) {
+                        itemStack.shrink(1);
+                        player.getInventory().add(new ItemStack(PSItems.MUG.get()));
+                    }
+                    playSound(SoundEvents.GENERIC_DRINK, getSoundVolume(), 1F);
+                    if (this.random.nextInt(25) == 0) {
+                        playSound(SoundEvents.PLAYER_BURP, getSoundVolume(), 1F);
+                    }
+                    this.heal(3.0F);
+                    return InteractionResult.SUCCESS;
+                }
+                if (item == Items.TORCH) {
+                    torch++;
+                    itemStack.shrink(1);
+                    playSound(SoundEvents.GENERIC_EAT, getSoundVolume(), 1F);
+                    if (this.random.nextInt(25) == 0) {
+                        playSound(SoundEvents.PLAYER_BURP, getSoundVolume(), 1F);
+                    }
+                }
+                InteractionResult interactionresult = super.mobInteract(player, hand);
+                if ((!interactionresult.consumesAction() || this.isBaby()) && this.isOwnedBy(player)) {
+                    this.setOrderedToSit(!this.isOrderedToSit());
+                    this.jumping = false;
+                    this.navigation.stop();
+                    //LogHelper.warn(this.isOrderedToSit() + " " + this.isSleeping());
+                    return InteractionResult.SUCCESS;
+                }
+                return interactionresult;
+            } else if (item == PSItems.SLOW_BREW.get()) {
+                if (!player.getAbilities().instabuild) {
+                    itemStack.shrink(1);
+                    player.getInventory().add(new ItemStack(PSItems.MUG.get()));
+                }
+                playSound(SoundEvents.GENERIC_DRINK, getSoundVolume(), 1F);
+                if (this.random.nextInt(25) == 0) {
+                    playSound(SoundEvents.PLAYER_BURP, getSoundVolume(), 1F);
+                }
+                if (this.random.nextInt(3) == 0 && !ForgeEventFactory.onAnimalTame(this, player)) {
+                    this.tame(player);
+                    this.navigation.stop();
+                    this.setOrderedToSit(true);
+                    this.level.broadcastEntityEvent(this, (byte) 7);
+                } else {
+                    this.level.broadcastEntityEvent(this, (byte) 6);
+                }
+                return InteractionResult.SUCCESS;
+            }
+            return super.mobInteract(player, hand);
+        }*/
+    }
+
     //This is Where the Magic Happens
 
     private void addtorch(Level world, BlockPos pos) {
@@ -211,10 +348,13 @@ public class EntityPetSlow extends TamableAnimal {
         }
     }
 
-    @Override
     public void tick() {
         super.tick();
-
+        addtorch(level, this.getOnPos());
+        isAway();
+        chooseafk(level);
+        shouldafk(level);
+        countdown(level);
     }
 }
 

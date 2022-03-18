@@ -5,6 +5,7 @@ package net.manmaed.petslow.client.render.model;// Made with Blockbench 4.1.5
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.manmaed.petslow.entity.EntityPetSlow;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -23,6 +24,7 @@ public class ModelSlowpoke<T extends Entity> extends EntityModel<T> {
 	public final ModelPart right_leg;
 	public final ModelPart left_leg_sit;
 	public final ModelPart right_leg_sit;
+	public final EntityPetSlow petSlow;
 
 	public ModelSlowpoke(ModelPart root) {
 		this.head = root.getChild("head");
@@ -34,6 +36,7 @@ public class ModelSlowpoke<T extends Entity> extends EntityModel<T> {
 		this.right_leg = root.getChild("right_leg");
 		this.left_leg_sit = root.getChild("left_leg_sit");
 		this.right_leg_sit = root.getChild("right_leg_sit");
+		petSlow = null;
 	}
 
 	public static LayerDefinition createBodyLayer() {
@@ -66,16 +69,20 @@ public class ModelSlowpoke<T extends Entity> extends EntityModel<T> {
 
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-
-		/*head.render(poseStack, buffer, packedLight, packedOverlay);
-		body.render(poseStack, buffer, packedLight, packedOverlay);
-		left_arm.render(poseStack, buffer, packedLight, packedOverlay);
-		right_arm.render(poseStack, buffer, packedLight, packedOverlay);
-		left_leg.render(poseStack, buffer, packedLight, packedOverlay);
-		right_leg.render(poseStack, buffer, packedLight, packedOverlay);
-		left_leg_sit.render(poseStack, buffer, packedLight, packedOverlay);
-		right_leg_sit.render(poseStack, buffer, packedLight, packedOverlay);
-		hat.render(poseStack, buffer, packedLight, packedOverlay);*/
-
+		poseStack.pushPose();
+		poseStack.scale((float) 0.5D, (float) 0.5D, (float) 0.5D);
+		poseStack.translate(0f, 1.5f, 0f);
+			/*hat.render(poseStack, buffer, packedLight, packedOverlay);*/
+			hat.copyFrom(head);
+			head.render(poseStack, buffer, packedLight, packedOverlay);
+			body.render(poseStack, buffer, packedLight, packedOverlay);
+			left_arm.render(poseStack, buffer, packedLight, packedOverlay);
+			right_arm.render(poseStack, buffer, packedLight, packedOverlay);
+			left_leg.render(poseStack, buffer, packedLight, packedOverlay);
+			right_leg.render(poseStack, buffer, packedLight, packedOverlay);
+		/*left_leg_sit.render(poseStack, buffer, packedLight, packedOverlay);
+		right_leg_sit.render(poseStack, buffer, packedLight, packedOverlay);*/
+		poseStack.popPose();
 	}
+
 }
