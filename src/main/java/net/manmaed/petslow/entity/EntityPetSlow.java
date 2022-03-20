@@ -184,6 +184,7 @@ public class EntityPetSlow extends TamableAnimal {
                     if (this.random.nextInt(25) == 0) {
                         playSound(SoundEvents.PLAYER_BURP, getSoundVolume(), 1F);
                     }
+                    return  InteractionResult.CONSUME;
                 }
                 if (!(item instanceof DyeItem)) {
                     InteractionResult interactionresult = super.mobInteract(player, hand);
@@ -229,9 +230,10 @@ public class EntityPetSlow extends TamableAnimal {
         int torch = 0;
         if (!world.isClientSide) {
             if (isTame() && !isOrderedToSit()) {
-                if (world.getLightEmission(pos) < 3) {
+                if (world.getLightEngine().getRawBrightness(pos.above(), 0) < 3) {
+                    //LogHelper.info("LightLevel: " + world.getLightEngine().getRawBrightness(pos.above(), 0));
                     if (Blocks.AIR.defaultBlockState() != world.getBlockState(pos.below())) {
-                        LogHelper.info("Torch Count before" + getTorchCount());
+                        LogHelper.info("Torch Count before: " + getTorchCount());
                         if (getTorchCount() >= 1) {
                             torch = getTorchCount();
                             LogHelper.info("Interal Torch Count: " + torch);
@@ -312,10 +314,12 @@ public class EntityPetSlow extends TamableAnimal {
     @Override
     public void tick() {
         super.tick();
-        /*addtorch(level, this.getOnPos());
-        isAway();
+        if (!this.level.isClientSide) {
+        addtorch(level, this.getOnPos());
+        /*isAway();
         chooseafk(level);
         shouldafk(level);
         countdown(level);*/
+        }
     }
 }

@@ -38,27 +38,18 @@ public class RenderSlowpoke extends MobRenderer<EntityPetSlow, ModelSlowpoke<Ent
         super.render(entityPetSlow, entityYaw, partialTicks, poseStack, multiBufferSource, packedLight);
         VertexConsumer vertexConsumer = multiBufferSource.getBuffer(RenderType.entitySolid(SLOWPOKE));
         poseStack.pushPose();
-        poseStack.scale((float) 0.5D, (float) 0.5D, (float) 0.5D);
+        /*poseStack.scale((float) 0.5D, (float) 0.5D, (float) 0.5D);
         poseStack.translate(0f, 1.5f, 0f);
-        poseStack.mulPose(new Quaternion(1, 0, 0, 0));
+        poseStack.mulPose(new Quaternion(1, 0, 0, 0));*/
         if(entityPetSlow.isInSittingPose()) {
+            model.setOnChair(true);
             if(entityPetSlow.isAway()) {
-                //No Slow Here
+                model.setAwayFromChair(true);
             } else {
-                model.head.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
-                model.body.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
-                model.right_arm.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
-                model.left_arm.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
-                model.right_leg_sit.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
-                model.left_leg_sit.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
+                model.setAwayFromChair(false);
             }
         } else {
-            model.head.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
-            model.body.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
-            model.right_arm.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
-            model.left_arm.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
-            model.right_leg.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
-            model.left_leg.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
+            model.setOnChair(false);
         }
         poseStack.popPose();
         /*super.render(entityPetSlow, entityYaw, partialTicks, poseStack, multiBufferSource, packedLight);*/
