@@ -10,6 +10,7 @@ import net.manmaed.petslow.client.render.layers.HatLayerRender;
 import net.manmaed.petslow.client.render.layers.SignLayerRenderer;
 import net.manmaed.petslow.client.render.model.ModelSlowpoke;
 import net.manmaed.petslow.entity.EntityPetSlow;
+import net.manmaed.petslow.libs.LogHelper;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -36,23 +37,16 @@ public class RenderSlowpoke extends MobRenderer<EntityPetSlow, ModelSlowpoke<Ent
     @Override
     public void render(EntityPetSlow entityPetSlow, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
         super.render(entityPetSlow, entityYaw, partialTicks, poseStack, multiBufferSource, packedLight);
-        VertexConsumer vertexConsumer = multiBufferSource.getBuffer(RenderType.entitySolid(SLOWPOKE));
-        poseStack.pushPose();
-        /*poseStack.scale((float) 0.5D, (float) 0.5D, (float) 0.5D);
-        poseStack.translate(0f, 1.5f, 0f);
-        poseStack.mulPose(new Quaternion(1, 0, 0, 0));*/
         if(entityPetSlow.isInSittingPose()) {
             model.setOnChair(true);
-            if(entityPetSlow.isAway()) {
+            if (entityPetSlow.isAway()) {
                 model.setAwayFromChair(true);
-            } else {
+            } else if (!entityPetSlow.isAway()) {
                 model.setAwayFromChair(false);
             }
-        } else {
+        } else if (!entityPetSlow.isInSittingPose()) {
             model.setOnChair(false);
         }
-        poseStack.popPose();
-        /*super.render(entityPetSlow, entityYaw, partialTicks, poseStack, multiBufferSource, packedLight);*/
     }
 
     @Override

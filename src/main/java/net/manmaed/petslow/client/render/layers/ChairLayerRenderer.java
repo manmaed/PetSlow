@@ -32,7 +32,7 @@ public class ChairLayerRenderer<T extends EntityPetSlow, M extends ModelSlowpoke
     public void render(PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight, T entity, float p_117353_, float p_117354_, float p_117355_, float p_117356_, float p_117357_, float p_117358_) {
         VertexConsumer vertexConsumer = multiBufferSource.getBuffer(RenderType.entitySolid(CHAIR));
         poseStack.pushPose();
-        if (true/*entity.isInSittingPose()*/) {
+        if (entity.isInSittingPose()) {
             hat.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
         }
         poseStack.popPose();

@@ -2,6 +2,7 @@ package net.manmaed.petslow.client.render.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.manmaed.petslow.libs.LogHelper;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -18,8 +19,8 @@ public class ModelSlowpoke<T extends Entity> extends EntityModel<T> {
     public final ModelPart right_leg;
     public final ModelPart left_leg_sit;
     public final ModelPart right_leg_sit;
-    private boolean awayFromChair = false;
-    private boolean onChair = false;
+    private boolean awayFromChair;
+    private boolean onChair;
 
 
     public ModelSlowpoke(ModelPart root) {
@@ -70,7 +71,7 @@ public class ModelSlowpoke<T extends Entity> extends EntityModel<T> {
 	}
 
 	public void setOnChair(boolean isOnChair) {
-		this.awayFromChair = isOnChair;
+		this.onChair = isOnChair;
 	}
 
 
@@ -79,20 +80,18 @@ public class ModelSlowpoke<T extends Entity> extends EntityModel<T> {
         poseStack.pushPose();
         poseStack.scale((float) 0.5D, (float) 0.5D, (float) 0.5D);
         poseStack.translate(0f, 1.5f, 0f);
-        if (onChair) {
+        if(onChair) {
             if (awayFromChair) {
 
-            } else {
+            } else if (!awayFromChair) {
                 head.render(poseStack, buffer, packedLight, packedOverlay);
                 body.render(poseStack, buffer, packedLight, packedOverlay);
                 left_arm.render(poseStack, buffer, packedLight, packedOverlay);
                 right_arm.render(poseStack, buffer, packedLight, packedOverlay);
-                left_leg.render(poseStack, buffer, packedLight, packedOverlay);
-                right_leg.render(poseStack, buffer, packedLight, packedOverlay);
                 left_leg_sit.render(poseStack, buffer, packedLight, packedOverlay);
                 right_leg_sit.render(poseStack, buffer, packedLight, packedOverlay);
             }
-        } else {
+        } else if (!onChair) {
             head.render(poseStack, buffer, packedLight, packedOverlay);
             body.render(poseStack, buffer, packedLight, packedOverlay);
             left_arm.render(poseStack, buffer, packedLight, packedOverlay);

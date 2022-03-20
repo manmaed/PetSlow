@@ -31,9 +31,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.event.ForgeEventFactory;
 import org.jetbrains.annotations.Nullable;
-import org.jline.utils.Log;
 
 import java.util.UUID;
 
@@ -93,9 +91,7 @@ public class EntityPetSlow extends TamableAnimal {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 20.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.25D);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.MOVEMENT_SPEED, 0.25D);
     }
 
     //Away Stuff
@@ -107,9 +103,6 @@ public class EntityPetSlow extends TamableAnimal {
         this.entityData.set(AWAY, b);
     }
 
-    public boolean onChair() {
-        return this.isInSittingPose();
-    }
 
     @Nullable
     @Override
@@ -172,7 +165,7 @@ public class EntityPetSlow extends TamableAnimal {
                     this.heal(3.0F);
                     return InteractionResult.SUCCESS;
                 }
-                if(item == Items.TORCH) {
+                if (item == Items.TORCH) {
                     if (!player.getAbilities().instabuild) {
                         itemStack.shrink(1);
                     }
@@ -184,7 +177,7 @@ public class EntityPetSlow extends TamableAnimal {
                     if (this.random.nextInt(25) == 0) {
                         playSound(SoundEvents.PLAYER_BURP, getSoundVolume(), 1F);
                     }
-                    return  InteractionResult.CONSUME;
+                    return InteractionResult.CONSUME;
                 }
                 if (!(item instanceof DyeItem)) {
                     InteractionResult interactionresult = super.mobInteract(player, hand);
@@ -207,12 +200,12 @@ public class EntityPetSlow extends TamableAnimal {
                     this.tame(player);
                     this.navigation.stop();
                     this.setOrderedToSit(true);
-                    this.level.broadcastEntityEvent(this, (byte)7);
+                    this.level.broadcastEntityEvent(this, (byte) 7);
                     //TOTEM_USE maybe
                     playSound(PSSounds.SLOW_TAME.get(), getSoundVolume(), 1F);
                     /*playSound(SoundEvents.TOTEM_USE, getSoundVolume(), 1F);*/
                 } else {
-                    this.level.broadcastEntityEvent(this, (byte)6);
+                    this.level.broadcastEntityEvent(this, (byte) 6);
                 }
                 playSound(SoundEvents.GENERIC_DRINK, getSoundVolume(), 1F);
                 if (this.random.nextInt(25) == 0) {
@@ -276,8 +269,7 @@ public class EntityPetSlow extends TamableAnimal {
                     int sc = this.entityData.get(STAY_COOLDOWN);
                     int nsc = --sc;
                     this.entityData.set(STAY_COOLDOWN, nsc);
-                }
-                if (this.entityData.get(RETURN_COOLDOWN) != NOT_IN_USE) {
+                } else if (this.entityData.get(RETURN_COOLDOWN) != NOT_IN_USE) {
                     int rc = this.entityData.get(RETURN_COOLDOWN);
                     int nrc = --rc;
                     this.entityData.set(RETURN_COOLDOWN, nrc);
@@ -291,11 +283,11 @@ public class EntityPetSlow extends TamableAnimal {
             if (this.entityData.get(STAY_COOLDOWN) == NOT_IN_USE && this.entityData.get(RETURN_COOLDOWN) == NOT_IN_USE) {
                 boolean tobeornottobe = world.random.nextBoolean();
                 if (tobeornottobe) {
-                    this.entityData.set(RETURN_COOLDOWN, (this.level.random.nextInt(2500) + 100));
+                    this.entityData.set(RETURN_COOLDOWN, (this.level.random.nextInt(100) + 100));
                     this.entityData.set(STAY_COOLDOWN, NOT_IN_USE);
                     setAway(false);
                 } else {
-                    this.entityData.set(STAY_COOLDOWN, (this.level.random.nextInt(25000) + 1000));
+                    this.entityData.set(STAY_COOLDOWN, (this.level.random.nextInt(2500) + 500));
                     this.entityData.set(RETURN_COOLDOWN, NOT_IN_USE);
                     setAway(true);
                 }
@@ -303,23 +295,22 @@ public class EntityPetSlow extends TamableAnimal {
         }
     }
 
-    public int getTorchCount(){
+    public int getTorchCount() {
         return this.entityData.get(TORCH_COUNT);
     }
 
-    public void setTorchCount(int amount){
+    public void setTorchCount(int amount) {
         this.entityData.set(TORCH_COUNT, amount);
     }
 
     @Override
     public void tick() {
         super.tick();
-        if (!this.level.isClientSide) {
+        LogHelper.info("STAY_COOLDOWN: " + this.entityData.get(STAY_COOLDOWN) + " : RETURN_COOLDOWN: " + this.entityData.get(RETURN_COOLDOWN));
         addtorch(level, this.getOnPos());
-        /*isAway();
+        isAway();
         chooseafk(level);
         shouldafk(level);
-        countdown(level);*/
-        }
+        countdown(level);
     }
 }

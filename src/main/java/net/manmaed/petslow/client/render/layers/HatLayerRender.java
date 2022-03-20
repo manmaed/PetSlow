@@ -36,7 +36,7 @@ public class HatLayerRender<T extends EntityPetSlow, M extends ModelSlowpoke<T>>
         poseStack.scale((float) 0.55D, (float) 0.55D, (float) 0.55D);
         poseStack.translate(0f, -0.12f, 0f);
         if (!entity.isAway()) {
-            /*hat.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY,1f,1f,1f,1f);*/
+            hat.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY,1f,1f,1f,1f);
         }
         poseStack.popPose();
     }

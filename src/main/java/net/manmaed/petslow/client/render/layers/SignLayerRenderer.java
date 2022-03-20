@@ -40,7 +40,7 @@ public class SignLayerRenderer<T extends EntityPetSlow, M extends ModelSlowpoke<
         poseStack.scale(size, size, size);
         poseStack.translate(0f, 5.65f, 0.56f);
         //TODO: remove true
-        if(true && true /*entity.isInSittingPose() && entity.isAway()*/) {
+        if(entity.isInSittingPose() && entity.isAway()) {
             hat.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
         }
         poseStack.popPose();
