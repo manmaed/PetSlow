@@ -1,55 +1,37 @@
 package net.manmaed.petslow.client.render.model;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.manmaed.petslow.entity.EntityPetSlow;
+import net.minecraft.client.model.Model;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.renderer.RenderType;
+
 /**
  * test - Undefined
  * Created using Tabula 7.0.0
  */
-public class ModelSign/*<T extends Entity> extends SegmentedModel<T>*/ {
-    /*public ModelRenderer sign;
+public class ModelSign<T extends EntityPetSlow> extends Model {
+    private final ModelPart sign;
 
-    public ModelSign() {
-        this.texWidth = 128;
-        this.texHeight = 128;
-        this.sign = new ModelRenderer(this, 0, 0);
-        this.sign.setPos(-3.0F, 12.2F, 1.0F);
-        this.sign.addBox(0.0F, 0.0F, 0.0F, 64, 39, 1, 0.0F);
+    public ModelSign(ModelPart root) {
+        super(RenderType::entitySolid);
+        this.sign = root.getChild("sign");
+    }
+
+    public static LayerDefinition createBodyLayer() {
+        MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
+
+        PartDefinition sign = partdefinition.addOrReplaceChild("sign", CubeListBuilder.create().texOffs(0, 0).addBox(-31.0F, -39.0F, 0.0F, 64.0F, 39.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 24.0F, 0.0F));
+
+        return LayerDefinition.create(meshdefinition, 128, 128);
     }
 
     @Override
-    public void setupAnim(T pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
-
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        sign.render(poseStack, buffer, packedLight, packedOverlay);
     }
-
-    @Override
-    public Iterable<ModelRenderer> parts() {
-        return ImmutableList.of(
-                this.sign
-        );
-    }
-
-    *//*@Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        GlStateManager.pushMatrix();
-        GlStateManager.translate(this.sign.offsetX, this.sign.offsetY, this.sign.offsetZ);
-        GlStateManager.translate(this.sign.rotationPointX * f5, this.sign.rotationPointY * f5, this.sign.rotationPointZ * f5);
-        GlStateManager.scale(0.1D, 0.1D, 0.5D);
-        GlStateManager.translate(-this.sign.offsetX, -this.sign.offsetY, -this.sign.offsetZ);
-        GlStateManager.translate(-this.sign.rotationPointX * f5, -this.sign.rotationPointY * f5, -this.sign.rotationPointZ * f5);
-        this.sign.render(f5);
-        GlStateManager.popMatrix();
-    }*//*
-
-    @Override
-    public void renderToBuffer(MatrixStack pMatrixStack, IVertexBuilder pBuffer, int pPackedLight, int pPackedOverlay, float pRed, float pGreen, float pBlue, float pAlpha) {
-        this.sign.render(pMatrixStack, pBuffer, pPackedLight, pPackedOverlay);
-    }
-
-    *//**
-     * This is a helper function from Tabula to set the rotation of model parts
-     *//*
-    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-        modelRenderer.xRot = x;
-        modelRenderer.yRot = y;
-        modelRenderer.zRot = z;
-    }*/
 }

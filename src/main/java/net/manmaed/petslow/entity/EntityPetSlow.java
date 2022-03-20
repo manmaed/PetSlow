@@ -45,7 +45,8 @@ public class EntityPetSlow extends TamableAnimal {
     private static final EntityDataAccessor<Integer> RETURN_COOLDOWN = SynchedEntityData.defineId(EntityPetSlow.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> STAY_COOLDOWN = SynchedEntityData.defineId(EntityPetSlow.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> AWAY = SynchedEntityData.defineId(EntityPetSlow.class, EntityDataSerializers.BOOLEAN);
-    private int torch = 0;
+    private static final EntityDataAccessor<Integer> TORCH_COUNT = SynchedEntityData.defineId(EntityPetSlow.class, EntityDataSerializers.INT);
+    /*private int torch = 0;*/
     private static final int NOT_IN_USE = -1;
 
     protected EntityPetSlow(EntityType<? extends TamableAnimal> type, Level level) {
@@ -74,19 +75,20 @@ public class EntityPetSlow extends TamableAnimal {
         this.entityData.define(RETURN_COOLDOWN, NOT_IN_USE);
         this.entityData.define(STAY_COOLDOWN, NOT_IN_USE);
         this.entityData.define(AWAY, false);
+        this.entityData.define(TORCH_COUNT, 0);
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
-        compoundTag.putInt("torchCount", this.torch);
+        compoundTag.putInt("torchCount", this.getTorchCount());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
         if (compoundTag.contains("torchCount")) {
-            torch = compoundTag.getInt("torchCount");
+            this.setTorchCount(compoundTag.getInt("torchCount"));
         }
     }
 
@@ -174,7 +176,10 @@ public class EntityPetSlow extends TamableAnimal {
                     if (!player.getAbilities().instabuild) {
                         itemStack.shrink(1);
                     }
-                    torch++;
+                    int tc = 0;
+                    tc = getTorchCount();
+                    tc++;
+                    setTorchCount(tc);
                     playSound(SoundEvents.GENERIC_EAT, getSoundVolume(), 1F);
                     if (this.random.nextInt(25) == 0) {
                         playSound(SoundEvents.PLAYER_BURP, getSoundVolume(), 1F);
@@ -216,76 +221,24 @@ public class EntityPetSlow extends TamableAnimal {
             }
             return super.mobInteract(player, hand);
         }
-        /*ItemStack itemStack = player.getItemInHand(hand);
-        Item item = itemStack.getItem();
-        if (!this.level.isClientSide) {
-            boolean flag = this.isOwnedBy(player) || this.isTame() || item == PSItems.SLOW_BREW.get() && !this.isTame();
-            return flag ? InteractionResult.CONSUME : InteractionResult.PASS;
-        } else {
-            if (this.isTame()) {
-                if (item == PSItems.CLAY_BREW.get() && this.getHealth() < this.getMaxHealth()) {
-                    LogHelper.warn("Mug is Clay and heal < max");
-                    if (!player.getAbilities().instabuild) {
-                        itemStack.shrink(1);
-                        player.getInventory().add(new ItemStack(PSItems.MUG.get()));
-                    }
-                    playSound(SoundEvents.GENERIC_DRINK, getSoundVolume(), 1F);
-                    if (this.random.nextInt(25) == 0) {
-                        playSound(SoundEvents.PLAYER_BURP, getSoundVolume(), 1F);
-                    }
-                    this.heal(3.0F);
-                    return InteractionResult.SUCCESS;
-                }
-                if (item == Items.TORCH) {
-                    torch++;
-                    itemStack.shrink(1);
-                    playSound(SoundEvents.GENERIC_EAT, getSoundVolume(), 1F);
-                    if (this.random.nextInt(25) == 0) {
-                        playSound(SoundEvents.PLAYER_BURP, getSoundVolume(), 1F);
-                    }
-                }
-                InteractionResult interactionresult = super.mobInteract(player, hand);
-                if ((!interactionresult.consumesAction() || this.isBaby()) && this.isOwnedBy(player)) {
-                    this.setOrderedToSit(!this.isOrderedToSit());
-                    this.jumping = false;
-                    this.navigation.stop();
-                    //LogHelper.warn(this.isOrderedToSit() + " " + this.isSleeping());
-                    return InteractionResult.SUCCESS;
-                }
-                return interactionresult;
-            } else if (item == PSItems.SLOW_BREW.get()) {
-                if (!player.getAbilities().instabuild) {
-                    itemStack.shrink(1);
-                    player.getInventory().add(new ItemStack(PSItems.MUG.get()));
-                }
-                playSound(SoundEvents.GENERIC_DRINK, getSoundVolume(), 1F);
-                if (this.random.nextInt(25) == 0) {
-                    playSound(SoundEvents.PLAYER_BURP, getSoundVolume(), 1F);
-                }
-                if (this.random.nextInt(3) == 0 && !ForgeEventFactory.onAnimalTame(this, player)) {
-                    this.tame(player);
-                    this.navigation.stop();
-                    this.setOrderedToSit(true);
-                    this.level.broadcastEntityEvent(this, (byte) 7);
-                } else {
-                    this.level.broadcastEntityEvent(this, (byte) 6);
-                }
-                return InteractionResult.SUCCESS;
-            }
-            return super.mobInteract(player, hand);
-        }*/
     }
 
     //This is Where the Magic Happens
 
     private void addtorch(Level world, BlockPos pos) {
-        if (!this.level.isClientSide) {
+        int torch = 0;
+        if (!world.isClientSide) {
             if (isTame() && !isOrderedToSit()) {
                 if (world.getLightEmission(pos) < 3) {
                     if (Blocks.AIR.defaultBlockState() != world.getBlockState(pos.below())) {
-                        //LogHelper.info(torch);
-                        if (torch >= 1) {
+                        LogHelper.info("Torch Count before" + getTorchCount());
+                        if (getTorchCount() >= 1) {
+                            torch = getTorchCount();
+                            LogHelper.info("Interal Torch Count: " + torch);
                             torch--;
+                            LogHelper.info("Internal After Torch tobe  placed: " + torch);
+                            setTorchCount(torch);
+                            LogHelper.info("Torch Count after" + getTorchCount());
                             world.setBlockAndUpdate(pos.above(), Blocks.TORCH.defaultBlockState());
                             playSound(SoundEvents.NOTE_BLOCK_BELL, getSoundVolume(), 0.01F);
                         }
@@ -348,239 +301,21 @@ public class EntityPetSlow extends TamableAnimal {
         }
     }
 
+    public int getTorchCount(){
+        return this.entityData.get(TORCH_COUNT);
+    }
+
+    public void setTorchCount(int amount){
+        this.entityData.set(TORCH_COUNT, amount);
+    }
+
+    @Override
     public void tick() {
         super.tick();
-        addtorch(level, this.getOnPos());
+        /*addtorch(level, this.getOnPos());
         isAway();
         chooseafk(level);
         shouldafk(level);
-        countdown(level);
+        countdown(level);*/
     }
 }
-
-//Sounds
-
-
-/*public class EntityMiniSlow*//* extends TameableEntity*/
-
-   /*
-
-
-
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(RETURN_COOLDOWN, NOT_IN_USE);
-        this.entityData.define(STAY_COOLDOWN, NOT_IN_USE);
-        this.entityData.define(AWAY, false);
-    }
-
-    private void addtorch(World world, BlockPos pos) {
-        if (!this.level.isClientSide) {
-            if (isTame() && !isOrderedToSit()) {
-                if (world.getLightEmission(pos) < 3) {
-                    if (Blocks.AIR.defaultBlockState() != world.getBlockState(pos.below())) {
-                        //LogHelper.info(torch);
-                        if (torch >= 1) {
-                            torch--;
-                            world.setBlockAndUpdate(pos.above(), Blocks.TORCH.defaultBlockState());
-                            playSound(SoundEvents.NOTE_BLOCK_BELL, getSoundVolume(), 0.01F);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private void shouldafk(World world) {
-        if (!world.isClientSide) {
-            if (isTame() && isOrderedToSit()) {
-                if (this.entityData.get(STAY_COOLDOWN) == 0 && this.entityData.get(RETURN_COOLDOWN) == NOT_IN_USE) {
-                    int bool = this.level.random.nextInt(2500) + 100;
-                    this.entityData.set(STAY_COOLDOWN, NOT_IN_USE);
-                    this.entityData.set(RETURN_COOLDOWN, bool);
-                    setAway(false);
-                }
-                if (this.entityData.get(RETURN_COOLDOWN) == 0 && this.entityData.get(STAY_COOLDOWN) == NOT_IN_USE) {
-                    int bool = this.level.random.nextInt(25000) + 1000;
-                    this.entityData.set(RETURN_COOLDOWN, NOT_IN_USE);
-                    this.entityData.set(STAY_COOLDOWN, bool);
-                    setAway(true);
-                }
-            }
-        }
-    }
-
-    private void countdown(World world) {
-        if (this.isTame() && this.isOrderedToSit()) {
-            if (!world.isClientSide) {
-                if (this.entityData.get(STAY_COOLDOWN) != NOT_IN_USE) {
-                    int sc = this.entityData.get(STAY_COOLDOWN);
-                    int nsc = --sc;
-                    this.entityData.set(STAY_COOLDOWN, nsc);
-                }
-                if (this.entityData.get(RETURN_COOLDOWN) != NOT_IN_USE) {
-                    int rc = this.entityData.get(RETURN_COOLDOWN);
-                    int nrc = --rc;
-                    this.entityData.set(RETURN_COOLDOWN, nrc);
-                }
-            }
-        }
-    }
-
-    private void chooseafk(World world) {
-        if (!world.isClientSide) {
-            if (this.entityData.get(STAY_COOLDOWN) == NOT_IN_USE && this.entityData.get(RETURN_COOLDOWN) == NOT_IN_USE) {
-                boolean tobeornottobe = world.random.nextBoolean();
-                if (tobeornottobe) {
-                    this.entityData.set(RETURN_COOLDOWN, (this.level.random.nextInt(2500) + 100));
-                    this.entityData.set(STAY_COOLDOWN, NOT_IN_USE);
-                    setAway(false);
-                } else {
-                    this.entityData.set(STAY_COOLDOWN, (this.level.random.nextInt(25000) + 1000));
-                    this.entityData.set(RETURN_COOLDOWN, NOT_IN_USE);
-                    setAway(true);
-                }
-            }
-        }
-    }
-
-    public void addAdditionalSaveData(CompoundNBT nbtTagCompound) {
-        super.addAdditionalSaveData(nbtTagCompound);
-        nbtTagCompound.putInt("torchCount", this.torch);
-    }
-
-    *//**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     *//*
-    public void readAdditionalSaveData(CompoundNBT nbtTagCompound) {
-        super.readAdditionalSaveData(nbtTagCompound);
-        if (nbtTagCompound.contains("torchCount")) {
-            torch = nbtTagCompound.getInt("torchCount");
-        }
-    }
-
-
-    @Override
-    protected SoundEvent getSwimHighSpeedSplashSound() {
-        return SoundEvents.PLAYER_SPLASH_HIGH_SPEED;
-    }
-
-    @Override
-    protected SoundEvent getSwimSplashSound() {
-        return SoundEvents.PLAYER_SPLASH;
-    }
-
-    @Override
-    protected SoundEvent getSwimSound() {
-        return SoundEvents.PLAYER_SWIM;
-    }
-
-    @Nullable
-    @Override
-    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
-        return SoundEvents.PLAYER_HURT;
-    }
-
-    @Nullable
-    @Override
-    protected SoundEvent getDeathSound() {
-        return PSSounds.SLOW_DEATH.get();
-    }
-
-    @Override
-    public void setTame(boolean tamed) {
-        super.setTame(tamed);
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
-        addtorch(level, this.getOnPos());
-        getAway();
-        chooseafk(level);
-        shouldafk(level);
-        countdown(level);
-    }
-
-
-    //Slow Brew - Tames
-    //Clay Brew - Heals
-
-    @Override
-    public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
-        ItemStack itemStack = player.getItemInHand(hand);
-        Item item = itemStack.getItem();
-        if (!this.level.isClientSide) {
-            boolean flag = this.isOwnedBy(player) || this.isTame() || item == PSItems.SLOW_BREW.get() && !this.isTame();
-            return flag ? ActionResultType.CONSUME : ActionResultType.PASS;
-        } else {
-            if (this.isTame()) {
-                if (item == PSItems.CLAY_BREW.get() && this.getHealth() < this.getMaxHealth()) {
-                    if (!player.abilities.instabuild) {
-                        itemStack.shrink(1);
-                        player.inventory.add(new ItemStack(PSItems.MUG.get()));
-                    }
-                    playSound(SoundEvents.GENERIC_DRINK, getSoundVolume(), 1F);
-                    if (this.random.nextInt(25) == 0) {
-                        playSound(SoundEvents.PLAYER_BURP, getSoundVolume(), 1F);
-                    }
-                    this.heal(3.0F);
-                    return ActionResultType.SUCCESS;
-                }
-                if (item == Items.TORCH) {
-                    torch++;
-                    itemStack.shrink(1);
-                    playSound(SoundEvents.GENERIC_EAT, getSoundVolume(), 1F);
-                    if (this.random.nextInt(25) == 0) {
-                        playSound(SoundEvents.PLAYER_BURP, getSoundVolume(), 1F);
-                    }
-                }
-                    ActionResultType actionresulttype = super.mobInteract(player, hand);
-                    if ((!actionresulttype.consumesAction() || this.isBaby()) && this.isOwnedBy(player)) {
-                        this.setOrderedToSit(!this.isOrderedToSit());
-                        this.jumping = false;
-                        this.navigation.stop();
-                        LogHelper.warn(this.isOrderedToSit() + " " + this.isSleeping());
-                        return ActionResultType.SUCCESS;
-                    }
-                    return actionresulttype;
-            } else if (item == PSItems.SLOW_BREW.get()) {
-                if (!player.abilities.instabuild) {
-                    itemStack.shrink(1);
-                    player.inventory.add(new ItemStack(PSItems.MUG.get()));
-                }
-                playSound(SoundEvents.GENERIC_DRINK, getSoundVolume(), 1F);
-                if (this.random.nextInt(25) == 0) {
-                    playSound(SoundEvents.PLAYER_BURP, getSoundVolume(), 1F);
-                }
-                if (this.random.nextInt(3) == 0 && !ForgeEventFactory.onAnimalTame(this, player)) {
-                    this.tame(player);
-                    this.navigation.stop();
-                    this.setOrderedToSit(true);
-                    this.level.broadcastEntityEvent(this, (byte) 7);
-                } else {
-                    this.level.broadcastEntityEvent(this, (byte) 6);
-                }
-                return ActionResultType.SUCCESS;
-            }
-            return super.mobInteract(player, hand);
-        }
-    }
-
-    //Away Stuff
-    public boolean getAway() {
-        return this.entityData.get(AWAY);
-    }
-
-    private void setAway(boolean b) {
-        this.entityData.set(AWAY, b);
-    }
-
-
-    @Nullable
-    @Override
-    public AgeableEntity getBreedOffspring(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        return null;
-    }
-*/

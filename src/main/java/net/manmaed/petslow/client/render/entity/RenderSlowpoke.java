@@ -2,12 +2,17 @@ package net.manmaed.petslow.client.render.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Quaternion;
 import net.manmaed.petslow.PetSlow;
 import net.manmaed.petslow.client.model.PSModels;
+import net.manmaed.petslow.client.render.layers.ChairLayerRenderer;
+import net.manmaed.petslow.client.render.layers.HatLayerRender;
+import net.manmaed.petslow.client.render.layers.SignLayerRenderer;
 import net.manmaed.petslow.client.render.model.ModelSlowpoke;
 import net.manmaed.petslow.entity.EntityPetSlow;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -23,9 +28,49 @@ public class RenderSlowpoke extends MobRenderer<EntityPetSlow, ModelSlowpoke<Ent
     public RenderSlowpoke(EntityRendererProvider.Context context) {
         super(context, new ModelSlowpoke<EntityPetSlow>(context.bakeLayer(PSModels.PETSLOW)), 0.25F);
         //this.addLayer(new LayerClass<>(this, context.getModelSet)
+        this.addLayer(new HatLayerRender<>(this, context.getModelSet()));
+        this.addLayer(new ChairLayerRenderer<>(this, context.getModelSet()));
+        this.addLayer(new SignLayerRenderer<>(this, context.getModelSet()));
     }
 
-    /*@Override
+    @Override
+    public void render(EntityPetSlow entityPetSlow, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
+        super.render(entityPetSlow, entityYaw, partialTicks, poseStack, multiBufferSource, packedLight);
+        VertexConsumer vertexConsumer = multiBufferSource.getBuffer(RenderType.entitySolid(SLOWPOKE));
+        poseStack.pushPose();
+        poseStack.scale((float) 0.5D, (float) 0.5D, (float) 0.5D);
+        poseStack.translate(0f, 1.5f, 0f);
+        poseStack.mulPose(new Quaternion(1, 0, 0, 0));
+        if(entityPetSlow.isInSittingPose()) {
+            if(entityPetSlow.isAway()) {
+                //No Slow Here
+            } else {
+                model.head.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
+                model.body.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
+                model.right_arm.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
+                model.left_arm.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
+                model.right_leg_sit.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
+                model.left_leg_sit.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
+            }
+        } else {
+            model.head.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
+            model.body.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
+            model.right_arm.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
+            model.left_arm.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
+            model.right_leg.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
+            model.left_leg.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
+        }
+        poseStack.popPose();
+        /*super.render(entityPetSlow, entityYaw, partialTicks, poseStack, multiBufferSource, packedLight);*/
+    }
+
+    @Override
+    public ResourceLocation getTextureLocation(EntityPetSlow entityPetSlow) {
+        return SLOWPOKE;
+    }
+}
+
+/*@Override
     public void render(EntityPetSlow petSlow, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
         *//*VertexConsumer vertexConsumer = multiBufferSource.getBuffer(this.model.renderType(SLOWPOKE));
         poseStack.pushPose();
@@ -63,12 +108,6 @@ public class RenderSlowpoke extends MobRenderer<EntityPetSlow, ModelSlowpoke<Ent
         this.model.right_leg.render(poseStack, vertexConsumer,packedLight, OverlayTexture.NO_OVERLAY);
         poseStack.popPose();
     }*/
-
-    @Override
-    public ResourceLocation getTextureLocation(EntityPetSlow entityPetSlow) {
-        return SLOWPOKE;
-    }
-}
 
     /*private static final ResourceLocation SLOWPOKE = new ResourceLocation(Reference.MOD_ID, "textures/entity/slowpoke.png");
 
