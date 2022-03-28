@@ -306,7 +306,7 @@ public class EntityPetSlow extends TamableAnimal {
     @Override
     public void tick() {
         super.tick();
-        LogHelper.info("STAY_COOLDOWN: " + this.entityData.get(STAY_COOLDOWN) + " : RETURN_COOLDOWN: " + this.entityData.get(RETURN_COOLDOWN));
+        //LogHelper.info("STAY_COOLDOWN: " + this.entityData.get(STAY_COOLDOWN) + " : RETURN_COOLDOWN: " + this.entityData.get(RETURN_COOLDOWN));
         addtorch(level, this.getOnPos());
         isAway();
         chooseafk(level);

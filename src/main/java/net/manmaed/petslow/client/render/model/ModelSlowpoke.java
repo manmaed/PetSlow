@@ -2,6 +2,7 @@ package net.manmaed.petslow.client.render.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.manmaed.petslow.entity.PSEntityTypes;
 import net.manmaed.petslow.libs.LogHelper;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -9,6 +10,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 
 public class ModelSlowpoke<T extends Entity> extends EntityModel<T> {
     public final ModelPart head;
@@ -75,30 +77,20 @@ public class ModelSlowpoke<T extends Entity> extends EntityModel<T> {
 	}
 
 
-    @Override
+	@Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        /*EntityType entity = PSEntityTypes.SLOWPOKE.get();*/
         poseStack.pushPose();
         poseStack.scale((float) 0.5D, (float) 0.5D, (float) 0.5D);
         poseStack.translate(0f, 1.5f, 0f);
-        if(onChair) {
-            if (awayFromChair) {
-
-            } else if (!awayFromChair) {
-                head.render(poseStack, buffer, packedLight, packedOverlay);
-                body.render(poseStack, buffer, packedLight, packedOverlay);
-                left_arm.render(poseStack, buffer, packedLight, packedOverlay);
-                right_arm.render(poseStack, buffer, packedLight, packedOverlay);
-                left_leg_sit.render(poseStack, buffer, packedLight, packedOverlay);
-                right_leg_sit.render(poseStack, buffer, packedLight, packedOverlay);
-            }
-        } else if (!onChair) {
-            head.render(poseStack, buffer, packedLight, packedOverlay);
-            body.render(poseStack, buffer, packedLight, packedOverlay);
-            left_arm.render(poseStack, buffer, packedLight, packedOverlay);
-            right_arm.render(poseStack, buffer, packedLight, packedOverlay);
-            left_leg.render(poseStack, buffer, packedLight, packedOverlay);
-            right_leg.render(poseStack, buffer, packedLight, packedOverlay);
-        }
+        head.render(poseStack, buffer, packedLight, packedOverlay);
+        body.render(poseStack, buffer, packedLight, packedOverlay);
+        left_arm.render(poseStack, buffer, packedLight, packedOverlay);
+        right_arm.render(poseStack, buffer, packedLight, packedOverlay);
+        left_leg_sit.render(poseStack, buffer, packedLight, packedOverlay);
+        right_leg_sit.render(poseStack, buffer, packedLight, packedOverlay);
+        left_leg.render(poseStack, buffer, packedLight, packedOverlay);
+        right_leg.render(poseStack, buffer, packedLight, packedOverlay);
         poseStack.popPose();
     }
 

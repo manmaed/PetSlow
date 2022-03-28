@@ -14,6 +14,7 @@ import net.manmaed.petslow.libs.LogHelper;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -25,28 +26,12 @@ import net.minecraft.resources.ResourceLocation;
 public class RenderSlowpoke extends MobRenderer<EntityPetSlow, ModelSlowpoke<EntityPetSlow>> {
 
     private static final ResourceLocation SLOWPOKE = new ResourceLocation(PetSlow.MOD_ID, "textures/entity/slowpoke.png");
-
     public RenderSlowpoke(EntityRendererProvider.Context context) {
         super(context, new ModelSlowpoke<EntityPetSlow>(context.bakeLayer(PSModels.PETSLOW)), 0.25F);
         //this.addLayer(new LayerClass<>(this, context.getModelSet)
         this.addLayer(new HatLayerRender<>(this, context.getModelSet()));
         this.addLayer(new ChairLayerRenderer<>(this, context.getModelSet()));
         this.addLayer(new SignLayerRenderer<>(this, context.getModelSet()));
-    }
-
-    @Override
-    public void render(EntityPetSlow entityPetSlow, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
-        super.render(entityPetSlow, entityYaw, partialTicks, poseStack, multiBufferSource, packedLight);
-        if(entityPetSlow.isInSittingPose()) {
-            model.setOnChair(true);
-            if (entityPetSlow.isAway()) {
-                model.setAwayFromChair(true);
-            } else if (!entityPetSlow.isAway()) {
-                model.setAwayFromChair(false);
-            }
-        } else if (!entityPetSlow.isInSittingPose()) {
-            model.setOnChair(false);
-        }
     }
 
     @Override
