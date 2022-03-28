@@ -14,25 +14,26 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 
 /**
  * Created by manmaed on 19/03/2022.
  */
-public class HatLayerRender<T extends EntityPetSlow, M extends ModelSlowpoke<T>> extends RenderLayer<T, M> {
+public class HatLayerRender extends RenderLayer<EntityPetSlow, ModelSlowpoke> {
 
     private static final ResourceLocation SLOWPOKE = new ResourceLocation(PetSlow.MOD_ID, "textures/entity/slowpoke.png");
-    private final ModelSlowpokeHat<T> hat;
+    private final ModelSlowpokeHat hat;
 
-    public HatLayerRender(RenderLayerParent<T, M> layerParent, EntityModelSet modelSet) {
+    public HatLayerRender(RenderLayerParent layerParent, EntityModelSet modelSet) {
         super(layerParent);
-        this.hat = new ModelSlowpokeHat<>(modelSet.bakeLayer(PSModels.HAT));
+        this.hat = new ModelSlowpokeHat(modelSet.bakeLayer(PSModels.HAT));
     }
 
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight, T entity, float p_117353_, float p_117354_, float p_117355_, float p_117356_, float p_117357_, float p_117358_) {
+    public void render(PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight, EntityPetSlow entity, float p_117353_, float p_117354_, float p_117355_, float p_117356_, float p_117357_, float p_117358_) {
         VertexConsumer vertexConsumer = multiBufferSource.getBuffer(RenderType.entityCutoutNoCull(SLOWPOKE));
         poseStack.pushPose();
-        getParentModel().head.translateAndRotate(poseStack);
+        this.getParentModel().head.translateAndRotate(poseStack);
         poseStack.scale((float) 0.55D, (float) 0.55D, (float) 0.55D);
         poseStack.translate(0f, -0.12f, 0f);
         if (!entity.isAway()) {
@@ -40,4 +41,5 @@ public class HatLayerRender<T extends EntityPetSlow, M extends ModelSlowpoke<T>>
         }
         poseStack.popPose();
     }
+
 }

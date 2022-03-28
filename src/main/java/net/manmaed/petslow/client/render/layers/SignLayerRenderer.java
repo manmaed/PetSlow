@@ -21,25 +21,24 @@ import net.minecraft.resources.ResourceLocation;
  */
 //TODO: FIX CLASS
 
-public class SignLayerRenderer<T extends EntityPetSlow, M extends ModelSlowpoke<T>> extends RenderLayer<T, M> {
+public class SignLayerRenderer extends RenderLayer<EntityPetSlow , ModelSlowpoke> {
 
     private static final ResourceLocation SIGN = new ResourceLocation(PetSlow.MOD_ID, "textures/entity/sign.png");
-    private final ModelSign<T> hat;
+    private final ModelSign hat;
 
-    public SignLayerRenderer(RenderLayerParent<T, M> layerParent, EntityModelSet entityModelSet) {
+    public SignLayerRenderer(RenderLayerParent layerParent, EntityModelSet entityModelSet) {
         super(layerParent);
-        this.hat = new ModelSign<>(entityModelSet.bakeLayer(PSModels.SIGN));
+        this.hat = new ModelSign(entityModelSet.bakeLayer(PSModels.SIGN));
     }
 
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight, T entity, float p_117353_, float p_117354_, float p_117355_, float p_117356_, float p_117357_, float p_117358_) {
+    public void render(PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight, EntityPetSlow entity, float p_117353_, float p_117354_, float p_117355_, float p_117356_, float p_117357_, float p_117358_) {
         VertexConsumer vertexConsumer = multiBufferSource.getBuffer(RenderType.entitySolid(SIGN));
         poseStack.pushPose();
         float size = 0.15F;
         /*getParentModel().head.translateAndRotate(poseStack);*/
         poseStack.scale(size, size, size);
         poseStack.translate(0f, 5.65f, 0.56f);
-        //TODO: remove true
         if(entity.isInSittingPose() && entity.isAway()) {
             hat.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
         }

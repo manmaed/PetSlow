@@ -19,17 +19,17 @@ import net.minecraft.resources.ResourceLocation;
 /**
  * Created by manmaed on 14/10/2021.
  */
-public class ChairLayerRenderer<T extends EntityPetSlow, M extends ModelSlowpoke<T>> extends RenderLayer<T, M> {
+public class ChairLayerRenderer extends RenderLayer<EntityPetSlow , ModelSlowpoke> {
     private static final ResourceLocation CHAIR = new ResourceLocation(PetSlow.MOD_ID, "textures/entity/chair.png");
-    private final ModelChair<T> hat;
+    private final ModelChair hat;
 
-    public ChairLayerRenderer(RenderLayerParent<T, M> layerParent, EntityModelSet modelSet) {
+    public ChairLayerRenderer(RenderLayerParent layerParent, EntityModelSet modelSet) {
         super(layerParent);
-        this.hat = new ModelChair<>(modelSet.bakeLayer(PSModels.CHAIR));
+        this.hat = new ModelChair(modelSet.bakeLayer(PSModels.CHAIR));
     }
 
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight, T entity, float p_117353_, float p_117354_, float p_117355_, float p_117356_, float p_117357_, float p_117358_) {
+    public void render(PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight, EntityPetSlow entity, float p_117353_, float p_117354_, float p_117355_, float p_117356_, float p_117357_, float p_117358_) {
         VertexConsumer vertexConsumer = multiBufferSource.getBuffer(RenderType.entitySolid(CHAIR));
         poseStack.pushPose();
         if (entity.isInSittingPose()) {
