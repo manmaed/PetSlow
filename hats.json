@@ -1,0 +1,104 @@
+{
+  "events": [
+    {
+      "hat": "birthday",
+      "condition": {
+        "username": "manmaed",
+        "date": {
+            "month": 6,
+            "day": 30
+        }
+      }
+    },
+	{
+      "hat": "birthday",
+      "condition": {
+        "username": "Unrealdinndebone / Dinnerbeef",
+        "date": {
+          "month": 6,
+          "day": 8
+        }
+      }
+    },
+	{
+      "hat": "birthday",
+      "condition": {
+        "username": "JoeNoIce",
+        "date": {
+            "month": 6,
+            "day": 8
+        }
+      }
+    },
+	{
+      "hat": "birthday",
+      "condition": {
+        "username": "Direwolf20",
+        "date": {
+            "month": 3,
+            "day": 20
+        }
+      }
+    },
+    {
+      "hat": "birthday",
+      "condition": {
+        "username": "Slowpoke101",
+        "date": {
+          "month": 6,
+          "day": 19
+        }
+      }
+    },
+    {
+      "hat": "halloween",
+      "condition": {
+        "username": "halloween",
+        "date": {
+          "month": 10,
+          "day": 0
+        }
+      }
+    },
+    {
+      "hat": "birthday",
+      "condition": {
+        "username": "Sunekaer",
+        "date": {
+          "month": 10,
+          "day": 20
+        }
+      }
+    },
+	{
+      "hat": "birthday",
+      "condition": {
+        "username": "Loneztar",
+        "date": {
+          "month": 7,
+          "day": 15
+        }
+      }
+    },
+    {
+      "hat": "christmas",
+      "condition": {
+        "username": "christmas",
+        "date": {
+          "month": 1,
+          "day": 0
+        }
+      }
+    },
+	{
+      "hat": "christmas",
+      "condition": {
+        "username": "christmas",
+        "date": {
+            "month": 12,
+            "day": 0
+        }
+      }
+    }
+  ]
+}
