@@ -61,7 +61,6 @@ public class ModelSlowpoke extends EntityModel<EntityPetSlow> {
         this.right_leg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount / 1.0F;
         this.left_leg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount / 1.0F;
         petSlow = entity;
-        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
 
 		/*this.head.x = headPitch / (180F / (float) Math.PI);

@@ -8,12 +8,13 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.world.entity.Entity;
 
 /**
  * test - Undefined
  * Created using Tabula 7.0.0
  */
-public class ModelSign<T extends EntityPetSlow> extends Model {
+public class ModelSign<T extends Entity> extends Model {
     private final ModelPart sign;
 
     public ModelSign(ModelPart root) {

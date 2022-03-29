@@ -14,13 +14,13 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.entity.Entity;
 
-public class ModelSlowpokeHat<T extends Entity> extends Model {
+public class ModelSlowpokeHat extends ModelSlowpoke {
 
 	public final ModelPart hat;
 
 
 	public ModelSlowpokeHat(ModelPart root) {
-		super(RenderType::entityCutout);
+		super(root);
 		this.hat = root.getChild("hat");
 
 	}
@@ -34,10 +34,10 @@ public class ModelSlowpokeHat<T extends Entity> extends Model {
 
 
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		/*poseStack.pushPose();
+		poseStack.pushPose();
 		poseStack.scale((float) 0.55D, (float) 0.55D, (float) 0.55D);
-		poseStack.translate(0f, -0.12f, 0f);*/
+		poseStack.translate(0f, -0.11f, 0f);
 		hat.render(poseStack, buffer, packedLight, packedOverlay);
-		/*poseStack.popPose();*/
+		poseStack.popPose();
 	}
 }
