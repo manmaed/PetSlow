@@ -25,14 +25,15 @@ public class MugMilk extends Item {
     }
 
     public ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity livingEntity) {
-        if (!level.isClientSide) livingEntity.curePotionEffects(itemStack); // FORGE - move up so stack.shrink does not turn stack into air
+        if (!level.isClientSide)
+            livingEntity.curePotionEffects(itemStack); // FORGE - move up so stack.shrink does not turn stack into air
         if (livingEntity instanceof ServerPlayer) {
-            ServerPlayer serverplayer = (ServerPlayer)livingEntity;
+            ServerPlayer serverplayer = (ServerPlayer) livingEntity;
             CriteriaTriggers.CONSUME_ITEM.trigger(serverplayer, itemStack);
             serverplayer.awardStat(Stats.ITEM_USED.get(this));
         }
 
-        if (livingEntity instanceof Player && !((Player)livingEntity).getAbilities().instabuild) {
+        if (livingEntity instanceof Player && !((Player) livingEntity).getAbilities().instabuild) {
             itemStack.shrink(1);
         }
 

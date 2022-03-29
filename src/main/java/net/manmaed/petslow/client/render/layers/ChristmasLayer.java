@@ -1,12 +1,14 @@
 package net.manmaed.petslow.client.render.layers;
 
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.manmaed.petslow.PetSlow;
 import net.manmaed.petslow.client.model.PSModels;
-import net.manmaed.petslow.client.render.model.ModelSign;
+import net.manmaed.petslow.client.render.model.ModelSantaHat;
 import net.manmaed.petslow.client.render.model.ModelSlowpoke;
 import net.manmaed.petslow.entity.EntityPetSlow;
+import net.manmaed.petslow.hats.PSHats;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -16,29 +18,31 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
 /**
- * Created by manmaed on 14/01/2019.
+ * Created by manmaed on 24/01/2022.
  */
+public class ChristmasLayer extends RenderLayer<EntityPetSlow, ModelSlowpoke> {
 
-public class SignLayerRenderer extends RenderLayer<EntityPetSlow, ModelSlowpoke> {
+    private static final ResourceLocation CHRISTMAS = new ResourceLocation(PetSlow.MOD_ID, "textures/entity/event/xmas.png");
+    private final ModelSantaHat hat;
 
-    private static final ResourceLocation SIGN = new ResourceLocation(PetSlow.MOD_ID, "textures/entity/sign.png");
-    private final ModelSign hat;
-
-    public SignLayerRenderer(RenderLayerParent layerParent, EntityModelSet entityModelSet) {
+    public ChristmasLayer(RenderLayerParent layerParent, EntityModelSet entityModelSet) {
         super(layerParent);
-        this.hat = new ModelSign(entityModelSet.bakeLayer(PSModels.SIGN));
+        this.hat = new ModelSantaHat(entityModelSet.bakeLayer(PSModels.SANTA));
+
     }
 
     @Override
     public void render(PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight, EntityPetSlow entity, float p_117353_, float p_117354_, float p_117355_, float p_117356_, float p_117357_, float p_117358_) {
-        VertexConsumer vertexConsumer = multiBufferSource.getBuffer(RenderType.entitySolid(SIGN));
+        VertexConsumer vertexConsumer = multiBufferSource.getBuffer(RenderType.entityCutoutNoCull(CHRISTMAS));
         poseStack.pushPose();
-        poseStack.scale((float) 2.0D, (float) 2.0D, (float) 2.0D);
-        float size = 0.125F;
-        poseStack.scale(size, size, size);
-        poseStack.translate(0.0f, 0.85f, 0.70f);
-        if (entity.isInSittingPose() && entity.isAway()) {
-            hat.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
+        if (PSHats.christmas) {
+            if (entity.isAway()) {
+                poseStack.translate(0.0F, -0.75F, -0.15F);
+            } else {
+                this.getParentModel().getHead().translateAndRotate(poseStack);
+                poseStack.translate(0F, -2F, 0F);
+            }
+            hat.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         }
         poseStack.popPose();
     }

@@ -18,7 +18,7 @@ public class PSItems {
     public static final RegistryObject<Item> MUG = ITEMS.register("mug", () -> new Mug(new Item.Properties().tab(PetSlow.PETSLOW)));
     public static final RegistryObject<Item> SLOW_BREW = ITEMS.register("slow_brew", () -> new SlowBrew(new Item.Properties().tab(PetSlow.PETSLOW).stacksTo(1)));
     public static final RegistryObject<Item> CLAY_BREW = ITEMS.register("clay_brew", () -> new ClayBrew(new Item.Properties().tab(PetSlow.PETSLOW).stacksTo(1)));
-    /*public static final RegistryObject<Item> MUG_LAVA = ITEMS.register("mug", () -> new MugLava(new Item.Properties().tab(PetSlow.PETSLOW)));
-    public static final RegistryObject<Item> MUG_WATER = ITEMS.register("mug", () -> new MugWater(new Item.Properties().tab(PetSlow.PETSLOW)));
-    public static final RegistryObject<Item> MUG_MILK = ITEMS.register("mug", () -> new MugMilk(new Item.Properties().tab(PetSlow.PETSLOW)));*/
+    public static final RegistryObject<Item> MUG_LAVA = ITEMS.register("mug_lava", () -> new MugLava(new Item.Properties().tab(PetSlow.PETSLOW).stacksTo(1)));
+    public static final RegistryObject<Item> MUG_WATER = ITEMS.register("mug_water", () -> new MugWater(new Item.Properties().tab(PetSlow.PETSLOW).stacksTo(1)));
+    public static final RegistryObject<Item> MUG_MILK = ITEMS.register("mug_milk", () -> new MugMilk(new Item.Properties().tab(PetSlow.PETSLOW).stacksTo(1)));
 }

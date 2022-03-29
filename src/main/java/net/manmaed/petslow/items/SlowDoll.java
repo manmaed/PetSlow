@@ -1,66 +1,53 @@
 package net.manmaed.petslow.items;
 
 
+import net.manmaed.petslow.entity.PSEntityTypes;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.BaseSpawner;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.Random;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by manmaed on 24/02/2017.
  */
 public class SlowDoll extends Item {
 
-    Random rand = new Random();
-
     public SlowDoll(Properties properties) {
         super(properties);
     }
 
-    /*@Override
-    public ActionResultType useOn(ItemUseContext context) {
-        World world = context.getLevel();
-        if (world.isClientSide) {
-            return ActionResultType.PASS;
-        } else {
-            ItemStack itemStack = context.getItemInHand();
-            BlockPos blockPos = context.getClickedPos();
-            Direction direction = context.getClickedFace();
-            BlockState blockState = world.getBlockState(blockPos);
-            Block block = blockState.getBlock();
-            BlockPos blockpos1;
-            if (blockState.getCollisionShape(world, blockPos).isEmpty()) {
-                blockpos1 = blockPos;
-            } else {
-                blockpos1 = blockPos.relative(direction);
-            }
-            if (PSEntityTypes.SLOWPOKE.isPresent()) {
-                itemStack.shrink(1);
-            }
-            return ActionResultType.PASS;
-        }
-    }*/
-
-    /*@Override
-    public ActionResult<ItemStack> useOn(World world, PlayerEntity player, Hand hand) {
-        if (!world.isClientSide) {
-            ItemStack itemStack = player.getItemInHand(hand);
-            itemStack.shrink(1);
-            //TODO: Spawn Slow
-     EntityMiniSlow miniSlow = new EntityMiniSlow(PSEntityTypes.SLOWPOKE.get(), world);
-            miniSlow.setLocationFromBoundingbox(player.xRot, player.yRot, player.xRot);
-            worldIn.spawnEntity(miniSlow);
-        }
-        return super.use(world, player, hand);
-    }*/
-    /**
-     * Called when this item is used when targetting a Block
-     */
-    /*@Override
-    public ActionResultType useOn(ItemUseContext context) {
-        World world = context.getLevel();
-        EntityType<?> entityType = PSEntityTypes.SLOWPOKE.get();
-        if (world.isClientSide()) {
-            return ActionResultType.SUCCESS;
+    @Override
+    public InteractionResult useOn(UseOnContext context) {
+        Level world = context.getLevel();
+        if (!(world instanceof ServerLevel)) {
+            return InteractionResult.SUCCESS;
         } else {
             ItemStack itemstack = context.getItemInHand();
             BlockPos blockpos = context.getClickedPos();
@@ -68,14 +55,14 @@ public class SlowDoll extends Item {
             BlockState blockstate = world.getBlockState(blockpos);
             Block block = blockstate.getBlock();
             if (block == Blocks.SPAWNER) {
-                TileEntity tileentity = world.getBlockEntity(blockpos);
-                if (tileentity instanceof MobSpawnerTileEntity) {
-                    AbstractSpawner abstractspawner = ((MobSpawnerTileEntity)tileentity).getSpawner();
-                    abstractspawner.setEntityId(entityType);
-                    tileentity.setChanged();
+                BlockEntity blockEntity = world.getBlockEntity(blockpos);
+                if (blockEntity instanceof SpawnerBlockEntity) {
+                    BaseSpawner baseSpawner = ((SpawnerBlockEntity) blockEntity).getSpawner();
+                    baseSpawner.setEntityId(PSEntityTypes.SLOWPOKE.get());
+                    blockEntity.setChanged();
                     world.sendBlockUpdated(blockpos, blockstate, blockstate, 3);
                     itemstack.shrink(1);
-                    return ActionResultType.SUCCESS;
+                    return InteractionResult.CONSUME;
                 }
             }
 
@@ -86,16 +73,49 @@ public class SlowDoll extends Item {
                 blockpos1 = blockpos.relative(direction);
             }
 
-            if (entityType.spawn((ServerWorld)world, itemstack, context.getPlayer(), blockpos1, SpawnReason.SPAWN_EGG, true, !Objects.equals(blockpos, blockpos1) && direction == Direction.UP) != null) {
+            if (PSEntityTypes.SLOWPOKE.get().spawn((ServerLevel) world, itemstack, context.getPlayer(), blockpos1, MobSpawnType.MOB_SUMMONED, true, !Objects.equals(blockpos, blockpos1) && direction == Direction.UP) != null) {
                 itemstack.shrink(1);
+                world.gameEvent(context.getPlayer(), GameEvent.ENTITY_PLACE, blockpos);
             }
 
-            return ActionResultType.SUCCESS;
+            return InteractionResult.CONSUME;
         }
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("item.petslow.slow_doll.tooltip"));
-    }*/
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand p_43227_) {
+        ItemStack itemstack = player.getItemInHand(p_43227_);
+        HitResult hitresult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.SOURCE_ONLY);
+        if (hitresult.getType() != HitResult.Type.BLOCK) {
+            return InteractionResultHolder.pass(itemstack);
+        } else if (!(level instanceof ServerLevel)) {
+            return InteractionResultHolder.success(itemstack);
+        } else {
+            BlockHitResult blockhitresult = (BlockHitResult) hitresult;
+            BlockPos blockpos = blockhitresult.getBlockPos();
+            if (!(level.getBlockState(blockpos).getBlock() instanceof LiquidBlock)) {
+                return InteractionResultHolder.pass(itemstack);
+            } else if (level.mayInteract(player, blockpos) && player.mayUseItemAt(blockpos, blockhitresult.getDirection(), itemstack)) {
+
+                if (PSEntityTypes.SLOWPOKE.get().spawn((ServerLevel) level, itemstack, player, blockpos, MobSpawnType.MOB_SUMMONED, false, false) == null) {
+                    return InteractionResultHolder.pass(itemstack);
+                } else {
+                    if (!player.getAbilities().instabuild) {
+                        itemstack.shrink(1);
+                    }
+
+                    player.awardStat(Stats.ITEM_USED.get(this));
+                    level.gameEvent(GameEvent.ENTITY_PLACE, player);
+                    return InteractionResultHolder.consume(itemstack);
+                }
+            } else {
+                return InteractionResultHolder.fail(itemstack);
+            }
+        }
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag flag) {
+        list.add(new TranslatableComponent("item.petslow.slow_doll.tooltip"));
+    }
 }

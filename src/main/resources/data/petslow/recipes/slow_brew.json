@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:wheat"
+    },
+    {
+      "item": "minecraft:apple"
+    },
+    {
+      "item": "petslow:mug_water"
+    }
+  ],
+  "result": {
+    "item": "petslow:slow_brew"
+  }
+}

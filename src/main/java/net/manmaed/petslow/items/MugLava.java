@@ -1,37 +1,41 @@
 package net.manmaed.petslow.items;
 
+
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 /**
  * Created by manmaed on 12/10/2021.
  */
-public class MugWater extends Item {
-    public MugWater(Properties properties) {
+public class MugLava extends Item {
+    public MugLava(Properties properties) {
         super(properties);
     }
 
     public ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity livingEntity) {
-        if (!level.isClientSide) livingEntity.curePotionEffects(itemStack); // FORGE - move up so stack.shrink does not turn stack into air
+        if (!level.isClientSide)
+            livingEntity.hurt(DamageSource.ON_FIRE, 8.0F); // FORGE - move up so stack.shrink does not turn stack into air
         if (livingEntity instanceof ServerPlayer) {
-            ServerPlayer serverplayer = (ServerPlayer)livingEntity;
+            ServerPlayer serverplayer = (ServerPlayer) livingEntity;
             CriteriaTriggers.CONSUME_ITEM.trigger(serverplayer, itemStack);
             serverplayer.awardStat(Stats.ITEM_USED.get(this));
         }
 
-        if (livingEntity instanceof Player && !((Player)livingEntity).getAbilities().instabuild) {
+        if (livingEntity instanceof Player && !((Player) livingEntity).getAbilities().instabuild) {
             itemStack.shrink(1);
         }
 
@@ -56,7 +60,7 @@ public class MugWater extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(new TranslatableComponent("item.petslow.mug_water.tooltip"));
+    public void appendHoverText(ItemStack stack, @org.jetbrains.annotations.Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
+        tooltip.add(new TranslatableComponent("item.petslow.mug_lava.tooltip").setStyle(Style.EMPTY.withColor(TextColor.parseColor("#ff6600"))));
     }
 }

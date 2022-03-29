@@ -3,18 +3,15 @@ package net.manmaed.petslow.client.render.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.manmaed.petslow.entity.EntityPetSlow;
-import net.manmaed.petslow.entity.PSEntityTypes;
-import net.manmaed.petslow.libs.LogHelper;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 
 public class ModelSlowpoke extends EntityModel<EntityPetSlow> {
     public final ModelPart head;
+    public final ModelPart hat;
     public final ModelPart body;
     public final ModelPart left_arm;
     public final ModelPart right_arm;
@@ -22,13 +19,12 @@ public class ModelSlowpoke extends EntityModel<EntityPetSlow> {
     public final ModelPart right_leg;
     public final ModelPart left_leg_sit;
     public final ModelPart right_leg_sit;
-    private boolean awayFromChair;
-    private boolean onChair;
     public EntityPetSlow petSlow;
 
 
     public ModelSlowpoke(ModelPart root) {
         this.head = root.getChild("head");
+        this.hat = root.getChild("hat");
         this.body = root.getChild("body");
         this.left_arm = root.getChild("left_arm");
         this.right_arm = root.getChild("right_arm");
@@ -42,6 +38,7 @@ public class ModelSlowpoke extends EntityModel<EntityPetSlow> {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
         PartDefinition head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+        PartDefinition hat = partdefinition.addOrReplaceChild("hat", CubeListBuilder.create().texOffs(32, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F).extend(0.5F)), PartPose.offset(0.0F, 0.0F, 0.0F));
         PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create().texOffs(16, 16).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
         PartDefinition left_arm = partdefinition.addOrReplaceChild("left_arm", CubeListBuilder.create().texOffs(40, 16).mirror().addBox(0.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(4.0F, 2.0F, 0.0F));
         PartDefinition right_arm = partdefinition.addOrReplaceChild("right_arm", CubeListBuilder.create().texOffs(40, 16).addBox(-4.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-4.0F, 2.0F, 0.0F));
@@ -60,6 +57,7 @@ public class ModelSlowpoke extends EntityModel<EntityPetSlow> {
         this.left_arm.xRot = Mth.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F / 1.0F;
         this.right_leg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount / 1.0F;
         this.left_leg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount / 1.0F;
+        this.hat.copyFrom(this.head);
         petSlow = entity;
 
 
@@ -71,25 +69,21 @@ public class ModelSlowpoke extends EntityModel<EntityPetSlow> {
 		this.right_leg.xRot = (float) (Math.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount);*/
     }
 
-    public void setAwayFromChair(boolean isAwayFromChair) {
-    	this.awayFromChair = isAwayFromChair;
-	}
+    public ModelPart getHead() {
+        return this.head;
+    }
 
-	public void setOnChair(boolean isOnChair) {
-		this.onChair = isOnChair;
-	}
-
-
-	@Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {;
+    @Override
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         poseStack.pushPose();
-        poseStack.scale((float) 0.5D, (float) 0.5D, (float) 0.5D);
-        poseStack.translate(0f, 1.5f, 0f);
+/*        poseStack.scale((float) 0.5D, (float) 0.5D, (float) 0.5D);
+        poseStack.translate(0f, 1.5f, 0f);*/
         if (petSlow.isInSittingPose()) {
             if (petSlow.isAway()) {
                 //404 Slowpoke not found!
             } else {
                 head.render(poseStack, buffer, packedLight, packedOverlay);
+                hat.render(poseStack, buffer, packedLight, packedOverlay);
                 body.render(poseStack, buffer, packedLight, packedOverlay);
                 left_arm.render(poseStack, buffer, packedLight, packedOverlay);
                 right_arm.render(poseStack, buffer, packedLight, packedOverlay);
@@ -98,6 +92,7 @@ public class ModelSlowpoke extends EntityModel<EntityPetSlow> {
             }
         } else {
             head.render(poseStack, buffer, packedLight, packedOverlay);
+            hat.render(poseStack, buffer, packedLight, packedOverlay);
             body.render(poseStack, buffer, packedLight, packedOverlay);
             left_arm.render(poseStack, buffer, packedLight, packedOverlay);
             right_arm.render(poseStack, buffer, packedLight, packedOverlay);

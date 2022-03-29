@@ -13,7 +13,7 @@ public class LogHelper {
     public static final Logger loggin = LogManager.getLogger(PetSlow.MOD_ID);
 
     private static void log(Level logLevel, Object object) {
-        loggin.log(logLevel, "[" + logLevel + "]:" + String.valueOf(object));
+        loggin.log(logLevel, "[" + logLevel + "]:" + object);
     }
 
     public static void all(Object object) {
