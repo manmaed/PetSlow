@@ -36,7 +36,7 @@ public class ChristmasLayer extends RenderLayer<EntityPetSlow, ModelSlowpoke> {
         VertexConsumer vertexConsumer = multiBufferSource.getBuffer(RenderType.entityCutoutNoCull(CHRISTMAS));
         poseStack.pushPose();
         if (PSHats.christmas) {
-            if (entity.isAway()) {
+            if (entity.isAway() && entity.isInSittingPose()) {
                 poseStack.translate(0.0F, -0.75F, -0.15F);
             } else {
                 this.getParentModel().getHead().translateAndRotate(poseStack);

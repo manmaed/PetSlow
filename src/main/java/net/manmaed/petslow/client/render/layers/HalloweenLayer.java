@@ -36,7 +36,7 @@ public class HalloweenLayer extends RenderLayer<EntityPetSlow, ModelSlowpoke> {
         VertexConsumer vertexConsumer = multiBufferSource.getBuffer(RenderType.entityCutoutNoCull(CREEPER));
         poseStack.pushPose();
         if (PSHats.halloween) {
-            if (entity.isAway()) {
+            if (entity.isAway() && entity.isInSittingPose()) {
                 poseStack.translate(0.0F, -0.75F, -0.15F);
             } else {
                 this.getParentModel().getHead().translateAndRotate(poseStack);
