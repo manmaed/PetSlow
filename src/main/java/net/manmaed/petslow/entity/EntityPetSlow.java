@@ -1,7 +1,6 @@
 package net.manmaed.petslow.entity;
 
 import net.manmaed.petslow.items.PSItems;
-import net.manmaed.petslow.libs.LogHelper;
 import net.manmaed.petslow.sounds.PSSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -226,14 +225,14 @@ public class EntityPetSlow extends TamableAnimal {
                 if (world.getLightEngine().getRawBrightness(pos.above(), 0) < 3) {
                     //LogHelper.info("LightLevel: " + world.getLightEngine().getRawBrightness(pos.above(), 0));
                     if (Blocks.AIR.defaultBlockState() != world.getBlockState(pos.below())) {
-                        LogHelper.info("Torch Count before: " + getTorchCount());
+                        /* LogHelper.info("Torch Count before: " + getTorchCount());*/
                         if (getTorchCount() >= 1) {
                             torch = getTorchCount();
-                            LogHelper.info("Interal Torch Count: " + torch);
+                            /*LogHelper.info("Interal Torch Count: " + torch);*/
                             torch--;
-                            LogHelper.info("Internal After Torch tobe  placed: " + torch);
+                            /*LogHelper.info("Internal After Torch tobe  placed: " + torch);*/
                             setTorchCount(torch);
-                            LogHelper.info("Torch Count after" + getTorchCount());
+                            /*LogHelper.info("Torch Count after" + getTorchCount());*/
                             world.setBlockAndUpdate(pos.above(), Blocks.TORCH.defaultBlockState());
                             playSound(SoundEvents.NOTE_BLOCK_BELL, getSoundVolume(), 0.01F);
                         }
