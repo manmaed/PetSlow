@@ -1,6 +1,7 @@
 {
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/pet-slow",
   "1.18.2": {
+    "0.5.4": "Feature request: Water extinguish fire",
     "0.5.3": "Fixed Debug messages on torch place by slow",
     "0.5.2": "Fix a bug when slow is away and gets told to stand up and hat remains in away mode",
     "0.5.1": "Port to 1.18.2"
@@ -14,8 +15,8 @@
     "0.1.0": "Mod made!"
   },
   "promos": {
-    "1.18.2-latest": "0.5.3",
-    "1.18.2-recommended": "0.5.3",
+    "1.18.2-latest": "0.5.4",
+    "1.18.2-recommended": "0.5.4",
     "1.12.2-latest": "0.1.13"
   }
 }
