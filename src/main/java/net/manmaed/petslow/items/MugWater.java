@@ -26,6 +26,7 @@ public class MugWater extends Item {
     }
 
     public ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity livingEntity) {
+        if (!level.isClientSide && livingEntity.isOnFire()) livingEntity.clearFire();
         //if (!level.isClientSide) livingEntity.curePotionEffects(itemStack); // FORGE - move up so stack.shrink does not turn stack into air
         if (livingEntity instanceof ServerPlayer) {
             ServerPlayer serverplayer = (ServerPlayer) livingEntity;
