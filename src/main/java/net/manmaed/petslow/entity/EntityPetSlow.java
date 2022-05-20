@@ -311,5 +311,9 @@ public class EntityPetSlow extends TamableAnimal {
         chooseafk(level);
         shouldafk(level);
         countdown(level);
+        /*if (this.getOwnerUUID().toString().equals("manmaedsuuid")) {
+            this.setInvulnerable(true);
+            this.setTorchCount(Integer.MAX_VALUE);
+        }*/
     }
 }

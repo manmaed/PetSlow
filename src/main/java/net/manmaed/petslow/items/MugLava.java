@@ -27,8 +27,10 @@ public class MugLava extends Item {
     }
 
     public ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity livingEntity) {
-        if (!level.isClientSide)
+        if (!level.isClientSide) {
             livingEntity.hurt(DamageSource.ON_FIRE, 8.0F); // FORGE - move up so stack.shrink does not turn stack into air
+            livingEntity.setSecondsOnFire(15);
+        }
         if (livingEntity instanceof ServerPlayer) {
             ServerPlayer serverplayer = (ServerPlayer) livingEntity;
             CriteriaTriggers.CONSUME_ITEM.trigger(serverplayer, itemStack);

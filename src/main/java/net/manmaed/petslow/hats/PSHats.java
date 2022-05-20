@@ -26,7 +26,7 @@ public class PSHats {
         try {
             if (!PetSlowClient.iChunHatsLoaded) {
                 hatData = HatData.getHatData(new URL("https://raw.githubusercontent.com/manmaed/PetSlow/main/hats.json"));
-                //hatData = HatData.getHatData(new URL("file:///G:/Modding/Forge/1_16_5/PetRock/run/hattesting.json"));
+                //hatData = HatData.getHatData(new URL("file:///G:/Modding/Forge/1_18_2/PetSlow/run/hattesting.json"));
                 String hat = hatData.isEventActive();
                 usernames = hatData.getUsername();
                 if (hat.equalsIgnoreCase("christmas")) {
