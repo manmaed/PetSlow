@@ -9,6 +9,10 @@ import net.minecraft.commands.Commands;
  */
 public class CommandSetHat {
     public static ArgumentBuilder<CommandSourceStack, ?> register() {
-        return Commands.literal("sethat").requires(cs -> cs.hasPermission(0)).then(CommandSHBirthday.register()).then(CommandSHChristmas.register()).then(CommandSHHallowen.register()).then(CommandSHNone.register());
+        return Commands.literal("sethat").requires(cs -> cs.hasPermission(0))
+                .then(CommandSHBirthday.register())
+                .then(CommandSHChristmas.register())
+                .then(CommandSHHallowen.register())
+                .then(CommandSHNone.register());
     }
 }

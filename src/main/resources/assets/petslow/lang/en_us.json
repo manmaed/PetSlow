@@ -27,5 +27,10 @@
   "petslow.comment.4": "Sounds",
   "entity.petslow.death": "Pet Slow death",
   "entity.petslow.tamed": "Pet Slow tamed",
-  "petslow.comment.5": "Other"
+  "petslow.comment.5": "Other",
+  "petslow.mode.christmas": "Happy Christmas!",
+  "petslow.mode.birthday": "Birthday mode enabled!",
+  "petslow.mode.halloween": "Happy Halloween!",
+  "petslow.mode.none": "Hats cleared!",
+  "petslow.command.reload": "Hats Reloaded!"
 }

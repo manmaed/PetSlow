@@ -4,9 +4,11 @@ package net.manmaed.petslow;
 import net.manmaed.petslow.client.model.PSModels;
 import net.manmaed.petslow.client.render.entity.RenderSlowpoke;
 import net.manmaed.petslow.client.render.model.*;
+import net.manmaed.petslow.commands.PSCommands;
 import net.manmaed.petslow.entity.PSEntityTypes;
 import net.manmaed.petslow.hats.PSHats;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.RegisterClientCommandsEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
@@ -19,6 +21,10 @@ public class PetSlowClient {
 
     public static void doEntityRendering(final EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(PSEntityTypes.SLOWPOKE.get(), RenderSlowpoke::new);
+    }
+
+    public static void registerClientCommands(RegisterClientCommandsEvent event) {
+        PSCommands.register(event.getDispatcher());
     }
 
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {

@@ -10,14 +10,14 @@ import net.minecraft.network.chat.TranslatableComponent;
 /**
  * Created by manmaed on 29/11/2019.
  */
-public class CommandSHBirthday {
+public class CommandSHReload {
     public static ArgumentBuilder<CommandSourceStack, ?> register() {
-        return Commands.literal("birthday").requires(cs ->cs.hasPermission(0)).executes(ctx -> run(ctx.getSource()));
+        return Commands.literal("reload").requires(cs -> cs.hasPermission(0)).executes(ctx -> run(ctx.getSource()));
     }
 
-    private static int run(CommandSourceStack stack) {
-        PSHats.setHat("birthday");
-        stack.sendSuccess(new TranslatableComponent("petslow.mode.birthday"), true);
+    private static int run(CommandSourceStack source) {
+        PSHats.load();
+        source.sendSuccess(new TranslatableComponent("petslow.command.reload"),true);
         return 0;
     }
 }

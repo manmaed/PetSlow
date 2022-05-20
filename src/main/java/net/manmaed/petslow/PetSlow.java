@@ -2,7 +2,6 @@ package net.manmaed.petslow;
 
 
 import net.manmaed.petslow.blocks.PSBlocks;
-import net.manmaed.petslow.commands.PSCommands;
 import net.manmaed.petslow.entity.EntityPetSlow;
 import net.manmaed.petslow.entity.PSEntityTypes;
 import net.manmaed.petslow.items.PSItems;
@@ -10,7 +9,6 @@ import net.manmaed.petslow.sounds.PSSounds;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -42,15 +40,11 @@ public class PetSlow {
         event.addListener(PetSlowClient::doEntityRendering);
         event.addListener(PetSlowClient::registerLayerDefinitions);
         event.addListener(PetSlowClient::doClientStuff);
-        MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, this::registerCommands);
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, PetSlowClient::registerClientCommands);
     }
 
     private void AttributeCreation(EntityAttributeCreationEvent event) {
         event.put(PSEntityTypes.SLOWPOKE.get(), EntityPetSlow.createAttributes().build());
-    }
-
-    private void registerCommands(RegisterCommandsEvent event) {
-        PSCommands.register(event.getDispatcher());
     }
 
 }
