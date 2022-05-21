@@ -2,6 +2,7 @@ package net.manmaed.petslow.items;
 
 
 import net.manmaed.petslow.entity.PSEntityTypes;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -116,6 +117,8 @@ public class SlowDoll extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag flag) {
-        list.add(new TranslatableComponent("item.petslow.slow_doll.tooltip"));
+        list.add(new TranslatableComponent("item.petslow.slow_doll.tooltip.one").withStyle(ChatFormatting.BOLD).withStyle(ChatFormatting.BLUE));
+        list.add(new TranslatableComponent("item.petslow.slow_doll.tooltip.two").withStyle(ChatFormatting.GOLD));
+        list.add(new TranslatableComponent("item.petslow.slow_doll.tooltip.three").withStyle(ChatFormatting.GRAY));
     }
 }
