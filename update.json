@@ -1,6 +1,7 @@
 {
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/pet-slow",
   "1.18.2": {
+    "0.5.7": "feat: changed slow doll tooltip to 3 lines",
     "0.5.6": "fixed translation key on sethat christmas",
     "0.5.5": "fix commands, added reload command & mug of lava sets player on fire",
     "0.5.4": "Feature request: Water extinguish fire",
