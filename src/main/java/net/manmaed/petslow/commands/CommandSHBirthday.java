@@ -1,11 +1,10 @@
 package net.manmaed.petslow.commands;
 
-
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import net.manmaed.petslow.hats.PSHats;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 
 /**
  * Created by manmaed on 29/11/2019.
@@ -17,7 +16,7 @@ public class CommandSHBirthday {
 
     private static int run(CommandSourceStack stack) {
         PSHats.setHat("birthday");
-        stack.sendSuccess(new TranslatableComponent("petslow.mode.birthday"), true);
+        stack.sendSuccess(Component.translatable("petslow.mode.birthday"), true);
         return 0;
     }
 }

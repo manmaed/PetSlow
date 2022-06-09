@@ -6,12 +6,12 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -97,8 +97,8 @@ public class SlowDoll extends Item {
             if (!(level.getBlockState(blockpos).getBlock() instanceof LiquidBlock)) {
                 return InteractionResultHolder.pass(itemstack);
             } else if (level.mayInteract(player, blockpos) && player.mayUseItemAt(blockpos, blockhitresult.getDirection(), itemstack)) {
-
-                if (PSEntityTypes.SLOWPOKE.get().spawn((ServerLevel) level, itemstack, player, blockpos, MobSpawnType.MOB_SUMMONED, false, false) == null) {
+                Entity entity = PSEntityTypes.SLOWPOKE.get().spawn((ServerLevel) level, itemstack, player, blockpos, MobSpawnType.MOB_SUMMONED, false, false);
+                if (entity == null) {
                     return InteractionResultHolder.pass(itemstack);
                 } else {
                     if (!player.getAbilities().instabuild) {
@@ -106,7 +106,7 @@ public class SlowDoll extends Item {
                     }
 
                     player.awardStat(Stats.ITEM_USED.get(this));
-                    level.gameEvent(GameEvent.ENTITY_PLACE, player);
+                    level.gameEvent(player, GameEvent.ENTITY_PLACE, entity.position());
                     return InteractionResultHolder.consume(itemstack);
                 }
             } else {
@@ -117,8 +117,8 @@ public class SlowDoll extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag flag) {
-        list.add(new TranslatableComponent("item.petslow.slow_doll.tooltip.one").withStyle(ChatFormatting.BOLD).withStyle(ChatFormatting.BLUE));
-        list.add(new TranslatableComponent("item.petslow.slow_doll.tooltip.two").withStyle(ChatFormatting.GOLD));
-        list.add(new TranslatableComponent("item.petslow.slow_doll.tooltip.three").withStyle(ChatFormatting.GRAY));
+        list.add(Component.translatable("item.petslow.slow_doll.tooltip.one").withStyle(ChatFormatting.BOLD).withStyle(ChatFormatting.BLUE));
+        list.add(Component.translatable("item.petslow.slow_doll.tooltip.two").withStyle(ChatFormatting.GOLD));
+        list.add(Component.translatable("item.petslow.slow_doll.tooltip.three").withStyle(ChatFormatting.GRAY));
     }
 }

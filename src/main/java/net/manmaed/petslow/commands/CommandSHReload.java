@@ -5,7 +5,7 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import net.manmaed.petslow.hats.PSHats;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 
 /**
  * Created by manmaed on 29/11/2019.
@@ -17,7 +17,7 @@ public class CommandSHReload {
 
     private static int run(CommandSourceStack source) {
         PSHats.load();
-        source.sendSuccess(new TranslatableComponent("petslow.command.reload"),true);
+        source.sendSuccess(Component.translatable("petslow.command.reload"),true);
         return 0;
     }
 }

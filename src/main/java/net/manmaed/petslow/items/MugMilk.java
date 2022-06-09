@@ -2,7 +2,6 @@ package net.manmaed.petslow.items;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -59,6 +58,6 @@ public class MugMilk extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(new TranslatableComponent("item.petslow.mug_milk.tooltip"));
+        tooltip.add(Component.translatable("item.petslow.mug_milk.tooltip"));
     }
 }

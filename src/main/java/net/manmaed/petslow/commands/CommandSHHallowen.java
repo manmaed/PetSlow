@@ -5,7 +5,7 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import net.manmaed.petslow.hats.PSHats;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 
 /**
  * Created by manmaed on 29/11/2019.
@@ -17,7 +17,7 @@ public class CommandSHHallowen {
 
     private static int run(CommandSourceStack source) {
         PSHats.setHat("halloween");
-        source.sendSuccess(new TranslatableComponent("petslow.mode.halloween"), true);
+        source.sendSuccess(Component.translatable("petslow.mode.halloween"), true);
         return 0;
     }
 }

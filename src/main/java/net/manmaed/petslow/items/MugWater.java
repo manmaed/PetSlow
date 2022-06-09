@@ -4,7 +4,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -60,6 +59,6 @@ public class MugWater extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(new TranslatableComponent("item.petslow.mug_water.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.AQUA)));
+        tooltip.add(Component.translatable("item.petslow.mug_water.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.AQUA)));
     }
 }

@@ -1,7 +1,6 @@
 package net.manmaed.petslow.items;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -21,6 +20,6 @@ public class Mug extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(new TranslatableComponent("item.petslow.mug.tooltip"));
+        tooltip.add(Component.translatable("item.petslow.mug.tooltip"));
     }
 }
