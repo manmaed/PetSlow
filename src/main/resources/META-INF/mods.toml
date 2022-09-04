@@ -1,5 +1,5 @@
 modLoader = "javafml" #mandatory
-loaderVersion = "[41,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+loaderVersion = "[43,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
 license = "All rights reserved"
 issueTrackerURL = "https://github.com/manmaed/PetSlow/issues" #optional
 [[mods]] #mandatory
@@ -11,3 +11,9 @@ credits = "Wendi for the SlowDoll and Riz for the death sound" #optional
 authors = "manmaed" #optional
 description = '''
 Mini Slowpokes!'''
+[[dependencies.petslow]]
+modId="forge"
+mandatory=true
+versionRange="[43.1.0,)"
+ordering="NONE"
+side="BOTH"

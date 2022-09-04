@@ -12,7 +12,7 @@ import net.minecraftforge.registries.RegistryObject;
  */
 public class PSEntityTypes {
 
-    public static DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, PetSlow.MOD_ID);
+    public static DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, PetSlow.MOD_ID);
 
     public static final RegistryObject<EntityType<EntityPetSlow>> SLOWPOKE = ENTITY_TYPES.register("petslow", () -> EntityType.Builder.of(EntityPetSlow::new, MobCategory.MISC).sized(0.5f, 1.0f).build("petslow"));
 }
