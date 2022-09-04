@@ -1,7 +1,7 @@
 {
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/pet-slow",
   "1.19.2": {
-    "0.7.1": "Port to 1.19.2"
+    "0.7.3": "Port to 1.19.2"
   },
   "1.19": {
     "0.6.2": "Fixed Mug o' Milk not cureing effects",
@@ -26,8 +26,8 @@
     "0.1.0": "Mod made!"
   },
   "promos": {
-    "1.19.2-latest": "0.7.0",
-    "1.19.2-recommended": "0.7.0",
+    "1.19.2-latest": "0.7.3",
+    "1.19.2-recommended": "0.7.3",
     "1.19-latest": "0.6.2",
     "1.19-recommended": "0.6.2",
     "1.18.2-latest": "0.5.8",
