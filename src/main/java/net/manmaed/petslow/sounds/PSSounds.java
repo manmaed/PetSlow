@@ -4,6 +4,7 @@ package net.manmaed.petslow.sounds;
 import net.manmaed.petslow.PetSlow;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -16,9 +17,9 @@ public class PSSounds {
     /* Example Of Sound Reg
     public static final RegistryObject<SoundEvent> HELLO = SOUNDS.register(
             "sounds.entity.mineturtle.hello",
-            () -> new SoundEvent(new ResourceLocation(Reference.MOD_ID, "sounds.entity.mineturtle.hello")));
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Reference.MOD_ID, "sounds.entity.mineturtle.hello")));
     */
-    public static final RegistryObject<SoundEvent> SLOW_DEATH = SOUNDS.register("sounds.entity.petslow.death", () -> new SoundEvent(new ResourceLocation(PetSlow.MOD_ID, "sounds.entity.petslow.death")));
-    public static final RegistryObject<SoundEvent> SLOW_TAME = SOUNDS.register("sounds.entity.petslow.tamed", () -> new SoundEvent(new ResourceLocation(PetSlow.MOD_ID, "sounds.entity.petslow.tamed")));
+    public static final RegistryObject<SoundEvent> SLOW_DEATH = SOUNDS.register("sounds.entity.petslow.death", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(PetSlow.MOD_ID, "sounds.entity.petslow.death")));
+    public static final RegistryObject<SoundEvent> SLOW_TAME = SOUNDS.register("sounds.entity.petslow.tamed", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(PetSlow.MOD_ID, "sounds.entity.petslow.tamed")));
 
 }

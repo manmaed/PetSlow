@@ -16,6 +16,7 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BaseSpawner;
@@ -39,7 +40,6 @@ import java.util.Objects;
  * Created by manmaed on 24/02/2017.
  */
 public class SlowDoll extends Item {
-
     public SlowDoll(Properties properties) {
         super(properties);
     }
@@ -54,14 +54,14 @@ public class SlowDoll extends Item {
             BlockPos blockpos = context.getClickedPos();
             Direction direction = context.getClickedFace();
             BlockState blockstate = world.getBlockState(blockpos);
-            Block block = blockstate.getBlock();
-            if (block == Blocks.SPAWNER) {
+            if (blockstate.is(Blocks.SPAWNER)) {
                 BlockEntity blockEntity = world.getBlockEntity(blockpos);
                 if (blockEntity instanceof SpawnerBlockEntity) {
-                    BaseSpawner baseSpawner = ((SpawnerBlockEntity) blockEntity).getSpawner();
-                    baseSpawner.setEntityId(PSEntityTypes.SLOWPOKE.get());
+                    SpawnerBlockEntity baseSpawner = (SpawnerBlockEntity)blockEntity;
+                    baseSpawner.setEntityId(PSEntityTypes.SLOWPOKE.get(), world.getRandom());
                     blockEntity.setChanged();
                     world.sendBlockUpdated(blockpos, blockstate, blockstate, 3);
+                    world.gameEvent(context.getPlayer(), GameEvent.BLOCK_CHANGE, blockpos);
                     itemstack.shrink(1);
                     return InteractionResult.CONSUME;
                 }
