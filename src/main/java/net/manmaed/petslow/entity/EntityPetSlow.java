@@ -234,7 +234,7 @@ public class EntityPetSlow extends TamableAnimal {
                             setTorchCount(torch);
                             /*LogHelper.info("Torch Count after" + getTorchCount());*/
                             world.setBlockAndUpdate(pos.above(), Blocks.TORCH.defaultBlockState());
-                            playSound(SoundEvents.NOTE_BLOCK_BELL, getSoundVolume(), 0.01F);
+                            playSound(SoundEvents.NOTE_BLOCK_BELL.get(), getSoundVolume(), 0.01F);
                         }
                     }
                 }
