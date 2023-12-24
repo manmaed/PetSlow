@@ -1,19 +1,18 @@
 plugins {
     id 'eclipse'
+    id 'idea'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '5.1.+'
-    id 'com.matthewprenger.cursegradle' version '1.4.0'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+    id "me.modmuss50.mod-publish-plugin" version "0.4.5"
 }
 
-repositories {
-    maven {
-        url "https://www.cursemaven.com"
-    }
-}
 def ENV = System.getenv()
 version = "${ENV.GITHUB_RUN_NUMBER}" ? "${mod_version}.${ENV.GITHUB_RUN_NUMBER}" : "${mod_version}.nobuildnumber"
-group = 'net.manmaed.petslow'
-archivesBaseName = 'petslow'
+group = project.maven_group
+
+base {
+    archivesBaseName = project.archives_base_name + "-forge"
+}
 
 // Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -21,73 +20,52 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
     mappings channel: "${minecraft_mappings}", version: "${minecraft_version}"
-runs {
-        client {
+    copyIdeResources = true
+    runs {
+        configureEach {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-            property 'forge.enabledGameTestNamespaces', 'petslow'
-            mods {
-                petslow {
-                    source sourceSets.main
-                }
-            }
+        }
+
+        client {
+            property 'forge.enabledGameTestNamespaces', project.archives_base_name
         }
 
         server {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            property 'forge.enabledGameTestNamespaces', 'petslow'
-            mods {
-                petslow {
-                    source sourceSets.main
-                }
-            }
-        }
-
-       gameTestServer {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            property 'forge.enabledGameTestNamespaces', 'petslow'
-            mods {
-                petslow {
-                    source sourceSets.main
-                }
-            }
+            property 'forge.enabledGameTestNamespaces', project.archives_base_name
+            args '--nogui'
         }
 
         data {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            args '--mod', 'petslow', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-            mods {
-                petslow {
-                    source sourceSets.main
-                }
-            }
+            workingDirectory project.file('run-data')
+            args '--mod', project.archives_base_name, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
         }
     }
 }
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
+sourceSets.main.resources {
+    srcDir 'src/generated/resources'
+}
 
 repositories {
-    maven { url 'https://maven.blamejared.com' }
+    maven {
+        url "https://maven.blamejared.com"
+    }
+    maven {
+        url "https://maven.curse.tools"
+    }
 }
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    //compileOnly fg.deobf("vazkii.patchouli:Patchouli:${minecraft_version}-${patchouli_version}:api")
-    //runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${minecraft_version}-${patchouli_version]")
+    //implementation fg.deobf("curse.maven:ctm-${ctm_id}:${ctm_file_id}")
 }
 
 jar {
     manifest {
         attributes([
-                "Specification-Title"     : "petslow",
+                "Specification-Title"     : project.archives_base_name,
                 "Specification-Vendor"    : "manmaed",
                 "Specification-Version"   : "1", // We are version 1 of ourselves
                 "Implementation-Title"    : project.name,
@@ -113,24 +91,38 @@ publishing {
     }
 }
 
-if (ENV.CURSE_DEPLOY) {
-    curseforge {
-        apiKey = ENV.CURSE_DEPLOY
-        project {
-            id = project.curseforge_id
-            releaseType = "${curseforge_releasetype}"
-            addGameVersion "Forge"
-            addGameVersion "Java 17"
-            addGameVersion "${minecraft_version}"
-            mainArtifact(jar) {
-                displayName = "${mod_name} v${version} - ${minecraft_version}"
-            }
-            changelog = "changeme"
+tasks.named('processResources', ProcessResources).configure {
+    var replaceProperties = [
+            version: version
+    ]
+    inputs.properties replaceProperties
 
-        }
+    filesMatching(['META-INF/mods.toml']) {
+        expand replaceProperties + [project: project]
+    }
+}
+
+publishMods {
+    dryRun = providers.environmentVariable("CURSE_DEPLOY").getOrNull() == null
+    file = jar.archiveFile
+    modLoaders.add("forge")
+    type = BETA
+    changelog = "changeme"
+    displayName = "${mod_name} v${project.version} - Forge - ${minecraft_version}"
+    curseforge {
+        accessToken = providers.environmentVariable("CURSE_DEPLOY")
+        projectId = project.curseforge_id
+        minecraftVersions.add("Java 17")
+        minecraftVersions.add("${minecraft_version}")
     }
 }
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
+
+sourceSets.each {
+    def dir = layout.buildDirectory.dir("sourcesSets/$it.name")
+    it.output.resourcesDir = dir
+    it.java.destinationDirectory = dir
 }

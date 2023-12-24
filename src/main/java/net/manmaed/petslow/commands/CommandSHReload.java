@@ -17,7 +17,9 @@ public class CommandSHReload {
 
     private static int run(CommandSourceStack source) {
         PSHats.load();
-        source.sendSuccess(Component.translatable("petslow.command.reload"),true);
+        source.sendSuccess(() -> {
+            return Component.translatable("petslow.command.reload");
+        },true);
         return 0;
     }
 }

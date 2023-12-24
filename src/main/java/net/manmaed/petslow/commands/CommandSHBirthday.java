@@ -16,7 +16,9 @@ public class CommandSHBirthday {
 
     private static int run(CommandSourceStack stack) {
         PSHats.setHat("birthday");
-        stack.sendSuccess(Component.translatable("petslow.mode.birthday"), true);
+        stack.sendSuccess(() -> {
+            return Component.translatable("petslow.mode.birthday");
+        }, true);
         return 0;
     }
 }

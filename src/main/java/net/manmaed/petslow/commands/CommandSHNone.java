@@ -17,7 +17,9 @@ public class CommandSHNone {
 
     private static int run(CommandSourceStack source) {
         PSHats.setHat("none");
-        source.sendSuccess(Component.translatable("petslow.mode.none"), true);
+        source.sendSuccess(() -> {
+            return Component.translatable("petslow.mode.none");
+        }, true);
         return 0;
     }
 }
