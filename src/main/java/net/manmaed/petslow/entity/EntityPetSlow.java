@@ -147,7 +147,8 @@ public class EntityPetSlow extends TamableAnimal {
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
         Item item = itemStack.getItem();
-        if (this.level.isClientSide) {
+        Level level = this.level();
+        if (level.isClientSide) {
             boolean flag = this.isOwnedBy(player) || this.isTame() || item == PSItems.SLOW_BREW.get() && !this.isTame();
             return flag ? InteractionResult.CONSUME : InteractionResult.PASS;
         } else {
@@ -199,12 +200,12 @@ public class EntityPetSlow extends TamableAnimal {
                     this.tame(player);
                     this.navigation.stop();
                     this.setOrderedToSit(true);
-                    this.level.broadcastEntityEvent(this, (byte) 7);
+                    level.broadcastEntityEvent(this, (byte) 7);
                     //TOTEM_USE maybe
                     playSound(PSSounds.SLOW_TAME.get(), getSoundVolume(), 1F);
                     /*playSound(SoundEvents.TOTEM_USE, getSoundVolume(), 1F);*/
                 } else {
-                    this.level.broadcastEntityEvent(this, (byte) 6);
+                    level.broadcastEntityEvent(this, (byte) 6);
                 }
                 playSound(SoundEvents.GENERIC_DRINK, getSoundVolume(), 1F);
                 if (this.random.nextInt(25) == 0) {
@@ -246,13 +247,13 @@ public class EntityPetSlow extends TamableAnimal {
         if (!world.isClientSide) {
             if (isTame() && isOrderedToSit()) {
                 if (this.entityData.get(STAY_COOLDOWN) == 0 && this.entityData.get(RETURN_COOLDOWN) == NOT_IN_USE) {
-                    int bool = this.level.random.nextInt(2500) + 100;
+                    int bool = world.random.nextInt(2500) + 100;
                     this.entityData.set(STAY_COOLDOWN, NOT_IN_USE);
                     this.entityData.set(RETURN_COOLDOWN, bool);
                     setAway(false);
                 }
                 if (this.entityData.get(RETURN_COOLDOWN) == 0 && this.entityData.get(STAY_COOLDOWN) == NOT_IN_USE) {
-                    int bool = this.level.random.nextInt(25000) + 1000;
+                    int bool = world.random.nextInt(25000) + 1000;
                     this.entityData.set(RETURN_COOLDOWN, NOT_IN_USE);
                     this.entityData.set(STAY_COOLDOWN, bool);
                     setAway(true);
@@ -282,11 +283,11 @@ public class EntityPetSlow extends TamableAnimal {
             if (this.entityData.get(STAY_COOLDOWN) == NOT_IN_USE && this.entityData.get(RETURN_COOLDOWN) == NOT_IN_USE) {
                 boolean tobeornottobe = world.random.nextBoolean();
                 if (tobeornottobe) {
-                    this.entityData.set(RETURN_COOLDOWN, (this.level.random.nextInt(100) + 100));
+                    this.entityData.set(RETURN_COOLDOWN, (world.random.nextInt(100) + 100));
                     this.entityData.set(STAY_COOLDOWN, NOT_IN_USE);
                     setAway(false);
                 } else {
-                    this.entityData.set(STAY_COOLDOWN, (this.level.random.nextInt(2500) + 500));
+                    this.entityData.set(STAY_COOLDOWN, (world.random.nextInt(2500) + 500));
                     this.entityData.set(RETURN_COOLDOWN, NOT_IN_USE);
                     setAway(true);
                 }
@@ -305,6 +306,7 @@ public class EntityPetSlow extends TamableAnimal {
     @Override
     public void tick() {
         super.tick();
+        Level level = this.level();
         //LogHelper.info("STAY_COOLDOWN: " + this.entityData.get(STAY_COOLDOWN) + " : RETURN_COOLDOWN: " + this.entityData.get(RETURN_COOLDOWN));
         addtorch(level, this.getOnPos());
         isAway();

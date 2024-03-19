@@ -16,7 +16,9 @@ public class CommandSHChristmas {
 
     private static int run(CommandSourceStack source) {
         PSHats.setHat("christmas");
-        source.sendSuccess(Component.translatable("petslow.mode.christmas"), true);
+        source.sendSuccess(() -> {
+            return Component.translatable("petslow.mode.christmas");
+        }, true);
         return 0;
     }
 }

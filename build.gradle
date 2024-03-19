@@ -2,7 +2,7 @@ plugins {
     id 'eclipse'
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '5.1.+'
-    id 'com.matthewprenger.cursegradle' version '1.4.0'
+    id "me.modmuss50.mod-publish-plugin" version "0.4.5"
 }
 
 repositories {
@@ -81,7 +81,7 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     //compileOnly fg.deobf("vazkii.patchouli:Patchouli:${minecraft_version}-${patchouli_version}:api")
-    //runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${minecraft_version}-${patchouli_version]")
+    //runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${minecraft_version}-${patchouli_version}")
 }
 
 jar {
@@ -113,21 +113,18 @@ publishing {
     }
 }
 
-if (ENV.CURSE_DEPLOY) {
+publishMods {
+    dryRun = providers.environmentVariable("CURSE_DEPLOY").getOrNull() == null
+    file = jar.archiveFile
+    modLoaders.add("forge")
+    type = BETA
+    changelog = "changeme"
+    displayName = "${mod_name} v${project.version} - Forge - ${minecraft_version}"
     curseforge {
-        apiKey = ENV.CURSE_DEPLOY
-        project {
-            id = project.curseforge_id
-            releaseType = "${curseforge_releasetype}"
-            addGameVersion "Forge"
-            addGameVersion "Java 17"
-            addGameVersion "${minecraft_version}"
-            mainArtifact(jar) {
-                displayName = "${mod_name} v${version} - ${minecraft_version}"
-            }
-            changelog = "changeme"
-
-        }
+        accessToken = providers.environmentVariable("CURSE_DEPLOY")
+        projectId = project.curseforge_id
+        minecraftVersions.add("Java 17")
+        minecraftVersions.add("${minecraft_version}")
     }
 }
 

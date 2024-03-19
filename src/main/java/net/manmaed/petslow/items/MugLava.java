@@ -9,7 +9,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
@@ -27,7 +26,7 @@ public class MugLava extends Item {
 
     public ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity livingEntity) {
         if (!level.isClientSide) {
-            livingEntity.hurt(DamageSource.ON_FIRE, 8.0F); // FORGE - move up so stack.shrink does not turn stack into air
+            livingEntity.hurt(livingEntity.damageSources().onFire(), 8.0F); // FORGE - move up so stack.shrink does not turn stack into air
             livingEntity.setSecondsOnFire(15);
         }
         if (livingEntity instanceof ServerPlayer) {
