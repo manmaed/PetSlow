@@ -59,7 +59,7 @@ public class ModelSantaHat extends Model {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int ihavenocluetrynegone) {
         HatBottem.render(poseStack, buffer, packedLight, packedOverlay);
         hatp1.render(poseStack, buffer, packedLight, packedOverlay);
         hatp2.render(poseStack, buffer, packedLight, packedOverlay);

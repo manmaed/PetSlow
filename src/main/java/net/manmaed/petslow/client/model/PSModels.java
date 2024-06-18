@@ -17,7 +17,7 @@ public class PSModels {
     public static final ModelLayerLocation SANTA = makeModelLayerLocation("santa");
 
     public static ModelLayerLocation makeModelLayerLocation(String name) {
-        return new ModelLayerLocation(new ResourceLocation(PetSlow.MOD_ID, name), name);
+        return new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(PetSlow.MOD_ID, name), name);
     }
 
 }

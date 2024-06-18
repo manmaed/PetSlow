@@ -22,7 +22,7 @@ import net.minecraft.resources.ResourceLocation;
  */
 public class HalloweenLayer extends RenderLayer<EntityPetSlow, ModelSlowpoke> {
 
-    private static final ResourceLocation CREEPER = new ResourceLocation(PetSlow.MOD_ID, "textures/entity/event/creeper.png");
+    private static final ResourceLocation CREEPER = ResourceLocation.fromNamespaceAndPath(PetSlow.MOD_ID, "textures/entity/event/creeper.png");
     private final ModelCreeperHat hat;
 
     public HalloweenLayer(RenderLayerParent layerParent, EntityModelSet entityModelSet) {
@@ -42,7 +42,7 @@ public class HalloweenLayer extends RenderLayer<EntityPetSlow, ModelSlowpoke> {
                 this.getParentModel().getHead().translateAndRotate(poseStack);
                 poseStack.translate(0F, -2F, 0F);
             }
-            hat.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+            hat.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, -1);
         }
         poseStack.popPose();
     }

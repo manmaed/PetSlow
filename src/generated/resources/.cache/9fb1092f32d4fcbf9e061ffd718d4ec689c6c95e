@@ -1,0 +1,15 @@
+// 1.21	2024-06-14T23:23:39.2121767	Recipes
+37aa550eff3ff5e3640cfeaa5f354a5e36e15eb0 data/petslow/advancement/recipes/building_blocks/clay_brew.json
+7ee6ebea87336457c400ea09b9eb30e872c101c8 data/petslow/advancement/recipes/building_blocks/mug.json
+0d6249234f492a9dc195a6ceba29b994248e1ee9 data/petslow/advancement/recipes/building_blocks/mug_lava.json
+af4589d64d63d1559efd8d58ba5a3a0830c90e0c data/petslow/advancement/recipes/building_blocks/mug_milk.json
+d2b3e9ffa53fcf7e37d3bb0aabd822ebe42b35fd data/petslow/advancement/recipes/building_blocks/mug_water.json
+1a0d2eb21230501dd4a51894e5455c4e63b2461e data/petslow/advancement/recipes/building_blocks/slow_brew.json
+6972bfa85e32ce46ac94287e9cccbda7ddc3c597 data/petslow/advancement/recipes/building_blocks/slow_doll.json
+4aab9a4076782ed40cdb5361df2ea8f512e4e524 data/petslow/recipe/clay_brew.json
+a2d0977ad2bf6a62a4ffeb5334e77cf76c324f87 data/petslow/recipe/mug.json
+78b757f61ac5ee7e08793ed0ca9b20a16d33b7e6 data/petslow/recipe/mug_lava.json
+4433d42cb7051d81545d7473ff1ce78117fc8ec1 data/petslow/recipe/mug_milk.json
+50a2bfb57d81a1d9e7ae5a2a68b0c73ac36b2d2d data/petslow/recipe/mug_water.json
+efb705ff38fcf6919e6b1b102950a2dfa3e4558a data/petslow/recipe/slow_brew.json
+9e38629d66052d6f6cafd365afa07b912242a902 data/petslow/recipe/slow_doll.json

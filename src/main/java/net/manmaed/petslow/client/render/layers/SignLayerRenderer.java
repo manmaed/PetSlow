@@ -21,7 +21,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class SignLayerRenderer extends RenderLayer<EntityPetSlow, ModelSlowpoke> {
 
-    private static final ResourceLocation SIGN = new ResourceLocation(PetSlow.MOD_ID, "textures/entity/sign.png");
+    private static final ResourceLocation SIGN = ResourceLocation.fromNamespaceAndPath(PetSlow.MOD_ID, "textures/entity/sign.png");
     private final ModelSign hat;
 
     public SignLayerRenderer(RenderLayerParent layerParent, EntityModelSet entityModelSet) {
@@ -38,7 +38,7 @@ public class SignLayerRenderer extends RenderLayer<EntityPetSlow, ModelSlowpoke>
         poseStack.scale(size, size, size);
         poseStack.translate(0.0f, 0.85f, 0.70f);
         if (entity.isInSittingPose() && entity.isAway()) {
-            hat.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
+            hat.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, -1);
         }
         poseStack.popPose();
     }

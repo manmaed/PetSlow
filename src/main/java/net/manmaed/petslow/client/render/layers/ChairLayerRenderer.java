@@ -19,7 +19,7 @@ import net.minecraft.resources.ResourceLocation;
  * Created by manmaed on 14/10/2021.
  */
 public class ChairLayerRenderer extends RenderLayer<EntityPetSlow, ModelSlowpoke> {
-    private static final ResourceLocation CHAIR = new ResourceLocation(PetSlow.MOD_ID, "textures/entity/chair.png");
+    private static final ResourceLocation CHAIR = ResourceLocation.fromNamespaceAndPath(PetSlow.MOD_ID, "textures/entity/chair.png");
     private final ModelChair hat;
 
     public ChairLayerRenderer(RenderLayerParent layerParent, EntityModelSet modelSet) {
@@ -34,7 +34,7 @@ public class ChairLayerRenderer extends RenderLayer<EntityPetSlow, ModelSlowpoke
         poseStack.scale((float) 2.0D, (float) 2.0D, (float) 2.0D);
         poseStack.translate(0.0F, -0.75F, 0F);
         if (entity.isInSittingPose()) {
-            hat.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
+            hat.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, -1);
         }
         poseStack.popPose();
     }

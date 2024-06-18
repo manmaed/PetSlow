@@ -57,13 +57,9 @@ public class ClayBrew extends Item {
         return ItemUtils.startUsingInstantly(p_42927_, p_42928_, p_42929_);
     }
 
-    @Override
-    public net.minecraftforge.common.capabilities.ICapabilityProvider initCapabilities(ItemStack stack, @javax.annotation.Nullable net.minecraft.nbt.CompoundTag nbt) {
-        return new net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper(stack);
-    }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag flagIn) {
         tooltip.add(Component.translatable("item.petslow.clay_brew.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.YELLOW)));
         tooltip.add(Component.translatable("item.petslow.clay_brew.nfhc").setStyle(Style.EMPTY.withBold(true)));
     }

@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
+  "category": "building",
   "ingredients": [
     {
       "item": "minecraft:wheat"
@@ -8,10 +9,11 @@
       "item": "minecraft:apple"
     },
     {
-      "item": "petslow:mug_water"
+      "item": "petslow:mug"
     }
   ],
   "result": {
-    "item": "petslow:slow_brew"
+    "count": 1,
+    "id": "petslow:slow_brew"
   }
 }

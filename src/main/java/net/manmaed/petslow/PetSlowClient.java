@@ -7,10 +7,10 @@ import net.manmaed.petslow.client.render.model.*;
 import net.manmaed.petslow.commands.PSCommands;
 import net.manmaed.petslow.entity.PSEntityTypes;
 import net.manmaed.petslow.hats.PSHats;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.RegisterClientCommandsEvent;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
 
 /**
  * Created by manmaed on 12/10/2021.

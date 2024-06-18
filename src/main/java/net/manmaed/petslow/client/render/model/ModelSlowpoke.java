@@ -74,7 +74,7 @@ public class ModelSlowpoke extends EntityModel<EntityPetSlow> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int ihavenocluetrynegone) {
         poseStack.pushPose();
 /*        poseStack.scale((float) 0.5D, (float) 0.5D, (float) 0.5D);
         poseStack.translate(0f, 1.5f, 0f);*/

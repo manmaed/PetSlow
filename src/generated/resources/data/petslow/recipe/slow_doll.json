@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "c": {
+      "item": "minecraft:clay"
+    },
+    "f": {
+      "item": "minecraft:rotten_flesh"
+    },
+    "s": {
+      "item": "minecraft:sugar"
+    },
+    "t": {
+      "item": "minecraft:torch"
+    }
+  },
+  "pattern": [
+    "cfc",
+    "scs",
+    "ctc"
+  ],
+  "result": {
+    "count": 1,
+    "id": "petslow:slow_doll"
+  }
+}

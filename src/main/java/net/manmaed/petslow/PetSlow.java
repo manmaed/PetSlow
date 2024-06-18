@@ -7,12 +7,11 @@ import net.manmaed.petslow.entity.PSEntityTypes;
 import net.manmaed.petslow.items.PSItems;
 import net.manmaed.petslow.sounds.PSSounds;
 import net.manmaed.petslow.tab.PSTab;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.bus.api.EventPriority;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 
 /**
  * Created by manmaed on 24/02/2017.
@@ -22,8 +21,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 public class PetSlow {
 
     public static final String MOD_ID = "petslow";
-    public PetSlow() {
-        IEventBus event = FMLJavaModLoadingContext.get().getModEventBus();
+    public PetSlow(IEventBus event) {
         PSItems.ITEMS.register(event);
         PSBlocks.BLOCKS.register(event);
         PSEntityTypes.ENTITY_TYPES.register(event);
@@ -33,7 +31,7 @@ public class PetSlow {
         event.addListener(PetSlowClient::doEntityRendering);
         event.addListener(PetSlowClient::registerLayerDefinitions);
         event.addListener(PetSlowClient::doClientStuff);
-        MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, PetSlowClient::registerClientCommands);
+        NeoForge.EVENT_BUS.addListener(EventPriority.HIGH, PetSlowClient::registerClientCommands);
     }
 
     private void AttributeCreation(EntityAttributeCreationEvent event) {

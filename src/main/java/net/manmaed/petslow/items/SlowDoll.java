@@ -16,13 +16,10 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.BaseSpawner;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -31,7 +28,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
@@ -58,7 +54,7 @@ public class SlowDoll extends Item {
                 BlockEntity blockEntity = world.getBlockEntity(blockpos);
                 if (blockEntity instanceof SpawnerBlockEntity) {
                     SpawnerBlockEntity baseSpawner = (SpawnerBlockEntity)blockEntity;
-                    baseSpawner.setEntityId(PSEntityTypes.SLOWPOKE.get(), world.getRandom());
+                    /*baseSpawner.setEntityId(PSEntityTypes.SLOWPOKE.get(), world.getRandom());*/
                     blockEntity.setChanged();
                     world.sendBlockUpdated(blockpos, blockstate, blockstate, 3);
                     world.gameEvent(context.getPlayer(), GameEvent.BLOCK_CHANGE, blockpos);
@@ -84,7 +80,7 @@ public class SlowDoll extends Item {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand p_43227_) {
+    public InteractionResultHolder use(Level level, Player player, InteractionHand p_43227_) {
         ItemStack itemstack = player.getItemInHand(p_43227_);
         HitResult hitresult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.SOURCE_ONLY);
         if (hitresult.getType() != HitResult.Type.BLOCK) {
@@ -116,9 +112,9 @@ public class SlowDoll extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag flag) {
-        list.add(Component.translatable("item.petslow.slow_doll.tooltip.one").withStyle(ChatFormatting.BOLD).withStyle(ChatFormatting.BLUE));
-        list.add(Component.translatable("item.petslow.slow_doll.tooltip.two").withStyle(ChatFormatting.GOLD));
-        list.add(Component.translatable("item.petslow.slow_doll.tooltip.three").withStyle(ChatFormatting.GRAY));
+    public void appendHoverText(ItemStack stack, TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag flagIn) {
+        tooltip.add(Component.translatable("item.petslow.slow_doll.tooltip.one").withStyle(ChatFormatting.BOLD).withStyle(ChatFormatting.BLUE));
+        tooltip.add(Component.translatable("item.petslow.slow_doll.tooltip.two").withStyle(ChatFormatting.GOLD));
+        tooltip.add(Component.translatable("item.petslow.slow_doll.tooltip.three").withStyle(ChatFormatting.GRAY));
     }
 }

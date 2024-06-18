@@ -37,7 +37,7 @@ public class ModelChair<T extends Entity> extends Model {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int ihavenocluetrynegone) {
         root.render(poseStack, buffer, packedLight, packedOverlay);
     }
 }

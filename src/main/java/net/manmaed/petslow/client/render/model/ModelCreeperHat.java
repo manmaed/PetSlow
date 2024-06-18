@@ -50,7 +50,7 @@ public class ModelCreeperHat<T extends Entity> extends Model {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int ihavenocluetrynegone) {
         foot2F.render(poseStack, buffer, packedLight, packedOverlay);
         foot1B.render(poseStack, buffer, packedLight, packedOverlay);
         CreepsHead.render(poseStack, buffer, packedLight, packedOverlay);

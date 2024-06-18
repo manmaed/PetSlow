@@ -4,6 +4,7 @@ import net.manmaed.petslow.items.PSItems;
 import net.manmaed.petslow.sounds.PSSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -13,16 +14,14 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
+import net.minecraft.world.entity.animal.Parrot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
@@ -30,6 +29,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
@@ -44,11 +44,13 @@ public class EntityPetSlow extends TamableAnimal {
     private static final EntityDataAccessor<Boolean> AWAY = SynchedEntityData.defineId(EntityPetSlow.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> TORCH_COUNT = SynchedEntityData.defineId(EntityPetSlow.class, EntityDataSerializers.INT);
     /*private int torch = 0;*/
+    private static final EntityDataAccessor<Boolean> MAGIC_ABILITY = SynchedEntityData.defineId(EntityPetSlow.class, EntityDataSerializers.BOOLEAN);
+
     private static final int NOT_IN_USE = -1;
 
     protected EntityPetSlow(EntityType<? extends TamableAnimal> type, Level level) {
         super(type, level);
-        this.setTame(false);
+        this.setTame(false, false);
     }
 
     @Override
@@ -56,7 +58,7 @@ public class EntityPetSlow extends TamableAnimal {
         //Goal Selectors
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(2, new SitWhenOrderedToGoal(this));
-        this.goalSelector.addGoal(3, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false));
+        this.goalSelector.addGoal(3, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F));
         this.goalSelector.addGoal(4, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
@@ -67,18 +69,20 @@ public class EntityPetSlow extends TamableAnimal {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(RETURN_COOLDOWN, NOT_IN_USE);
-        this.entityData.define(STAY_COOLDOWN, NOT_IN_USE);
-        this.entityData.define(AWAY, false);
-        this.entityData.define(TORCH_COUNT, 0);
+    protected void defineSynchedData(SynchedEntityData.Builder synceddata) {
+        super.defineSynchedData(synceddata);
+        synceddata.define(RETURN_COOLDOWN, NOT_IN_USE);
+        synceddata.define(STAY_COOLDOWN, NOT_IN_USE);
+        synceddata.define(AWAY, false);
+        synceddata.define(TORCH_COUNT, 0);
+        synceddata.define(MAGIC_ABILITY, false);
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
         compoundTag.putInt("torchCount", this.getTorchCount());
+        compoundTag.putBoolean("MAGIC_ABILITY", this.getMagicAbility());
     }
 
     @Override
@@ -87,6 +91,14 @@ public class EntityPetSlow extends TamableAnimal {
         if (compoundTag.contains("torchCount")) {
             this.setTorchCount(compoundTag.getInt("torchCount"));
         }
+        if (compoundTag.contains("MAGIC_ABILITY")) {
+            this.setMagicAbility(compoundTag.getBoolean("MAGIC_ABILITY"));
+        }
+    }
+
+    @Override
+    public boolean isFood(ItemStack itemStack) {
+        return itemStack == PSItems.SLOW_BREW.get().getDefaultInstance();
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -110,7 +122,7 @@ public class EntityPetSlow extends TamableAnimal {
         UUID uuid = this.getOwnerUUID();
         if (uuid != null) {
             slowpoke.setOwnerUUID(uuid);
-            slowpoke.setTame(true);
+            slowpoke.setTame(true, true);
         }
         return slowpoke;
     }
@@ -141,6 +153,7 @@ public class EntityPetSlow extends TamableAnimal {
     @Override
     protected SoundEvent getDeathSound() {
         return PSSounds.SLOW_DEATH.get();
+        //return SoundEvents.PLAYER_DEATH;
     }
 
     @Override
@@ -196,7 +209,7 @@ public class EntityPetSlow extends TamableAnimal {
                 if (!player.getAbilities().instabuild) {
                     itemStack.shrink(1);
                 }
-                if (this.random.nextInt(3) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player)) {
+                if (this.random.nextInt(3) == 0) {
                     this.tame(player);
                     this.navigation.stop();
                     this.setOrderedToSit(true);
@@ -235,7 +248,7 @@ public class EntityPetSlow extends TamableAnimal {
                             setTorchCount(torch);
                             /*LogHelper.info("Torch Count after" + getTorchCount());*/
                             world.setBlockAndUpdate(pos.above(), Blocks.TORCH.defaultBlockState());
-                            playSound(SoundEvents.NOTE_BLOCK_BELL.get(), getSoundVolume(), 0.01F);
+                            playSound(SoundEvents.NOTE_BLOCK_BELL.value(), getSoundVolume(), 0.01F);
                         }
                     }
                 }
@@ -262,60 +275,91 @@ public class EntityPetSlow extends TamableAnimal {
         }
     }
 
-    private void countdown(Level world) {
-        if (this.isTame() && this.isOrderedToSit()) {
-            if (!world.isClientSide) {
-                if (this.entityData.get(STAY_COOLDOWN) != NOT_IN_USE) {
-                    int sc = this.entityData.get(STAY_COOLDOWN);
-                    int nsc = --sc;
-                    this.entityData.set(STAY_COOLDOWN, nsc);
-                } else if (this.entityData.get(RETURN_COOLDOWN) != NOT_IN_USE) {
-                    int rc = this.entityData.get(RETURN_COOLDOWN);
-                    int nrc = --rc;
-                    this.entityData.set(RETURN_COOLDOWN, nrc);
-                }
-            }
-        }
-    }
-
-    private void chooseafk(Level world) {
+    private void spawnBos(Level world, BlockPos pos) {
         if (!world.isClientSide) {
-            if (this.entityData.get(STAY_COOLDOWN) == NOT_IN_USE && this.entityData.get(RETURN_COOLDOWN) == NOT_IN_USE) {
-                boolean tobeornottobe = world.random.nextBoolean();
-                if (tobeornottobe) {
-                    this.entityData.set(RETURN_COOLDOWN, (world.random.nextInt(100) + 100));
-                    this.entityData.set(STAY_COOLDOWN, NOT_IN_USE);
-                    setAway(false);
-                } else {
-                    this.entityData.set(STAY_COOLDOWN, (world.random.nextInt(2500) + 500));
-                    this.entityData.set(RETURN_COOLDOWN, NOT_IN_USE);
-                    setAway(true);
+            if (isTame() && !isOrderedToSit()) {
+                if (world.random.nextInt(10000) == 0) {
+                    Entity entity = EntityType.PARROT.spawn((ServerLevel) world, pos.above(), MobSpawnType.TRIGGERED);
+                    /*LogHelper.info("Spawning Bo");*/
+                    if (entity != null) {
+                        entity.setCustomName(Component.literal("Bo"));
+                        entity.setCustomNameVisible(true);
+                        CompoundTag tag = entity.saveWithoutId(new CompoundTag());
+                        tag.putInt("Variant", Parrot.Variant.GREEN.getId());
+                        entity.load(tag);
+                        world.gameEvent(this, GameEvent.ENTITY_PLACE, entity.position());
+                    }
                 }
             }
         }
     }
+        private void countdown(Level world){
+            if (this.isTame() && this.isOrderedToSit()) {
+                if (!world.isClientSide) {
+                    if (this.entityData.get(STAY_COOLDOWN) != NOT_IN_USE) {
+                        int sc = this.entityData.get(STAY_COOLDOWN);
+                        int nsc = --sc;
+                        this.entityData.set(STAY_COOLDOWN, nsc);
+                    } else if (this.entityData.get(RETURN_COOLDOWN) != NOT_IN_USE) {
+                        int rc = this.entityData.get(RETURN_COOLDOWN);
+                        int nrc = --rc;
+                        this.entityData.set(RETURN_COOLDOWN, nrc);
+                    }
+                }
+            }
+        }
 
-    public int getTorchCount() {
-        return this.entityData.get(TORCH_COUNT);
-    }
+        private void chooseafk(Level world){
+            if (!world.isClientSide) {
+                if (this.entityData.get(STAY_COOLDOWN) == NOT_IN_USE && this.entityData.get(RETURN_COOLDOWN) == NOT_IN_USE) {
+                    boolean tobeornottobe = world.random.nextBoolean();
+                    if (tobeornottobe) {
+                        this.entityData.set(RETURN_COOLDOWN, (world.random.nextInt(100) + 100));
+                        this.entityData.set(STAY_COOLDOWN, NOT_IN_USE);
+                        setAway(false);
+                    } else {
+                        this.entityData.set(STAY_COOLDOWN, (world.random.nextInt(2500) + 500));
+                        this.entityData.set(RETURN_COOLDOWN, NOT_IN_USE);
+                        setAway(true);
+                    }
+                }
+            }
+        }
 
-    public void setTorchCount(int amount) {
-        this.entityData.set(TORCH_COUNT, amount);
-    }
+        public int getTorchCount() {
+            return this.entityData.get(TORCH_COUNT);
+        }
 
-    @Override
-    public void tick() {
-        super.tick();
-        Level level = this.level();
-        //LogHelper.info("STAY_COOLDOWN: " + this.entityData.get(STAY_COOLDOWN) + " : RETURN_COOLDOWN: " + this.entityData.get(RETURN_COOLDOWN));
-        addtorch(level, this.getOnPos());
-        isAway();
-        chooseafk(level);
-        shouldafk(level);
-        countdown(level);
+        public void setTorchCount(int amount){
+            this.entityData.set(TORCH_COUNT, amount);
+        }
+
+        public boolean getMagicAbility() {
+            return this.entityData.get(MAGIC_ABILITY);
+        }
+
+        public void usedMagicAbility() {
+            this.entityData.set(MAGIC_ABILITY, true);
+        }
+
+        public void setMagicAbility(boolean usedMagicAbility){
+            this.entityData.set(MAGIC_ABILITY, usedMagicAbility);
+        }
+
+        @Override
+        public void tick() {
+            super.tick();
+            Level level = this.level();
+            //LogHelper.info("STAY_COOLDOWN: " + this.entityData.get(STAY_COOLDOWN) + " : RETURN_COOLDOWN: " + this.entityData.get(RETURN_COOLDOWN));
+            addtorch(level, this.getOnPos());
+            //useMagicAbility(level, this.getOnPos());
+            isAway();
+            chooseafk(level);
+            shouldafk(level);
+            countdown(level);
         /*if (this.getOwnerUUID().toString().equals("manmaedsuuid")) {
             this.setInvulnerable(true);
             this.setTorchCount(Integer.MAX_VALUE);
         }*/
+        }
     }
-}

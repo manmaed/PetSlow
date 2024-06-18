@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
+  "category": "building",
   "ingredients": [
     {
       "item": "minecraft:milk_bucket"
@@ -9,6 +10,7 @@
     }
   ],
   "result": {
-    "item": "petslow:mug_milk"
+    "count": 1,
+    "id": "petslow:mug_milk"
   }
 }

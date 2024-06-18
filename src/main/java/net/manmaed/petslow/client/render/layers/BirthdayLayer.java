@@ -21,7 +21,7 @@ import net.minecraft.resources.ResourceLocation;
  */
 public class BirthdayLayer extends RenderLayer<EntityPetSlow, ModelSlowpoke> {
 
-    private static final ResourceLocation CAKE = new ResourceLocation(PetSlow.MOD_ID, "textures/entity/event/cake.png");
+    private static final ResourceLocation CAKE = ResourceLocation.fromNamespaceAndPath(PetSlow.MOD_ID, "textures/entity/event/cake.png");
     private final ModelCakeHat hat;
 
     public BirthdayLayer(RenderLayerParent layerParent, EntityModelSet entityModelSet) {
@@ -41,7 +41,7 @@ public class BirthdayLayer extends RenderLayer<EntityPetSlow, ModelSlowpoke> {
                 this.getParentModel().getHead().translateAndRotate(poseStack);
                 poseStack.translate(0F, -2F, 0F);
             }
-            hat.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+            hat.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, -1);
         }
         poseStack.popPose();
     }

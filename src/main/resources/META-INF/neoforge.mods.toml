@@ -1,0 +1,19 @@
+modLoader = "javafml"
+loaderVersion = "[1,)"
+license = "All rights reserved"
+issueTrackerURL = "https://github.com/manmaed/PetSlow/issues"
+[[mods]]
+modId = "petslow"
+version = "${version}"
+displayName = "PetSlow"
+updateJSONURL = "https://raw.githubusercontent.com/manmaed/PetSlow/main/update.json"
+credits = "Wendi for the SlowDoll and Riz for the death sound"
+authors = "manmaed"
+description = '''
+Mini Slowpokes!'''
+[[dependencies.petslow]]
+modId="neoforge"
+required=true
+versionRange="[21.0.0-beta,)"
+ordering="NONE"
+side="BOTH"

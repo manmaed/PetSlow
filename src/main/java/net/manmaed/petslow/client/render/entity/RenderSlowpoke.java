@@ -16,7 +16,7 @@ import net.minecraft.resources.ResourceLocation;
  */
 public class RenderSlowpoke extends MobRenderer<EntityPetSlow, ModelSlowpoke> {
 
-    public static final ResourceLocation SLOWPOKE = new ResourceLocation(PetSlow.MOD_ID, "textures/entity/slowpoke.png");
+    public static final ResourceLocation SLOWPOKE = ResourceLocation.fromNamespaceAndPath(PetSlow.MOD_ID, "textures/entity/slowpoke.png");
 
     public RenderSlowpoke(EntityRendererProvider.Context context) {
         super(context, new ModelSlowpoke(context.bakeLayer(PSModels.PETSLOW)), 0.25F);

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_mug": {
+      "conditions": {
+        "items": [
+          {
+            "items": "petslow:mug"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "petslow:slow_brew"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_mug"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "petslow:slow_brew"
+    ]
+  }
+}

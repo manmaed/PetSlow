@@ -1,14 +1,16 @@
 {
   "type": "minecraft:crafting_shapeless",
+  "category": "building",
   "ingredients": [
     {
-      "item": "minecraft:water_bucket"
+      "item": "minecraft:lava_bucket"
     },
     {
       "item": "petslow:mug"
     }
   ],
   "result": {
-    "item": "petslow:mug_water"
+    "count": 1,
+    "id": "petslow:mug_lava"
   }
 }

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "c": {
+      "item": "minecraft:clay"
+    },
+    "w": {
+      "item": "petslow:mug_water"
+    }
+  },
+  "pattern": [
+    "ccc",
+    "cwc"
+  ],
+  "result": {
+    "count": 1,
+    "id": "petslow:clay_brew"
+  }
+}
