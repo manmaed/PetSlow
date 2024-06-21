@@ -37,8 +37,15 @@ public class RenderSlowpoke extends MobRenderer<EntityPetSlow, ModelSlowpoke> {
         poseStack.popPose();
     }
 
+    private ResourceLocation getloc(String filename){
+        return ResourceLocation.fromNamespaceAndPath(PetSlow.MOD_ID, "textures/entity/" + filename + ".png");
+    }
+
     @Override
     public ResourceLocation getTextureLocation(EntityPetSlow entityPetSlow) {
-        return SLOWPOKE;
+        String name = String.valueOf(entityPetSlow.getCustomName());
+        if (name.contains("manmaed")) {
+            return getloc("manmaed");
+        } else return getloc("slowpoke");
     }
 }

@@ -288,6 +288,7 @@ public class EntityPetSlow extends TamableAnimal {
                         tag.putInt("Variant", Parrot.Variant.GREEN.getId());
                         entity.load(tag);
                         world.gameEvent(this, GameEvent.ENTITY_PLACE, entity.position());
+                        usedMagicAbility();
                     }
                 }
             }
@@ -346,20 +347,33 @@ public class EntityPetSlow extends TamableAnimal {
             this.entityData.set(MAGIC_ABILITY, usedMagicAbility);
         }
 
+    public void useMagicAbility(Level level, BlockPos pos){
+        if (!getMagicAbility()) {
+            String name = String.valueOf(this.getCustomName());
+            if (name.contains("Jake_Evans")) {
+                spawnBos(level, pos);
+                /*usedMagicAbility();*/
+            }
+            /*if (name.contains("Slowpoke101")) {
+                spawnClay(level, pos);
+                usedMagicAbility();
+            }*/
+            /*if (name.contains("manmaed")) {
+                usedMagicAbility();
+            }*/
+        }
+    }
+
         @Override
         public void tick() {
             super.tick();
             Level level = this.level();
             //LogHelper.info("STAY_COOLDOWN: " + this.entityData.get(STAY_COOLDOWN) + " : RETURN_COOLDOWN: " + this.entityData.get(RETURN_COOLDOWN));
             addtorch(level, this.getOnPos());
-            //useMagicAbility(level, this.getOnPos());
+            useMagicAbility(level, this.getOnPos());
             isAway();
             chooseafk(level);
             shouldafk(level);
             countdown(level);
-        /*if (this.getOwnerUUID().toString().equals("manmaedsuuid")) {
-            this.setInvulnerable(true);
-            this.setTorchCount(Integer.MAX_VALUE);
-        }*/
         }
     }

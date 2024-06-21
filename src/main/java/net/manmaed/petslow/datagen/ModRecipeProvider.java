@@ -61,7 +61,7 @@ public class ModRecipeProvider extends RecipeProvider {
 
         //Mug Clay
         ShapedRecipeBuilder.shaped(category, PSItems.CLAY_BREW, 1)
-                .define('c', Ingredient.of(Items.CLAY))
+                .define('c', Ingredient.of(Items.CLAY_BALL))
                 .define('w', Ingredient.of(PSItems.MUG_WATER))
                 .pattern("ccc")
                 .pattern("cwc")
@@ -79,7 +79,7 @@ public class ModRecipeProvider extends RecipeProvider {
 
     protected static void makeSlowDoll(RecipeOutput consumer) {
         ShapedRecipeBuilder.shaped(category, PSItems.SLOW_DOLL, 1)
-                .define('c', Ingredient.of(Items.CLAY))
+                .define('c', Ingredient.of(Items.CLAY_BALL))
                 .define('f', Ingredient.of(Items.ROTTEN_FLESH))
                 .define('s', Ingredient.of(Items.SUGAR))
                 .define('t', Ingredient.of(Items.TORCH))

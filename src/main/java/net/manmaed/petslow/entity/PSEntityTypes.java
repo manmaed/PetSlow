@@ -15,5 +15,8 @@ public class PSEntityTypes {
     //TODO: Add Main Part of the mod
     public static DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(Registries.ENTITY_TYPE, PetSlow.MOD_ID);
 
-   public static final DeferredHolder<EntityType<?>, EntityType<EntityPetSlow>> SLOWPOKE = ENTITY_TYPES.register("petslow", () -> EntityType.Builder.of(EntityPetSlow::new, MobCategory.MISC).sized(0.5f, 1.0f).build("petslow"));
+   public static final DeferredHolder<EntityType<?>, EntityType<EntityPetSlow>> SLOWPOKE = ENTITY_TYPES.register("petslow", () -> EntityType.Builder.of(EntityPetSlow::new, MobCategory.MISC)
+           .sized(0.5f, 1.0f)
+           .nameTagOffset(2f)
+           .build("petslow"));
 }
