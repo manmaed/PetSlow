@@ -36,8 +36,8 @@ import java.util.Objects;
  * Created by manmaed on 24/02/2017.
  */
 public class SlowDoll extends Item {
-    public SlowDoll(Properties properties) {
-        super(properties);
+    public SlowDoll() {
+        super(new Properties().stacksTo(1));
     }
 
     @Override

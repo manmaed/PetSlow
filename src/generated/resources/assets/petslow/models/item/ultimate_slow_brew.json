@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "petslow:item/ultimate_slow_brew"
+  }
+}

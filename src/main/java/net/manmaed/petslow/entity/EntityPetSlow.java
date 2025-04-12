@@ -205,6 +205,16 @@ public class EntityPetSlow extends TamableAnimal {
 
                     return interactionresult;
                 }
+            } else if (item == PSItems.ULTIMATE_SLOW_BREW.get()) {
+                if (!player.getAbilities().instabuild) {
+                    itemStack.shrink(1);
+                }
+                    this.tame(player);
+                    this.navigation.stop();
+                    this.setOrderedToSit(true);
+                    level.broadcastEntityEvent(this, (byte) 7);
+                    playSound(PSSounds.SLOW_TAME.get(), getSoundVolume(), 1F);
+                    return InteractionResult.SUCCESS;
             } else if (item == PSItems.SLOW_BREW.get()) {
                 if (!player.getAbilities().instabuild) {
                     itemStack.shrink(1);
@@ -350,10 +360,10 @@ public class EntityPetSlow extends TamableAnimal {
     public void useMagicAbility(Level level, BlockPos pos){
         if (!getMagicAbility()) {
             String name = String.valueOf(this.getCustomName());
-            if (name.contains("Jake_Evans")) {
+            /*if (name.contains("Jake_Evans")) {
                 spawnBos(level, pos);
-                /*usedMagicAbility();*/
-            }
+                usedMagicAbility();
+            }*/
             /*if (name.contains("Slowpoke101")) {
                 spawnClay(level, pos);
                 usedMagicAbility();
@@ -370,7 +380,7 @@ public class EntityPetSlow extends TamableAnimal {
             Level level = this.level();
             //LogHelper.info("STAY_COOLDOWN: " + this.entityData.get(STAY_COOLDOWN) + " : RETURN_COOLDOWN: " + this.entityData.get(RETURN_COOLDOWN));
             addtorch(level, this.getOnPos());
-            useMagicAbility(level, this.getOnPos());
+            //useMagicAbility(level, this.getOnPos());
             isAway();
             chooseafk(level);
             shouldafk(level);

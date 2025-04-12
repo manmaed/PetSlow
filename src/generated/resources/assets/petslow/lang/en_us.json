@@ -21,6 +21,8 @@
   "item.petslow.slow_doll.tooltip.one": "Mini Slowpoke instructions,",
   "item.petslow.slow_doll.tooltip.three": "* To heal it give it a Clay brew",
   "item.petslow.slow_doll.tooltip.two": "* To tame it give it a Slow brew",
+  "item.petslow.ultimate_slow_brew": "Ultimate Slow Brew",
+  "item.petslow.ultimate_slow_brew.tooltip": "It's so powerful it can tame a Mini Slowpoke in one go!",
   "itemGroup.petslow": "PetSlow",
   "petslow.command.reload": "Hats Reloaded!",
   "petslow.mode.birthday": "Birthday mode enabled!",

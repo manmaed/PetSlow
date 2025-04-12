@@ -16,8 +16,6 @@ import net.minecraft.resources.ResourceLocation;
  */
 public class RenderSlowpoke extends MobRenderer<EntityPetSlow, ModelSlowpoke> {
 
-    public static final ResourceLocation SLOWPOKE = ResourceLocation.fromNamespaceAndPath(PetSlow.MOD_ID, "textures/entity/slowpoke.png");
-
     public RenderSlowpoke(EntityRendererProvider.Context context) {
         super(context, new ModelSlowpoke(context.bakeLayer(PSModels.PETSLOW)), 0.25F);
         //this.addLayer(new LayerClass(this, context.getModelSet)
@@ -37,7 +35,7 @@ public class RenderSlowpoke extends MobRenderer<EntityPetSlow, ModelSlowpoke> {
         poseStack.popPose();
     }
 
-    private ResourceLocation getloc(String filename){
+    private ResourceLocation getSkin(String filename){
         return ResourceLocation.fromNamespaceAndPath(PetSlow.MOD_ID, "textures/entity/" + filename + ".png");
     }
 
@@ -45,7 +43,7 @@ public class RenderSlowpoke extends MobRenderer<EntityPetSlow, ModelSlowpoke> {
     public ResourceLocation getTextureLocation(EntityPetSlow entityPetSlow) {
         String name = String.valueOf(entityPetSlow.getCustomName());
         if (name.contains("manmaed")) {
-            return getloc("manmaed");
-        } else return getloc("slowpoke");
+            return getSkin("manmaed");
+        } else return getSkin("slowpoke");
     }
 }

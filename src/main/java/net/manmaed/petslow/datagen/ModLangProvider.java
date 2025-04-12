@@ -33,6 +33,8 @@ public class ModLangProvider extends LanguageProvider {
             add("item.petslow.clay_brew.tooltip", "Used to heal a tamed Mini Slowpoke");
             add("item.petslow.clay_brew.nfhc", "Not For Human Consumption");
             add("item.petslow.slow_brew.tooltip", "Used to tame a Mini Slowpoke");
+            add("item.petslow.ultimate_slow_brew", "Ultimate Slow Brew");
+            add("item.petslow.ultimate_slow_brew.tooltip", "It's so powerful it can tame a Mini Slowpoke in one go!");
             add("item.petslow.slow_doll", "Slowpoke Doll");
             add("item.petslow.slow_doll.tooltip.one", "Mini Slowpoke instructions,");
             add("item.petslow.slow_doll.tooltip.two", "* To tame it give it a Slow brew");

@@ -15,7 +15,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -25,8 +24,8 @@ import java.util.List;
 public class ClayBrew extends Item {
 
 
-    public ClayBrew(Properties properties) {
-        super(properties);
+    public ClayBrew() {
+        super(new Properties().stacksTo(1));
     }
 
     public ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity livingEntity) {
@@ -45,7 +44,8 @@ public class ClayBrew extends Item {
         return itemStack.isEmpty() ? new ItemStack(PSItems.MUG.get()) : itemStack;
     }
 
-    public int getUseDuration(ItemStack p_42933_) {
+    @Override
+    public int getUseDuration(ItemStack itemStack, LivingEntity livingEntity) {
         return 32;
     }
 

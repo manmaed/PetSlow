@@ -21,8 +21,8 @@ import java.util.List;
  */
 public class SlowBrew extends Item {
 
-    public SlowBrew(Properties properties) {
-        super(properties);
+    public SlowBrew() {
+        super(new Properties().stacksTo(1));
     }
 
     @Override

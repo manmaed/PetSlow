@@ -22,5 +22,6 @@ public class PSDataGeneration {
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
         generator.addProvider(true, new ModLangProvider(packOutput));
         generator.addProvider(true, new ModRecipeProvider(packOutput, lookupProvider));
+        generator.addProvider(true, new ModItemModelProvider(packOutput, fileHelper));
     }
 }

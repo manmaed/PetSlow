@@ -12,8 +12,8 @@ import java.util.List;
  */
 public class Mug extends Item {
 
-    public Mug(Properties properties) {
-        super(properties);
+    public Mug() {
+        super(new Properties());
     }
 
     @Override

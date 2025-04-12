@@ -19,8 +19,8 @@ import java.util.List;
  */
 public class MugMilk extends Item {
 
-    public MugMilk(Properties properties) {
-        super(properties);
+    public MugMilk() {
+        super(new Properties().stacksTo(1));
     }
 
     @Override

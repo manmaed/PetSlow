@@ -20,8 +20,8 @@ import java.util.List;
  * Created by manmaed on 12/10/2021.
  */
 public class MugLava extends Item {
-    public MugLava(Properties properties) {
-        super(properties);
+    public MugLava() {
+        super(new Properties().stacksTo(1));
     }
 
     public ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity livingEntity) {
@@ -30,7 +30,8 @@ public class MugLava extends Item {
             serverPlayer.awardStat(Stats.ITEM_USED.get(this));
         }
         if (!level.isClientSide) {
-            //Set on fire
+            livingEntity.igniteForSeconds(8.0F);
+
         }
         if (livingEntity instanceof Player player) {
             return ItemUtils.createFilledResult(itemStack, player, new ItemStack(PSItems.MUG.get()), false);
