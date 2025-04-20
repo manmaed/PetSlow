@@ -28,5 +28,7 @@
   "petslow.mode.birthday": "Birthday mode enabled!",
   "petslow.mode.christmas": "Happy Christmas!",
   "petslow.mode.halloween": "Happy Halloween!",
-  "petslow.mode.none": "Hats cleared!"
+  "petslow.mode.none": "Hats cleared!",
+  "resourcePack.petslow.programmer_art.desc": "PetSlow Textures before the Squidgy remakes",
+  "resourcePack.petslow.programmer_art.name": "PetSlow Programmer Art"
 }

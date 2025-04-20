@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import org.joml.Quaternionf;
 
 /**
  * Created by manmaed on 14/01/2019.
@@ -31,12 +32,12 @@ public class SignLayerRenderer extends RenderLayer<EntityPetSlow, ModelSlowpoke>
 
     @Override
     public void render(PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight, EntityPetSlow entity, float p_117353_, float p_117354_, float p_117355_, float p_117356_, float p_117357_, float p_117358_) {
-        VertexConsumer vertexConsumer = multiBufferSource.getBuffer(RenderType.entitySolid(SIGN));
+        VertexConsumer vertexConsumer = multiBufferSource.getBuffer(RenderType.entityTranslucentCull(SIGN));
         poseStack.pushPose();
         poseStack.scale((float) 2.0D, (float) 2.0D, (float) 2.0D);
-        float size = 0.125F;
+        float size = 0.15F;
         poseStack.scale(size, size, size);
-        poseStack.translate(0.0f, 0.85f, 0.70f);
+        poseStack.translate(2.0F, 2.5F, 0.7F);
         if (entity.isInSittingPose() && entity.isAway()) {
             hat.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, -1);
         }

@@ -47,6 +47,8 @@ public class ModLangProvider extends LanguageProvider {
             add("petslow.mode.halloween", "Happy Halloween!");
             add("petslow.mode.none", "Hats cleared!");
             add("petslow.command.reload", "Hats Reloaded!");
+            add("resourcePack.petslow.programmer_art.name", "PetSlow Programmer Art");
+            add("resourcePack.petslow.programmer_art.desc", "PetSlow Textures before the Squidgy remakes");
         }
 
     }

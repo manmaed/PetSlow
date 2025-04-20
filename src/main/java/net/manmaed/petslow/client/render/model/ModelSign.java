@@ -17,7 +17,7 @@ public class ModelSign<T extends Entity> extends Model {
     private final ModelPart sign;
 
     public ModelSign(ModelPart root) {
-        super(RenderType::entitySolid);
+        super(RenderType::entityTranslucentCull);
         this.sign = root.getChild("sign");
     }
 
@@ -25,7 +25,13 @@ public class ModelSign<T extends Entity> extends Model {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition sign = partdefinition.addOrReplaceChild("sign", CubeListBuilder.create().texOffs(0, 0).addBox(-31.0F, -39.0F, 0.0F, 64.0F, 39.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 24.0F, 0.0F));
+        PartDefinition sign = partdefinition.addOrReplaceChild("sign",
+                CubeListBuilder.create().texOffs(0, 0)
+                        .addBox(-31.0F, -20.0F, -1.0F, 64.0F, 40.0F, 0.0F,
+                                new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(-32.0F, -20.0F, 0.0F, -0.2618F, 0.0F, 0.0F));
+
+
 
         return LayerDefinition.create(meshdefinition, 128, 128);
     }
