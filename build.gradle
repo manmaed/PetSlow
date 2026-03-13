@@ -4,7 +4,7 @@ plugins {
     id 'idea'
     id 'maven-publish'
     id 'net.neoforged.gradle.userdev' version "${neo_gradle}"
-    id "me.modmuss50.mod-publish-plugin" version "0.4.5"
+    id "me.modmuss50.mod-publish-plugin" version "${modmuss_publish}"
 }
 
 def ENV = System.getenv()
@@ -14,7 +14,22 @@ group = project.maven_group
 repositories {
     mavenLocal()
     maven {
-        url "https://maven.curse.tools"
+        url "https://cursemaven.com"
+    }
+    maven {
+        url 'https://maven.blamejared.com'
+    }
+    maven {
+        url 'https://maven.nanite.dev/'
+    }
+    maven {
+        url 'https://maven.ftb.dev/releases'
+    }
+    maven {
+        url 'https://maven.architectury.dev/'
+    }
+    maven {
+        url 'https://api.modrinth.com/maven'
     }
 }
 
@@ -51,6 +66,11 @@ sourceSets.main.resources {
 
 dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
+    runtimeOnly "curse.maven:jei-238222:5781938" //Just Enough Items
+    runtimeOnly "curse.maven:architectury-419699:5786327"
+    runtimeOnly "curse.maven:toolkit-324888:5521502"
+    runtimeOnly "dev.ftb.mods:ftb-library-neoforge:2100.1.4"
+    implementation "maven.modrinth:jade:${jade_version}+neoforge"
 }
 tasks.withType(ProcessResources).configureEach {
     var replaceProperties = [

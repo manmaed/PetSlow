@@ -1,6 +1,7 @@
 {
   "a.lang.author.name": "manmaed",
   "a.lang.file.name": "English US",
+  "config.jade.plugin_petslow.petslow_stats": "PetSlow Stats",
   "entity.petslow.death": "Pet Slow death",
   "entity.petslow.petslow": "Pet Slow",
   "entity.petslow.tamed": "Pet Slow tamed",
@@ -25,6 +26,9 @@
   "item.petslow.ultimate_slow_brew.tooltip": "It's so powerful it can tame a Mini Slowpoke in one go!",
   "itemGroup.petslow": "PetSlow",
   "petslow.command.reload": "Hats Reloaded!",
+  "petslow.entity.petslow.afk": "AFK Mode: %d",
+  "petslow.entity.petslow.torchcount.none": "No Torches",
+  "petslow.entity.petslow.torchcount.some": "Torches: %d",
   "petslow.mode.birthday": "Birthday mode enabled!",
   "petslow.mode.christmas": "Happy Christmas!",
   "petslow.mode.halloween": "Happy Halloween!",

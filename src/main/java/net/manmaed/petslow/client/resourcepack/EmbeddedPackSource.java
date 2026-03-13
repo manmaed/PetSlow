@@ -32,6 +32,8 @@ public class EmbeddedPackSource implements RepositorySource {
     @Override
     public void loadPacks(Consumer<Pack> consumer) {
         Path packPath = modFile.findResource(type == PackType.CLIENT_RESOURCES ? "resourcepacks" : "datapacks").resolve(packId);
+        LogHelper.error("findResource: " + modFile.findResource(type == PackType.CLIENT_RESOURCES ? "resourcepacks" : "datapacks"));
+        LogHelper.error("getFilePath: " + modFile.getFilePath());
         if (!Files.exists(packPath)) {
             LogHelper.error("Unable to find embedded mod pack " + packId + " at " + packPath);
             return;

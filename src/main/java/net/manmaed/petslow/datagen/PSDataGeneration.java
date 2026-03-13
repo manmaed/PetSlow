@@ -20,8 +20,8 @@ public class PSDataGeneration {
         PackOutput packOutput = generator.getPackOutput();
         ExistingFileHelper fileHelper= event.getExistingFileHelper();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
-        generator.addProvider(true, new ModLangProvider(packOutput));
         generator.addProvider(true, new ModRecipeProvider(packOutput, lookupProvider));
         generator.addProvider(true, new ModItemModelProvider(packOutput, fileHelper));
+        ModLangProvider.addTranslations(generator);
     }
 }
